@@ -18,15 +18,3 @@ func changeScene(scene) -> void:  #changes scene with input 'scene' based off of
 		get_child(0).queue_free()
 	instance = currentScene.instantiate()
 	add_child(instance)
-
-
-func _on_start_butt_focus_entered() -> void: #Hover over startButt
-	pass 
-
-
-func _on_start_butt_focus_exited() -> void: #Exit startButt area
-	pass 
-
-
-func _on_start_butt_pressed() -> void: #start game
-	pass 
