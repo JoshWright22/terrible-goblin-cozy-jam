@@ -1,10 +1,12 @@
 [gd_scene format=3 uid="uid://br1ubaj4pgswi"]
 
 [ext_resource type="Texture2D" uid="uid://bw1gddh5tmpwy" path="res://assets/sprites/mainMenuSprites/frozenMachine.png" id="1_1ehe0"]
+[ext_resource type="Script" uid="uid://dw0w8nrwoxfp0" path="res://Scripts/main_menu.gd" id="1_ce3w2"]
 [ext_resource type="Texture2D" uid="uid://fxpfabrsoy3k" path="res://assets/sprites/mainMenuSprites/unfrozenMachine.png" id="2_ce3w2"]
 [ext_resource type="BitMap" uid="uid://c845rjwklfsrw" path="res://assets/sprites/mainMenuSprites/machineBitMap.png" id="3_n45e2"]
 
 [node name="mainMenu" type="Node2D" unique_id=365446402]
+script = ExtResource("1_ce3w2")
 
 [node name="uiControl" type="Control" parent="." unique_id=2131386965]
 layout_mode = 3
@@ -12,7 +14,7 @@ anchors_preset = 0
 offset_top = -267.0
 offset_bottom = -267.0
 
-[node name="TextureButton" type="TextureButton" parent="uiControl" unique_id=2027130576]
+[node name="achievements" type="TextureButton" parent="uiControl" unique_id=2027130576]
 layout_mode = 0
 offset_left = -854.99994
 offset_top = 162.99998
@@ -25,7 +27,7 @@ texture_hover = ExtResource("2_ce3w2")
 texture_click_mask = ExtResource("3_n45e2")
 ignore_texture_size = true
 
-[node name="TextureButton2" type="TextureButton" parent="uiControl" unique_id=2032574939]
+[node name="startbutt" type="TextureButton" parent="uiControl" unique_id=2032574939]
 layout_mode = 0
 offset_left = -195.0
 offset_top = 162.99998
@@ -38,7 +40,7 @@ texture_hover = ExtResource("2_ce3w2")
 texture_click_mask = ExtResource("3_n45e2")
 ignore_texture_size = true
 
-[node name="TextureButton3" type="TextureButton" parent="uiControl" unique_id=1474733402]
+[node name="saves" type="TextureButton" parent="uiControl" unique_id=1474733402]
 layout_mode = 0
 offset_left = 468.99997
 offset_top = 162.99998
@@ -72,3 +74,5 @@ offset_right = 40.0
 offset_bottom = 67.0
 scale = Vector2(23.891033, 1.3291179)
 color = Color(0.48235294, 1, 1, 1)
+
+[connection signal="button_down" from="uiControl/startbutt" to="." method="_on_startbutt_button_down"]
