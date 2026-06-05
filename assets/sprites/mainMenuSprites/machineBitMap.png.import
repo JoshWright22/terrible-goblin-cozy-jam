@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://c845rjwklfsrw"
+path="res://.godot/imported/machineBitMap.png-4a4cdd189ae2c91d9813ec9a064ab981.res"
+
+[deps]
+
+source_file="res://assets/sprites/mainMenuSprites/machineBitMap.png"
+dest_files=["res://.godot/imported/machineBitMap.png-4a4cdd189ae2c91d9813ec9a064ab981.res"]
+
+[params]
+
+create_from=0
+threshold=0.5
