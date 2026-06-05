@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://br1ubaj4pgswi"]
 
-[ext_resource type="Texture2D" uid="uid://bw1gddh5tmpwy" path="res://assets/sprites/mainMenuSprites/frozenMachine.png" id="1_1ehe0"]
+[ext_resource type="Texture2D" uid="uid://bw1gddh5tmpwy" path="res://Assets/sprites/mainMenuSprites/frozenMachine.png" id="1_1ehe0"]
 [ext_resource type="Script" uid="uid://dw0w8nrwoxfp0" path="res://Scripts/main_menu.gd" id="1_ce3w2"]
-[ext_resource type="Texture2D" uid="uid://fxpfabrsoy3k" path="res://assets/sprites/mainMenuSprites/unfrozenMachine.png" id="2_ce3w2"]
-[ext_resource type="BitMap" uid="uid://c845rjwklfsrw" path="res://assets/sprites/mainMenuSprites/machineBitMap.png" id="3_n45e2"]
+[ext_resource type="Texture2D" uid="uid://fxpfabrsoy3k" path="res://Assets/sprites/mainMenuSprites/unfrozenMachine.png" id="2_ce3w2"]
+[ext_resource type="BitMap" uid="uid://c845rjwklfsrw" path="res://Assets/sprites/mainMenuSprites/machineBitMap.png" id="3_n45e2"]
 
 [node name="mainMenu" type="Node2D" unique_id=365446402]
 script = ExtResource("1_ce3w2")
