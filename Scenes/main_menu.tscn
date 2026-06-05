@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://br1ubaj4pgswi"]
+
+[sub_resource type="Theme" id="Theme_erv1k"]
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+
+[node name="mainMenu" type="Node2D" unique_id=365446402]
+
+[node name="uiControl" type="Control" parent="." unique_id=2131386965]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="startButt" type="Button" parent="uiControl" unique_id=1648855049]
+layout_mode = 0
+offset_left = 840.0
+offset_top = 500.0
+offset_right = 1080.0
+offset_bottom = 580.0
+pivot_offset = Vector2(120, 40)
+theme = SubResource("Theme_erv1k")
+icon_alignment = 1
