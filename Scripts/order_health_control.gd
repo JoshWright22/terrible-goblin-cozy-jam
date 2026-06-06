@@ -12,8 +12,8 @@ extends Node2D
 @onready var charSprite2 = load("res://assets/sprites/characterSprites/char2/char2Sprite.PNG")
 
 #used for randomizing and ensuring there arent two of the same sprite at once
-var characters : Array #initialized in _ready
-var characterSprites : Array  #initialized in _ready
+var characters : Array #initialized in _ready | sprite Node path list 
+var characterSprites : Array  #initialized in _ready | add sprites here
 var currentUsedSprites : Array #currently unused; put in genCustomer() after while()
 
 var FADE_TIME : float = 1.5 #customer fade in seconds
