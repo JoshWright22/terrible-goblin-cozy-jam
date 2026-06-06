@@ -44,8 +44,9 @@ var ITEM_EASY_MAX : int = 3
 var ITEM_MED_MAX : int = 4
 var ITEM_HARD_MAX : int = 5
 #___________________________________________________________________________
+#EXTREMELY WIP
 var customerNo #tracks how many customers you've served for difficulty scaling
-var customerSprites : Array = ["None", "None", "None", "None"] #tracks sprites in use & positions
+var currentCustomer : Dictionary = {"char1" : 0, "char2" : 0, "char3" : 0, "char4" : 0} #tracks sprites in use & positions
 #list of things a customer may want
 var ingredients : Array = ["Banana", "Apple", "Cherry", "Mango", "Strawberry"] 
 var currentOrders : Array = []
@@ -57,14 +58,14 @@ var order4 : Dictionary = {}
 
 func _ready() -> void:
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
-	print("ran")
 func _process(delta: float) -> void:
 	pass
 
-func genCustomer(): #creates customer and order
+func genCustomer(): #creates customer and order Wip___________________
 	if currentOrders.size() <= 3:
 		var fadeTween = create_tween() 
 		var select = randi_range(0,3)
+		select = currentCustomer
 		var sprite = characterSprites[randi_range(0,characterSprites.size())] #selects random sprite for customer
 		fadeTween.tween_property(select, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
 
