@@ -12,8 +12,9 @@ extends Node2D
 @onready var charSprite2 = load("res://assets/sprites/characterSprites/char2/char2Sprite.PNG")
 
 #used for randomizing and ensuring there arent two of the same sprite at once
-var characters : Array = [customer1Sprite, customer2Sprite,customer3Sprite,customer4Sprite]
-var characterSprites : Array = [charSprite1, charSprite2]
+var characters : Array #initialized in _ready
+var characterSprites : Array  #initialized in _ready
+var currentUsedSprites : Array #currently unused; put in genCustomer() after while()
 
 var FADE_TIME : float = 1.5 #customer fade in seconds
 var difficulty = "EASY" # "MED" "HARD" general setter for code
@@ -47,7 +48,7 @@ var ITEM_HARD_MAX : int = 5
 #___________________________________________________________________________
 #EXTREMELY WIP
 var customerNo #tracks how many customers you've served for difficulty scaling
-var currentCustomer : Dictionary = {"char1" : 0, "char2" : 0, "char3" : 0, "char4" : 0} #tracks sprites in use & positions
+var currentCustomer : Dictionary = {} #tracks sprites in use & positions
 #list of things a customer may want
 var ingredients : Array = ["Banana", "Apple", "Cherry", "Mango", "Strawberry"] 
 var currentOrders : Array = []
@@ -58,30 +59,38 @@ var order3 : Dictionary = {}
 var order4 : Dictionary = {}
 
 func _ready() -> void:
+	characters = [customer1Sprite, customer2Sprite,customer3Sprite,customer4Sprite]
+	characterSprites = [charSprite1, charSprite2]
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 func _process(delta: float) -> void:
 	pass
 
 func genCustomer(): #creates customer and order Wip___________________
-	if currentOrders.size() < 4:
+	if currentCustomer.size() <= 4:
 		var fadeTween = create_tween() 
-		var select = randi_range(0,3)
-		while currentCustomer.has(select):
-			select = randi_range(0,3)
-		currentCustomer[select] = characters[select]
+		var select = randi_range(0,3) #for selecting which place they will take
+		while currentCustomer.has(select):#prevents selection of already occupied spot
+			select = randi_range(0,3) #respin, techincally inefficient but its miliseconds lol
+		var charNode = characters[select]
+		currentCustomer[select] = charNode #asign customer no to its node path
 		var sprite = characterSprites.pick_random() #selects random sprite for customer
-		fadeTween.tween_property(select, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
+		while currentUsedSprites.has(sprite): #ensures no two sprites are used at once UNUSED
+			sprite = characterSprites.pick_random()
+		charNode.texture = sprite #sets trg node to correct trg sprite
+		fadeTween.tween_property(charNode, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
 
 
 func genOrder(): #creates the order and proportions of each needed; controls order difficulty
 	pass
 
-func scaleDiff(): #simply checks and sets diffculty variable
+func scaleDiff(): #simply checks and sets diffculty variables | add cust completed check
 	var setterMin
 	var setterMax
 	if difficulty == "EASY":
 		setterMin = MIN_CHAR_TIME_EASY
 		setterMax = MAX_CHAR_TIME_EASY
+		itemMin = ITEM_EASY_MIN
+		itemMax = ITEM_HARD_MAX
 	elif difficulty == "MED":
 		pass
 	elif difficulty == "HARD":
@@ -90,6 +99,8 @@ func scaleDiff(): #simply checks and sets diffculty variable
 		print("Error at scaleDiff()")
 	charTimeMin = setterMin
 	charTimeMax = setterMax
+	itemMin
+	itemMax
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
 	print("Customer Time: " + str(customerSpawnTimer.wait_time) + " @_on_customer_s_pawner_timeout()")

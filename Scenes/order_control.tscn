@@ -60,19 +60,19 @@ texture = ExtResource("4_4bhqh")
 
 [node name="Char2Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2088307927]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(583, 471.99997)
+position = Vector2(557, 471.99997)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_bntd5")
 
 [node name="Char3Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2068310689]
-self_modulate = Color(1, 1, 1, 0)
-position = Vector2(991.99994, 465.99997)
+modulate = Color(1, 1, 1, 0)
+position = Vector2(753.99994, 465.99997)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_bntd5")
 
 [node name="Char4Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1401304267]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(801.4, 469.80002)
+position = Vector2(977, 469.99997)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_4bhqh")
 
