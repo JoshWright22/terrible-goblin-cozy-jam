@@ -50,29 +50,34 @@ position = Vector2(665, 372)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_lmoxa")
 
-[node name="characterSprites" type="Node2D" parent="custWindow" unique_id=824760304]
+[node name="characterSprites" type="ColorRect" parent="custWindow" unique_id=382991627]
+clip_children = 1
+offset_left = 243.00002
+offset_top = 94.0
+offset_right = 1080.4651
+offset_bottom = 613.065
 
 [node name="Char1Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1670024145]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(396.40002, 454.80002)
+position = Vector2(147.4, 323.60007)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_4bhqh")
 
 [node name="Char2Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2088307927]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(557, 471.99997)
+position = Vector2(308, 340.80002)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_bntd5")
 
 [node name="Char3Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2068310689]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(753.99994, 465.99997)
+position = Vector2(504.99994, 334.80002)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_bntd5")
 
 [node name="Char4Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1401304267]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(977, 469.99997)
+position = Vector2(728, 338.80002)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_4bhqh")
 
