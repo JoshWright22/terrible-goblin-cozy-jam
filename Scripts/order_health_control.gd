@@ -48,7 +48,7 @@ var ITEM_HARD_MAX : int = 5
 #___________________________________________________________________________
 #EXTREMELY WIP
 var customerNo #tracks how many customers you've served for difficulty scaling
-var currentCustomer : Dictionary = {} #tracks sprites in use & positions
+var currentCustomer : Dictionary = {} #tracks current customer + node path
 #list of things a customer may want
 var ingredients : Array = ["Banana", "Apple", "Cherry", "Mango", "Strawberry"] 
 var currentOrders : Array = []
@@ -86,11 +86,13 @@ func genOrder(): #creates the order and proportions of each needed; controls ord
 func scaleDiff(): #simply checks and sets diffculty variables | add cust completed check
 	var setterMin
 	var setterMax
+	var itemSetterMin
+	var itemSetterMax
 	if difficulty == "EASY":
 		setterMin = MIN_CHAR_TIME_EASY
 		setterMax = MAX_CHAR_TIME_EASY
-		itemMin = ITEM_EASY_MIN
-		itemMax = ITEM_HARD_MAX
+		itemSetterMin = ITEM_EASY_MIN
+		itemSetterMax = ITEM_HARD_MAX
 	elif difficulty == "MED":
 		pass
 	elif difficulty == "HARD":
@@ -99,8 +101,8 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 		print("Error at scaleDiff()")
 	charTimeMin = setterMin
 	charTimeMax = setterMax
-	itemMin
-	itemMax
+	itemMin = itemSetterMin
+	itemMax = itemSetterMax
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
 	print("Customer Time: " + str(customerSpawnTimer.wait_time) + " @_on_customer_s_pawner_timeout()")
