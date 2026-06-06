@@ -12,6 +12,7 @@ extends Node2D
 @onready var charSprite2 = load("res://assets/sprites/characterSprites/char2/char2Sprite.PNG")
 
 #used for randomizing and ensuring there arent two of the same sprite at once
+var characters : Array = [customer1Sprite, customer2Sprite,customer3Sprite,customer4Sprite]
 var characterSprites : Array = [charSprite1, charSprite2]
 
 var FADE_TIME : float = 1.5 #customer fade in seconds
@@ -62,11 +63,13 @@ func _process(delta: float) -> void:
 	pass
 
 func genCustomer(): #creates customer and order Wip___________________
-	if currentOrders.size() <= 3:
+	if currentOrders.size() < 4:
 		var fadeTween = create_tween() 
 		var select = randi_range(0,3)
-		select = currentCustomer
-		var sprite = characterSprites[randi_range(0,characterSprites.size())] #selects random sprite for customer
+		while currentCustomer.has(select):
+			select = randi_range(0,3)
+		currentCustomer[select] = characters[select]
+		var sprite = characterSprites.pick_random() #selects random sprite for customer
 		fadeTween.tween_property(select, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
 
 
