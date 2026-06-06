@@ -53,25 +53,25 @@ texture = ExtResource("3_lmoxa")
 [node name="characterSprites" type="Node2D" parent="custWindow" unique_id=824760304]
 
 [node name="Char1Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1670024145]
-visible = false
+modulate = Color(1, 1, 1, 0)
 position = Vector2(396.40002, 454.80002)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_4bhqh")
 
 [node name="Char2Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2088307927]
-visible = false
+modulate = Color(1, 1, 1, 0)
 position = Vector2(583, 471.99997)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_bntd5")
 
 [node name="Char3Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2068310689]
-visible = false
+self_modulate = Color(1, 1, 1, 0)
 position = Vector2(991.99994, 465.99997)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("5_bntd5")
 
 [node name="Char4Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1401304267]
-visible = false
+modulate = Color(1, 1, 1, 0)
 position = Vector2(801.4, 469.80002)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("4_4bhqh")

@@ -1,34 +1,53 @@
 extends Node2D
+#Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
 @onready var timer = $healthbar/Timer
-@onready var char1Sprite = $custWindow/characterSprites/Char1Sprite
-@onready var char2Sprite = $custWindow/characterSprites/Char2Sprite
-@onready var char3Sprite = $custWindow/characterSprites/Char3Sprite
-@onready var char4Sprite = $custWindow/characterSprites/Char4Sprite
-@onready var charSpawnTimer = $customerSpawner
+@onready var customer1Sprite = $custWindow/characterSprites/Char1Sprite
+@onready var customer2Sprite = $custWindow/characterSprites/Char2Sprite
+@onready var customer3Sprite = $custWindow/characterSprites/Char3Sprite
+@onready var customer4Sprite = $custWindow/characterSprites/Char4Sprite
+@onready var customerSpawnTimer = $customerSpawner
+#____________________#loaded character sprites_________________________________
+@onready var charSprite1 = load("res://assets/sprites/characterSprites/char1/char1Sprite.PNG")
+@onready var charSprite2 = load("res://assets/sprites/characterSprites/char2/char2Sprite.PNG")
 
-#Timer/health variables
-var MAX_TIME = 30
-var MAX_ADD_TIME = 15
+#used for randomizing and ensuring there arent two of the same sprite at once
+var characterSprites : Array = [charSprite1, charSprite2]
 
-#Customer variables
-var MIN_CHAR_TIME = 10
-var MAX_CHAR_TIME = 15
+var FADE_TIME : float = 1.5 #customer fade in seconds
+var difficulty = "EASY" # "MED" "HARD" general setter for code
 
-var EASY_MIN = 2 #NO OF ITEMS USED PER ORDER PER DIFFICULTY
-var EASY_MAX = 3
-var MED_MIN = 3
-var MED_MAX = 4
-var HARD_MIN = 3
-var HARD_MAX = 5
+#Timer/health variables______________________________________________________
+var MAX_TIME : float = 30 #Time till health runs out
+var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with satisfaction
 
+#Customer spawn time variables_______________________________________________
+var charTimeMin : float #setter variables for below
+var charTimeMax : float
+
+var MIN_CHAR_TIME_EASY = 10
+var MIN_CHAR_TIME_MED = 7
+var MIN_CHAR_TIME_HARD = 5
+
+var MAX_CHAR_TIME_EASY = 15
+var MAX_CHAR_TIME_MED = 13
+var MAX_CHAR_TIME_HARD = 10
+#NO OF ITEMS USED PER ORDER PER DIFFICULTY__________________________________
+var itemMin : int #setter variables for below
+var itemMax : int
+
+var ITEM_EASY_MIN : int = 2 
+var ITEM_MED_MIN : int = 3
+var ITEM_HARD_MIN : int = 3
+
+var ITEM_EASY_MAX : int = 3
+var ITEM_MED_MAX : int = 4
+var ITEM_HARD_MAX : int = 5
+#___________________________________________________________________________
 var customerNo #tracks how many customers you've served for difficulty scaling
-var currentCustomerCount : int = 0 
-
-var ingredients : Array = [ #list of things a customer may want
-"Banana", "Apple", "Cherry", "Mango", "Strawberry"
-]
-
+var customerSprites : Array = ["None", "None", "None", "None"] #tracks sprites in use & positions
+#list of things a customer may want
+var ingredients : Array = ["Banana", "Apple", "Cherry", "Mango", "Strawberry"] 
 var currentOrders : Array = []
 #assigned to positions left to right, not necessarily the order the customers show up
 var order1 : Dictionary = {}
@@ -37,26 +56,39 @@ var order3 : Dictionary = {}
 var order4 : Dictionary = {}
 
 func _ready() -> void:
-	charSpawnTimer.start(charSpawnTimer.wait_time)
+	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	print("ran")
 func _process(delta: float) -> void:
 	pass
 
 func genCustomer(): #creates customer and order
-	if currentOrders.size() <= 4:
-		pass
-	currentCustomerCount = currentCustomerCount + 1
+	if currentOrders.size() <= 3:
+		var fadeTween = create_tween() 
+		var select = randi_range(0,3)
+		var sprite = characterSprites[randi_range(0,characterSprites.size())] #selects random sprite for customer
+		fadeTween.tween_property(select, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
+
 
 func genOrder(): #creates the order and proportions of each needed; controls order difficulty
-	if customerNo <= 4: #Easy
-		pass
-	elif customerNo >= 5 && customerNo <= 8: #Med (More items, stranger proportions)
-		pass
-	else: #Hard (Most items, wacky proportions
-		pass
+	pass
 
+func scaleDiff(): #simply checks and sets diffculty variable
+	var setterMin
+	var setterMax
+	if difficulty == "EASY":
+		setterMin = MIN_CHAR_TIME_EASY
+		setterMax = MAX_CHAR_TIME_EASY
+	elif difficulty == "MED":
+		pass
+	elif difficulty == "HARD":
+		pass
+	else:
+		print("Error at scaleDiff()")
+	charTimeMin = setterMin
+	charTimeMax = setterMax
 
-func _on_customer_s_pawner_timeout() -> void: #next customer walks up
-	print("functioned " + str(charSpawnTimer.wait_time))
-	charSpawnTimer.wait_time = randi_range(MIN_CHAR_TIME, MAX_CHAR_TIME)
+func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
+	print("Customer Time: " + str(customerSpawnTimer.wait_time) + " @_on_customer_s_pawner_timeout()")
+	scaleDiff()
+	customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 	genCustomer()
