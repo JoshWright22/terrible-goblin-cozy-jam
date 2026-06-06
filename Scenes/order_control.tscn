@@ -8,9 +8,6 @@ bg_color = Color(2.3102762e-06, 0.83722603, 0.97005206, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uojq"]
 bg_color = Color(3.272891e-06, 0.5973928, 0.78205675, 1)
-border_width_left = 3
-border_width_top = 4
-border_width_bottom = 4
 
 [node name="orderControl" type="Node2D" unique_id=1560439912]
 script = ExtResource("1_735xl")
@@ -28,7 +25,8 @@ rotation = -1.5707964
 scale = Vector2(7.719999, 2.2800004)
 theme_override_styles/background = SubResource("StyleBoxFlat_3c1p4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0uojq")
-value = 50.0
+max_value = 30.0
+value = 25.0
 rounded = true
 show_percentage = false
 
