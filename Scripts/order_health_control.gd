@@ -5,7 +5,7 @@ extends Node2D
 @onready var char2Sprite = $custWindow/characterSprites/Char2Sprite
 @onready var char3Sprite = $custWindow/characterSprites/Char3Sprite
 @onready var char4Sprite = $custWindow/characterSprites/Char4Sprite
-@onready var charSpawnTImer = $customerSPawner
+@onready var charSpawnTimer = $customerSpawner
 
 #Timer/health variables
 var MAX_TIME = 30
@@ -23,7 +23,7 @@ var HARD_MIN = 3
 var HARD_MAX = 5
 
 var customerNo #tracks how many customers you've served for difficulty scaling
-var currentCustomerCount 
+var currentCustomerCount : int = 0 
 
 var ingredients : Array = [ #list of things a customer may want
 "Banana", "Apple", "Cherry", "Mango", "Strawberry"
@@ -37,14 +37,15 @@ var order3 : Dictionary = {}
 var order4 : Dictionary = {}
 
 func _ready() -> void:
-	pass 
+	charSpawnTimer.start(charSpawnTimer.wait_time)
+	print("ran")
 func _process(delta: float) -> void:
 	pass
 
 func genCustomer(): #creates customer and order
 	if currentOrders.size() <= 4:
 		pass
-	customerNo = customerNo + 1
+	currentCustomerCount = currentCustomerCount + 1
 
 func genOrder(): #creates the order and proportions of each needed; controls order difficulty
 	if customerNo <= 4: #Easy
@@ -56,5 +57,6 @@ func genOrder(): #creates the order and proportions of each needed; controls ord
 
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up
-	charSpawnTImer.wait_time = randi_range(MIN_CHAR_TIME, MAX_CHAR_TIME)
+	print("functioned " + str(charSpawnTimer.wait_time))
+	charSpawnTimer.wait_time = randi_range(MIN_CHAR_TIME, MAX_CHAR_TIME)
 	genCustomer()

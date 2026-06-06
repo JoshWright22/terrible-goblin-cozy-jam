@@ -81,7 +81,7 @@ position = Vector2(661, 361)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_hsnre")
 
-[node name="customerSPawner" type="Timer" parent="." unique_id=627961247]
+[node name="customerSpawner" type="Timer" parent="." unique_id=627961247]
 wait_time = 10.0
 
-[connection signal="timeout" from="customerSPawner" to="." method="_on_customer_s_pawner_timeout"]
+[connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]
