@@ -4,10 +4,13 @@
 [ext_resource type="Texture2D" uid="uid://b81qu8sawpser" path="res://assets/sprites/orderWindowSprites/satisfiedSprite.png" id="2_tqxxo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c1p4"]
-bg_color = Color(0.3834009, 0.870323, 0.42938226, 1)
+bg_color = Color(2.3102762e-06, 0.83722603, 0.97005206, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uojq"]
-bg_color = Color(0, 0.5343108, 0.11393311, 1)
+bg_color = Color(3.272891e-06, 0.5973928, 0.78205675, 1)
+border_width_left = 3
+border_width_top = 4
+border_width_bottom = 4
 
 [node name="orderControl" type="Node2D" unique_id=1560439912]
 script = ExtResource("1_735xl")
