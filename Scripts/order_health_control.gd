@@ -1,9 +1,6 @@
 extends Node2D
 @onready var healthBar = $healthbar/ProgressBar
 @onready var timer = $healthbar/Timer
-@onready var satis = load("res://assets/sprites/orderWindowSprites/satisfiedSprite.png")
-@onready var medSatisSprite = load("res://assets/sprites/orderWindowSprites/medSasSprite.png")
-@onready var unsatisSprite = load("res://assets/sprites/orderWindowSprites/unsasSprite.png")
 
 #Timer/health variables
 var MAX_TIME = 30
@@ -18,15 +15,18 @@ var HARD_MIN = 3
 var HARD_MAX = 5
 
 var customerNo #tracks how many customers you've served for difficulty scaling
+var currentCustomer
 
 var ingredients : Array = [ #list of things a customer may want
 "Banana", "Apple", "Cherry", "Mango", "Strawberry"
 ]
 
-var currentOrder : Dictionary = { #what customer wants in what proportions
-	
-}
 
+var currentOrders : Array = [] #what customer wants in what proportions max 4
+var order1 : Dictionary = {}
+var order2 : Dictionary = {}
+var order3 : Dictionary = {}
+var order4 : Dictionary = {}
 
 func _ready() -> void:
 	pass 
