@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c73boq4msi581"]
 
 [ext_resource type="Script" uid="uid://r8xqbm37pu8s" path="res://Scripts/order_health_control.gd" id="1_735xl"]
-[ext_resource type="Texture2D" uid="uid://b81qu8sawpser" path="res://assets/sprites/orderWindowSprites/satisfiedSprite.png" id="2_tqxxo"]
+[ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="2_735xl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c1p4"]
 bg_color = Color(2.3102762e-06, 0.83722603, 0.97005206, 1)
@@ -16,13 +16,18 @@ script = ExtResource("1_735xl")
 position = Vector2(-28, 0)
 scale = Vector2(1, 1.0000001)
 
+[node name="HealthbarSprite" type="Sprite2D" parent="healthbar" unique_id=1845993325]
+position = Vector2(125, 537.99994)
+scale = Vector2(0.5, 0.49999994)
+texture = ExtResource("2_735xl")
+
 [node name="ProgressBar" type="ProgressBar" parent="healthbar" unique_id=640652128]
-offset_left = 95.00001
-offset_top = 1045.9999
-offset_right = 213.0
-offset_bottom = 1073.0
+offset_left = 93.99999
+offset_top = 943.99976
+offset_right = 212.0
+offset_bottom = 970.9999
 rotation = -1.5707964
-scale = Vector2(7.719999, 2.2800004)
+scale = Vector2(6.8799977, 2.2800004)
 theme_override_styles/background = SubResource("StyleBoxFlat_3c1p4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0uojq")
 max_value = 30.0
@@ -30,10 +35,9 @@ value = 25.0
 rounded = true
 show_percentage = false
 
-[node name="satisfaction" type="Sprite2D" parent="healthbar" unique_id=999961283]
-position = Vector2(120, 61.000053)
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("2_tqxxo")
-
 [node name="Timer" type="Timer" parent="healthbar" unique_id=1236831801]
 wait_time = 30.0
+
+[node name="custWindow" type="Node2D" parent="." unique_id=1888929233]
+
+[node name="customerSPawner" type="Timer" parent="." unique_id=627961247]
