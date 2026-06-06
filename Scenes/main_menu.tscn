@@ -29,7 +29,7 @@ ignore_texture_size = true
 
 [node name="startbutt" type="TextureButton" parent="uiControl" unique_id=2032574939]
 layout_mode = 0
-offset_left = -195.0
+offset_left = -194.99998
 offset_top = 162.99998
 offset_right = 3645.0
 offset_bottom = 2323.0

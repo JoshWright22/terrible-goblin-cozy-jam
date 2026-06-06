@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://r8xqbm37pu8s" path="res://Scripts/order_health_control.gd" id="1_735xl"]
 [ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="2_735xl"]
+[ext_resource type="Texture2D" uid="uid://hvvpjt45gxo7" path="res://assets/sprites/orderWindowSprites/customerBGSPrite.PNG" id="3_lmoxa"]
+[ext_resource type="Texture2D" uid="uid://b2bc6puid3oqb" path="res://assets/sprites/characterSprites/char1/char1Sprite.PNG" id="4_4bhqh"]
+[ext_resource type="Texture2D" uid="uid://dc1qpx2cb1xh" path="res://assets/sprites/characterSprites/char2/char2Sprite.PNG" id="5_bntd5"]
+[ext_resource type="Texture2D" uid="uid://bij2pj2nqrm7x" path="res://assets/sprites/orderWindowSprites/customerFGSprite.PNG" id="6_hsnre"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c1p4"]
 bg_color = Color(2.3102762e-06, 0.83722603, 0.97005206, 1)
@@ -39,5 +43,45 @@ show_percentage = false
 wait_time = 30.0
 
 [node name="custWindow" type="Node2D" parent="." unique_id=1888929233]
+position = Vector2(-38, -40)
+
+[node name="CustomerBgsPrite" type="Sprite2D" parent="custWindow" unique_id=105228672]
+position = Vector2(665, 372)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_lmoxa")
+
+[node name="characterSprites" type="Node2D" parent="custWindow" unique_id=824760304]
+
+[node name="Char1Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1670024145]
+visible = false
+position = Vector2(396.40002, 454.80002)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_4bhqh")
+
+[node name="Char2Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2088307927]
+visible = false
+position = Vector2(583, 471.99997)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("5_bntd5")
+
+[node name="Char3Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=2068310689]
+visible = false
+position = Vector2(991.99994, 465.99997)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("5_bntd5")
+
+[node name="Char4Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1401304267]
+visible = false
+position = Vector2(801.4, 469.80002)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("4_4bhqh")
+
+[node name="CustomerFgSprite" type="Sprite2D" parent="custWindow" unique_id=1681289659]
+position = Vector2(661, 361)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_hsnre")
 
 [node name="customerSPawner" type="Timer" parent="." unique_id=627961247]
+wait_time = 10.0
+
+[connection signal="timeout" from="customerSPawner" to="." method="_on_customer_s_pawner_timeout"]
