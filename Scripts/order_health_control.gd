@@ -27,13 +27,13 @@ var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with sat
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
 
-var MIN_CHAR_TIME_EASY = 10
+var MIN_CHAR_TIME_EASY = 8
 var MIN_CHAR_TIME_MED = 7
 var MIN_CHAR_TIME_HARD = 5
 
-var MAX_CHAR_TIME_EASY = 15
+var MAX_CHAR_TIME_EASY = 14
 var MAX_CHAR_TIME_MED = 13
-var MAX_CHAR_TIME_HARD = 10
+var MAX_CHAR_TIME_HARD = 8
 #NO OF ITEMS USED PER ORDER PER DIFFICULTY__________________________________
 var itemMin : int #setter variables for below
 var itemMax : int
@@ -105,7 +105,9 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	itemMax = itemSetterMax
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
+	customerSpawnTimer.stop()
 	print("Customer Time: " + str(customerSpawnTimer.wait_time) + " @_on_customer_s_pawner_timeout()")
 	scaleDiff()
 	customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
+	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	genCustomer()
