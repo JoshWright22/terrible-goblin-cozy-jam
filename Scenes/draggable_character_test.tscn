@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bgtrjmiirpjlq"]
+
+[ext_resource type="Texture2D" uid="uid://bknc7gsxymbew" path="res://icon.svg" id="1_ag5vq"]
+[ext_resource type="Script" uid="uid://djg1vqd4wvbhm" path="res://Scripts/Fruit_Shop.gd" id="2_aibg3"]
+
+[node name="Draggable Character Test" type="Node2D" unique_id=415006080]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=244444211]
+position = Vector2(563, 376)
+texture = ExtResource("1_ag5vq")
+script = ExtResource("2_aibg3")
