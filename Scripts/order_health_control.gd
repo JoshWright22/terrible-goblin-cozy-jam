@@ -1,7 +1,7 @@
 extends Node2D
 #Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
-@onready var timer = $healthbar/Timer
+@onready var healthTimer = $healthbar/Timer
 @onready var customer1Sprite = $custWindow/characterSprites/Char1Sprite
 @onready var customer2Sprite = $custWindow/characterSprites/Char2Sprite
 @onready var customer3Sprite = $custWindow/characterSprites/Char3Sprite
@@ -21,6 +21,7 @@ var difficulty = "EASY" # "MED" "HARD" general setter for code
 
 #Timer/health variables______________________________________________________
 var MAX_TIME : float = 30 #Time till health runs out
+var REMAIN_TIME : float #Time remaining, timer paused if no customers
 var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with satisfaction
 
 #Customer spawn time variables_______________________________________________
@@ -62,8 +63,10 @@ func _ready() -> void:
 	characters = [customer1Sprite, customer2Sprite,customer3Sprite,customer4Sprite]
 	characterSprites = [charSprite1, charSprite2]
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
+	REMAIN_TIME = MAX_TIME
 func _process(delta: float) -> void:
-	pass
+	var percentage = healthTimer.time_left / healthTimer.wait_time
+	healthBar.value = percentage
 
 func genCustomer(): #creates customer and order Wip___________________
 	if currentCustomer.size() <= 4:
@@ -105,6 +108,8 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	itemMax = itemSetterMax
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
+	if currentCustomer.size() == 0:
+		healthTimer.start(REMAIN_TIME)
 	customerSpawnTimer.stop()
 	print("Customer Time: " + str(customerSpawnTimer.wait_time) + " @_on_customer_s_pawner_timeout()")
 	scaleDiff()
