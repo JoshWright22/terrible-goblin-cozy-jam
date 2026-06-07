@@ -40,6 +40,7 @@ rounded = true
 show_percentage = false
 
 [node name="Timer" type="Timer" parent="healthbar" unique_id=1236831801]
+process_callback = 0
 wait_time = 30.0
 
 [node name="custWindow" type="Node2D" parent="." unique_id=1888929233]

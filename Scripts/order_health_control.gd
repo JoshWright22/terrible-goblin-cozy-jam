@@ -66,6 +66,7 @@ func _ready() -> void:
 	REMAIN_TIME = MAX_TIME
 func _process(delta: float) -> void:
 	var percentage = healthTimer.time_left / healthTimer.wait_time
+	percentage = percentage * 30
 	healthBar.value = percentage
 
 func genCustomer(): #creates customer and order Wip___________________
