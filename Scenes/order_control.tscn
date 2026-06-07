@@ -43,10 +43,10 @@ show_percentage = false
 wait_time = 30.0
 
 [node name="custWindow" type="Node2D" parent="." unique_id=1888929233]
-position = Vector2(-38, -40)
+position = Vector2(-69, -40)
 
 [node name="CustomerBgsPrite" type="Sprite2D" parent="custWindow" unique_id=105228672]
-position = Vector2(665, 372)
+position = Vector2(660.965, 372)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_lmoxa")
 
@@ -56,6 +56,7 @@ offset_left = 243.00002
 offset_top = 94.0
 offset_right = 1080.4651
 offset_bottom = 613.065
+metadata/_edit_use_anchors_ = true
 
 [node name="Char1Sprite" type="Sprite2D" parent="custWindow/characterSprites" unique_id=1670024145]
 modulate = Color(1, 1, 1, 0)
