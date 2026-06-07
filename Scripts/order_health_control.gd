@@ -8,6 +8,7 @@ extends Node2D
 @onready var customer4Sprite = $custWindow/characterSprites/Char4Sprite
 @onready var customerSpawnTimer = $customerSpawner
 #____________________#loaded character sprites_________________________________
+@onready var gameOverScene = load("res://Scenes/game_over.tscn")
 @onready var charSprite1 = load("res://assets/sprites/characterSprites/char1/char1Sprite.PNG")
 @onready var charSprite2 = load("res://assets/sprites/characterSprites/char2/char2Sprite.PNG")
 
@@ -117,3 +118,10 @@ func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets tim
 	customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	genCustomer()
+
+
+func _on_timer_timeout() -> void: #GAME OVER | Health ran out
+	healthTimer.stop()
+	customerSpawnTimer.stop()
+	var c = gameOverScene.instantiate()
+	add_child(c)

@@ -91,4 +91,5 @@ texture = ExtResource("6_hsnre")
 [node name="customerSpawner" type="Timer" parent="." unique_id=627961247]
 wait_time = 3.0
 
+[connection signal="timeout" from="healthbar/Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]
