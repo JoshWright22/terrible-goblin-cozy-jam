@@ -1,86 +1,54 @@
 extends Node2D
 
-@export var grid_rows: int = 9       # Change this in the inspector to resize your grid
-@export var grid_columns: int = 9    # Change this in the inspector to resize your grid
-@export var tile_texture: Texture2D  # Drop your background tile image here
+@export var grid_rows: int = 9
+@export var grid_columns: int = 9
+@export var cell_pixel_size: float = 64.0  # The piece automatically stretches to match this value!
+@export var tile_texture: Texture2D  
 
-var tile_size: Vector2 = Vector2(64, 64)
-var grid_data: Dictionary = {}
+var tile_size: Vector2 = Vector2.ZERO
 var grid_start_pos: Vector2 = Vector2.ZERO
 
 @onready var grid_anchor: Area2D = $GridAnchor
-@onready var collision_shape: CollisionShape2D = $GridAnchor/CollisionShape2D
 @onready var grid_visuals: Node2D = $GridVisuals
 
 func _ready() -> void:
+	tile_size = Vector2(cell_pixel_size, cell_pixel_size)
 	calculate_grid_dimensions()
-	initialize_grid_data()
-	generate_visual_grid()
+	generate_physical_grid()
 
 func calculate_grid_dimensions() -> void:
-	# Save the top-left starting position of our grid
-	grid_start_pos = grid_anchor.global_position
-	
-	# Extract the size directly from the RectangleShape2D resource
-	if collision_shape and collision_shape.shape is RectangleShape2D:
-		# RectangleShape2D 'size' is the total width and height
-		tile_size = collision_shape.shape.size
-	else:
-		push_warning("GridAnchor needs a RectangleShape2D to calculate tile size dynamically!")
+	var total_grid_width: float = grid_columns * tile_size.x
+	var total_grid_height: float = grid_rows * tile_size.y
+	grid_start_pos = grid_anchor.global_position - Vector2(total_grid_width / 2.0, total_grid_height / 2.0)
 
-func initialize_grid_data() -> void:
-	grid_data.clear()
-	# Dynamically populate the matrix based on your chosen rows and columns
-	for x in range(grid_columns):
-		for y in range(grid_rows):
-			grid_data[Vector2i(x, y)] = false
-
-func generate_visual_grid() -> void:
-	# Clear out old visuals if updating at runtime
+func generate_physical_grid() -> void:
 	for child in grid_visuals.get_children():
 		child.queue_free()
 		
-	if tile_texture == null:
-		return # Skip drawing if no texture image was provided
-		
-	# Spawn a grid of background sprites automatically matching our dynamic dimensions
 	for x in range(grid_columns):
 		for y in range(grid_rows):
+			var tile_node = Node2D.new()
+			tile_node.name = "Tile_%d_%d" % [x, y]
+			tile_node.set_meta("is_occupied", false)
+			tile_node.set_meta("grid_x", x)
+			tile_node.set_meta("grid_y", y)
+			
 			var tile_sprite = Sprite2D.new()
-			tile_sprite.texture = tile_texture
+			tile_sprite.texture = tile_texture if tile_texture != null else load("res://icon.svg")
+			var img_size = tile_sprite.texture.get_size()
+			tile_sprite.scale = Vector2(tile_size.x / img_size.x, tile_size.y / img_size.y)
+			tile_node.add_child(tile_sprite)
 			
-			# Calculate centered position for the sprite relative to the grid start position
-			var local_pos = Vector2(
-				(x * tile_size.x) + (tile_size.x / 2),
-				(y * tile_size.y) + (tile_size.y / 2)
-			)
-			tile_sprite.global_position = grid_start_pos + local_pos
-			grid_visuals.add_child(tile_sprite)
-
-# Converts any screen space coordinate into a Grid coordinate (e.g., Vector2i(0, 4))
-func world_to_grid(global_pos: Vector2) -> Vector2i:
-	var relative_pos = global_pos - grid_start_pos
-	return Vector2i(
-		floor(relative_pos.x / tile_size.x),
-		floor(relative_pos.y / tile_size.y)
-	)
-
-# Checks if a shape array fits onto the dynamic boundaries
-func can_place_shape(cells: Array[Vector2i], start_grid_pos: Vector2i) -> bool:
-	for cell in cells:
-		var target_cell = start_grid_pos + cell
-		
-		# Out of bounds check using our dynamic row/col variables
-		if target_cell.x < 0 or target_cell.x >= grid_columns or target_cell.y < 0 or target_cell.y >= grid_rows:
-			return false
+			var tile_area = Area2D.new()
+			tile_area.name = "TileArea"
+			var tile_collision = CollisionShape2D.new()
+			var rect_shape = RectangleShape2D.new()
+			rect_shape.size = tile_size - Vector2(4, 4)
 			
-		# Check if cell is occupied
-		if not grid_data.has(target_cell) or grid_data[target_cell] == true:
-			return false
-	return true
-
-func place_shape(cells: Array[Vector2i], start_grid_pos: Vector2i) -> void:
-	for cell in cells:
-		var target_cell = start_grid_pos + cell
-		if grid_data.has(target_cell):
-			grid_data[target_cell] = true
+			tile_collision.shape = rect_shape
+			tile_area.add_child(tile_collision)
+			tile_node.add_child(tile_area)
+			
+			var local_pos = Vector2((x * tile_size.x) + (tile_size.x / 2.0), (y * tile_size.y) + (tile_size.y / 2.0))
+			tile_node.global_position = grid_start_pos + local_pos
+			grid_visuals.add_child(tile_node)
