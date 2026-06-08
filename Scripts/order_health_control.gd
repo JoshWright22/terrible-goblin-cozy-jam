@@ -1,13 +1,14 @@
 extends Node2D
 #Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
-@onready var timer = $healthbar/Timer
+@onready var healthTimer = $healthbar/Timer
 @onready var customer1Sprite = $custWindow/characterSprites/Char1Sprite
 @onready var customer2Sprite = $custWindow/characterSprites/Char2Sprite
 @onready var customer3Sprite = $custWindow/characterSprites/Char3Sprite
 @onready var customer4Sprite = $custWindow/characterSprites/Char4Sprite
 @onready var customerSpawnTimer = $customerSpawner
 #____________________#loaded character sprites_________________________________
+@onready var gameOverScene = load("res://Scenes/game_over.tscn")
 @onready var charSprite1 = load("res://assets/sprites/characterSprites/char1/char1Sprite.PNG")
 @onready var charSprite2 = load("res://assets/sprites/characterSprites/char2/char2Sprite.PNG")
 
@@ -21,19 +22,20 @@ var difficulty = "EASY" # "MED" "HARD" general setter for code
 
 #Timer/health variables______________________________________________________
 var MAX_TIME : float = 30 #Time till health runs out
+var REMAIN_TIME : float #Time remaining, timer paused if no customers
 var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with satisfaction
 
 #Customer spawn time variables_______________________________________________
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
 
-var MIN_CHAR_TIME_EASY = 10
+var MIN_CHAR_TIME_EASY = 8
 var MIN_CHAR_TIME_MED = 7
 var MIN_CHAR_TIME_HARD = 5
 
-var MAX_CHAR_TIME_EASY = 15
+var MAX_CHAR_TIME_EASY = 14
 var MAX_CHAR_TIME_MED = 13
-var MAX_CHAR_TIME_HARD = 10
+var MAX_CHAR_TIME_HARD = 8
 #NO OF ITEMS USED PER ORDER PER DIFFICULTY__________________________________
 var itemMin : int #setter variables for below
 var itemMax : int
@@ -62,8 +64,11 @@ func _ready() -> void:
 	characters = [customer1Sprite, customer2Sprite,customer3Sprite,customer4Sprite]
 	characterSprites = [charSprite1, charSprite2]
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
+	REMAIN_TIME = MAX_TIME
 func _process(delta: float) -> void:
-	pass
+	var percentage = healthTimer.time_left / healthTimer.wait_time
+	percentage = percentage * 30
+	healthBar.value = percentage
 
 func genCustomer(): #creates customer and order Wip___________________
 	if currentCustomer.size() <= 4:
@@ -105,7 +110,18 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	itemMax = itemSetterMax
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
+	if currentCustomer.size() == 0:
+		healthTimer.start(REMAIN_TIME)
+	customerSpawnTimer.stop()
 	print("Customer Time: " + str(customerSpawnTimer.wait_time) + " @_on_customer_s_pawner_timeout()")
 	scaleDiff()
 	customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
+	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	genCustomer()
+
+
+func _on_timer_timeout() -> void: #GAME OVER | Health ran out
+	healthTimer.stop()
+	customerSpawnTimer.stop()
+	var c = gameOverScene.instantiate()
+	add_child(c)

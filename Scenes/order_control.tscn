@@ -35,11 +35,12 @@ scale = Vector2(6.8799977, 2.2800004)
 theme_override_styles/background = SubResource("StyleBoxFlat_3c1p4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0uojq")
 max_value = 30.0
-value = 25.0
+value = 30.0
 rounded = true
 show_percentage = false
 
 [node name="Timer" type="Timer" parent="healthbar" unique_id=1236831801]
+process_callback = 0
 wait_time = 30.0
 
 [node name="custWindow" type="Node2D" parent="." unique_id=1888929233]
@@ -90,4 +91,5 @@ texture = ExtResource("6_hsnre")
 [node name="customerSpawner" type="Timer" parent="." unique_id=627961247]
 wait_time = 3.0
 
+[connection signal="timeout" from="healthbar/Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]

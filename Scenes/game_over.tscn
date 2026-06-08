@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://t100sqm3ynpw"]
+
+[ext_resource type="Script" uid="uid://cm0ly5v4kqaoc" path="res://Scripts/game_over.gd" id="1_ojehl"]
+[ext_resource type="Texture2D" uid="uid://dlcam0ogg8dcn" path="res://assets/sprites/orderWindowSprites/tempGameOverAsset.jpg" id="2_8fo1c"]
+
+[node name="gameOver" type="Node2D" unique_id=939538374]
+script = ExtResource("1_ojehl")
+
+[node name="TempGameOverAsset" type="Sprite2D" parent="." unique_id=846552199]
+position = Vector2(956, 538)
+scale = Vector2(3, 3)
+texture = ExtResource("2_8fo1c")
