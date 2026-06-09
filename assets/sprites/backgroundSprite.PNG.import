@@ -2,16 +2,26 @@
 
 importer="texture"
 type="CompressedTexture2D"
+<<<<<<< HEAD:assets/sprites/characterSprites/char2/char2Sprite.PNG.import
+uid="uid://dc1qpx2cb1xh"
+path="res://.godot/imported/char2Sprite.PNG-e00a6aebdd59e6c021e4273028a53391.ctex"
+=======
 uid="uid://biau4b44tgf0v"
 path="res://.godot/imported/backgroundSprite.PNG-2ad006e7964c6188d7960cef63c84a45.ctex"
+>>>>>>> b3abbf3647de695a4d0be401919c11582699974d:assets/sprites/backgroundSprite.PNG.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
+<<<<<<< HEAD:assets/sprites/characterSprites/char2/char2Sprite.PNG.import
+source_file="res://assets/sprites/characterSprites/char2/char2Sprite.PNG"
+dest_files=["res://.godot/imported/char2Sprite.PNG-e00a6aebdd59e6c021e4273028a53391.ctex"]
+=======
 source_file="res://assets/sprites/backgroundSprite.PNG"
 dest_files=["res://.godot/imported/backgroundSprite.PNG-2ad006e7964c6188d7960cef63c84a45.ctex"]
+>>>>>>> b3abbf3647de695a4d0be401919c11582699974d:assets/sprites/backgroundSprite.PNG.import
 
 [params]
 

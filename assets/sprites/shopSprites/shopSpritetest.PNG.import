@@ -3,15 +3,24 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://du2c26g254apw"
+<<<<<<< HEAD:assets/sprites/bgSprites/shopSprite.PNG.import
+path="res://.godot/imported/shopSprite.PNG-1292e967113f00dbda1903e9d43da2d8.ctex"
+=======
 path="res://.godot/imported/shopSpritetest.PNG-be7f3b684a397cc657d7cbc5d057e540.ctex"
+>>>>>>> b3abbf3647de695a4d0be401919c11582699974d:assets/sprites/shopSprites/shopSpritetest.PNG.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
+<<<<<<< HEAD:assets/sprites/bgSprites/shopSprite.PNG.import
+source_file="res://assets/sprites/bgSprites/shopSprite.PNG"
+dest_files=["res://.godot/imported/shopSprite.PNG-1292e967113f00dbda1903e9d43da2d8.ctex"]
+=======
 source_file="res://assets/sprites/shopSprites/shopSpritetest.PNG"
 dest_files=["res://.godot/imported/shopSpritetest.PNG-be7f3b684a397cc657d7cbc5d057e540.ctex"]
+>>>>>>> b3abbf3647de695a4d0be401919c11582699974d:assets/sprites/shopSprites/shopSpritetest.PNG.import
 
 [params]
 
