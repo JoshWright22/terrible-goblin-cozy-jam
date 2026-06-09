@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://bskt41wkq0c31"]
+
+[ext_resource type="Script" uid="uid://w1ioh3q4el0c" path="res://Scripts/Grid/dragable.gd" id="1_3jwyx"]
+[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://Assets/sprites/temp/T_Tetromino0.webp" id="2_72mdp"]
+[ext_resource type="Script" uid="uid://coow5owhd2ajb" path="res://Scripts/Grid/grid.gd" id="3_bb1ui"]
+[ext_resource type="Resource" uid="uid://bn4iqyl5o3myf" path="res://Resource/pineapple_3x2_L.tres" id="3_uto0t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bb1ui"]
+size = Vector2(64, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uto0t"]
+size = Vector2(47, 45)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oex5n"]
+size = Vector2(47, 46)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hv0dx"]
+size = Vector2(49, 47)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4ish"]
+size = Vector2(47, 47)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_72mdp"]
+size = Vector2(146, 96)
+
+[node name="GridScene" type="Node2D" unique_id=1036425377]
+
+[node name="Grid" type="Node2D" parent="." unique_id=1837612127]
+position = Vector2(425, 271)
+script = ExtResource("3_bb1ui")
+
+[node name="GridAnchor" type="Area2D" parent="Grid" unique_id=111237867]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grid/GridAnchor" unique_id=848158052]
+scale = Vector2(1e-05, 1e-05)
+shape = SubResource("RectangleShape2D_bb1ui")
+
+[node name="GridVisuals" type="Node2D" parent="Grid" unique_id=2056752111]
+
+[node name="FruitPiece" type="Node2D" parent="." unique_id=1100809242]
+position = Vector2(112, 82)
+script = ExtResource("1_3jwyx")
+fruit_profile = ExtResource("3_uto0t")
+block_layout = null
+
+[node name="BlockDetectors" type="Node2D" parent="FruitPiece" unique_id=1586268712]
+
+[node name="Area2D" type="Area2D" parent="FruitPiece/BlockDetectors" unique_id=436721842]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FruitPiece/BlockDetectors/Area2D" unique_id=163579015]
+position = Vector2(-47.5, -26.5)
+shape = SubResource("RectangleShape2D_uto0t")
+
+[node name="Area2D2" type="Area2D" parent="FruitPiece/BlockDetectors" unique_id=824644369]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FruitPiece/BlockDetectors/Area2D2" unique_id=1064246679]
+position = Vector2(1.5, -26)
+shape = SubResource("RectangleShape2D_oex5n")
+
+[node name="Area2D3" type="Area2D" parent="FruitPiece/BlockDetectors" unique_id=14178476]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FruitPiece/BlockDetectors/Area2D3" unique_id=639454002]
+position = Vector2(49.5, -25.5)
+shape = SubResource("RectangleShape2D_hv0dx")
+
+[node name="Area2D4" type="Area2D" parent="FruitPiece/BlockDetectors" unique_id=1210577738]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FruitPiece/BlockDetectors/Area2D4" unique_id=1626050853]
+position = Vector2(0.5, 23.5)
+shape = SubResource("RectangleShape2D_f4ish")
+
+[node name="Area2D" type="Area2D" parent="FruitPiece" unique_id=1933479652]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FruitPiece/Area2D" unique_id=1345648533]
+position = Vector2(1, -1)
+shape = SubResource("RectangleShape2D_72mdp")
+
+[node name="Sprite2D" type="Sprite2D" parent="FruitPiece" unique_id=1897898583]
+position = Vector2(1.0000076, -0.9999962)
+scale = Vector2(0.42244893, 0.422449)
+texture = ExtResource("2_72mdp")
