@@ -2,14 +2,11 @@ extends Node2D
 #Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
 @onready var healthTimer = $healthbar/Timer
-@onready var customer1Sprite = $custWindow/characterSprites/Char1Sprite
-@onready var customer2Sprite = $custWindow/characterSprites/Char2Sprite
-@onready var customer3Sprite = $custWindow/characterSprites/Char3Sprite
-@onready var customer4Sprite = $custWindow/characterSprites/Char4Sprite
 @onready var customerSpawnTimer = $customerSpawner
 #____________________#loaded character sprites_________________________________
 @onready var gameOverScene = load("res://Scenes/game_over.tscn")
 @onready var customer = load("res://Scenes/customer.tscn")
+
 
 var difficulty = "EASY" # "MED" "HARD" general setter for code
 
@@ -45,10 +42,11 @@ var ITEM_HARD_MAX : int = 5
 #___________________________________________________________________________
 #EXTREMELY WIP
 var customerNo #tracks how many customers you've served for difficulty scaling
-var currentCustomer : Dictionary = {} #tracks current customer + node path
+var currentCustomer : Dictionary = {} #tracks current customer + loc
+var currentOrders : Dictionary = {}
 #list of things a customer may want
-var ingredients : Array = ["Banana", "Apple", "Cherry", "Mango", "Strawberry"] 
-var currentOrders : Array = []
+
+
 #assigned to positions left to right, not necessarily the order the customers show up
 
 func _ready() -> void:
@@ -61,8 +59,6 @@ func _process(delta: float) -> void: #WIP make linear
 
 
 
-func genOrder(cust): #creates the order and proportions of each needed; controls order difficulty
-	pass
 
 func scaleDiff(): #simply checks and sets diffculty variables | add cust completed check
 	var setterMin
@@ -83,6 +79,9 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	itemMin = itemSetterMin
 	itemMax = itemSetterMax
 
+func genOrder(custID):
+	pass
+
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
 	if currentCustomer.size() != 4:
 		customerSpawnTimer.stop()
@@ -94,15 +93,18 @@ func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets tim
 		while trgPos in currentCustomer.values():
 			trgPos = positions[randi_range(1,4)]
 		c.position = trgPos
-		currentCustomer.get_or_add(c,trgPos)
+		c.ID = currentCustomer.size() + 1
+		currentCustomer.get_or_add(currentCustomer.size() + 1,trgPos)
 		genOrder(c)
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)
+	else:
+		pass
 
 
 
 func _on_timer_timeout() -> void: #GAME OVER | Health ran out
 	healthTimer.stop()
 	customerSpawnTimer.stop()
-	var c = gameOverScene.instantiate()
-	add_child(c)
+	var GM = gameOverScene.instantiate()
+	add_child(GM)

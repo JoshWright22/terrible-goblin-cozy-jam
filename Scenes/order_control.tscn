@@ -54,7 +54,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="SubViewport" type="SubViewport" parent="custWindow/characterSprites" unique_id=1967619854]
 handle_input_locally = false
-size = Vector2i(847, 523)
+physics_object_picking = true
+size = Vector2i(847, 555)
 render_target_update_mode = 4
 
 [node name="CustomerBgsPrite" type="Sprite2D" parent="custWindow/characterSprites/SubViewport" unique_id=105228672]
@@ -69,6 +70,8 @@ texture = ExtResource("6_hsnre")
 
 [node name="customerSpawner" type="Timer" parent="." unique_id=627961247]
 wait_time = 3.0
+
+position = Vector2(298, 782)
 
 [connection signal="timeout" from="healthbar/Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]
