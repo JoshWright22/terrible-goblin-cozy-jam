@@ -28,6 +28,16 @@ var MIN_CHAR_TIME_HARD = 5
 var MAX_CHAR_TIME_EASY = 14
 var MAX_CHAR_TIME_MED = 13
 var MAX_CHAR_TIME_HARD = 8
+
+#TIME UNTIL CUSTOMER CHANGES EMOTION + LOSE POINTS
+var MAX_WAIT_TIME_EASY = 15
+var MIN_WAIT_TIME_EASY = 10
+
+var MAX_WAIT_TIME_MED = 13
+var MIN_WAIT_TIME_MED = 9
+
+var MAX_WAIT_TIME_HARD = 12
+var MIN_WAIT_TIME_HARD = 8
 #NO OF ITEMS USED PER ORDER PER DIFFICULTY__________________________________
 var itemMin : int #setter variables for below
 var itemMax : int
