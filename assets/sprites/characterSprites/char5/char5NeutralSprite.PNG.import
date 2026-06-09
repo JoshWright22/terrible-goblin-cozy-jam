@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://du2c26g254apw"
-path="res://.godot/imported/shopSprite.PNG-1292e967113f00dbda1903e9d43da2d8.ctex"
+uid="uid://7625ce88uocf"
+path="res://.godot/imported/char5NeutralSprite.PNG-9d5b6c793cdc172ffd484c6becf4bda3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/bgSprites/shopSprite.PNG"
-dest_files=["res://.godot/imported/shopSprite.PNG-1292e967113f00dbda1903e9d43da2d8.ctex"]
+source_file="res://assets/sprites/characterSprites/char5/char5NeutralSprite.PNG"
+dest_files=["res://.godot/imported/char5NeutralSprite.PNG-9d5b6c793cdc172ffd484c6becf4bda3.ctex"]
 
 [params]
 

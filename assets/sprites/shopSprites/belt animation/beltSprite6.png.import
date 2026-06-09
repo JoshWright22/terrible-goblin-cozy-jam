@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b2bc6puid3oqb"
-path="res://.godot/imported/char1Sprite.PNG-4cfb445454af35e233f7a4084ce9fd16.ctex"
+uid="uid://dc3lbrmsjfljm"
+path="res://.godot/imported/beltSprite6.png-c9075fe54fcd0ac2e61e376e19db9d8a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/characterSprites/char1/char1Sprite.PNG"
-dest_files=["res://.godot/imported/char1Sprite.PNG-4cfb445454af35e233f7a4084ce9fd16.ctex"]
+source_file="res://assets/sprites/shopSprites/belt animation/beltSprite6.png"
+dest_files=["res://.godot/imported/beltSprite6.png-c9075fe54fcd0ac2e61e376e19db9d8a.ctex"]
 
 [params]
 

@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://3tdcx025650d"]
+
+[ext_resource type="Script" uid="uid://b1apy1wxlitob" path="res://Scripts/order_bubble.gd" id="1_o4fdk"]
+
+[node name="orderBubble" type="Node2D" unique_id=627937534]
+script = ExtResource("1_o4fdk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1841571763]
+position = Vector2(0, 169)
+scale = Vector2(0.75, 0.75)
