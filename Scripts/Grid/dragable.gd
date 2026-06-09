@@ -1,11 +1,20 @@
 extends Node2D
 
+# 1. RESOURCE DATA EXTRACTION BUCKETS
+@export var fruit_profile: FruitData
+
 @export var block_layout: Array[Vector2] = [
 	Vector2(0, 0),
 	Vector2(1, 0),
 	Vector2(2, 0),
 	Vector2(1, 1)
 ]
+
+# --- TOGGLEABLE MODIFIER CONFIGURATIONS ---
+@export_group("Modifiers")
+@export var change_shape_on_pickup: bool = false
+@export var shapeshift_while_held: bool = false
+@export var variant_pool: Array[FruitData] = [] # Assign allowed transformation resources here!
 
 var is_dragging: bool = false
 var is_locked: bool = false
@@ -20,18 +29,49 @@ var locked_tiles: Array[Node2D] = []
 var dynamic_cell_size: float = 64.0
 var layout_center_offset: Vector2 = Vector2.ZERO
 
+# 2. PUBLIC DATA READOUTS
+var current_fruit_type: int = 0
+var total_block_count: int = 0
+
 @onready var main_click_area: Area2D = $Area2D
 @onready var block_detectors: Node2D = $BlockDetectors
+
+# Internal tracking for tick transformations
+var shifting_timer: Timer = null
+
+# Cache local layout bounds for strict math validation
+var local_min_x: float = 0.0
+var local_min_y: float = 0.0
 
 func _ready() -> void:
 	spawn_position = global_position
 	target_rotation = rotation
-	main_click_area.input_event.connect(_on_area_2d_input_event)
 	
-	var grid_node = get_tree().current_scene.find_child("Grid", true, false)
-	if grid_node and "cell_pixel_size" in grid_node:
-		dynamic_cell_size = grid_node.cell_pixel_size
+	if main_click_area:
+		main_click_area.input_event.connect(_on_main_click_area_input)
+	
+	# Dynamically scale cell sizes using a nearby grid node context if available initially
+	var fallback_grid = get_tree().current_scene.find_child("Grid*", true, false)
+	if fallback_grid and "cell_pixel_size" in fallback_grid:
+		dynamic_cell_size = fallback_grid.cell_pixel_size
 		
+	if fruit_profile != null:
+		current_fruit_type = fruit_profile.fruit_name
+		block_layout = fruit_profile.layout
+		
+	total_block_count = block_layout.size()
+	build_piece_from_layout()
+	
+	# Set up the internal processing timer engine loop for held shifting
+	setup_shifting_timer()
+
+func change_fruit_profile(new_profile: FruitData) -> void:
+	if new_profile == null:
+		return
+	fruit_profile = new_profile
+	current_fruit_type = fruit_profile.fruit_name
+	block_layout = fruit_profile.layout
+	total_block_count = block_layout.size()
 	build_piece_from_layout()
 
 func build_piece_from_layout() -> void:
@@ -52,6 +92,9 @@ func build_piece_from_layout() -> void:
 		min_y = min(min_y, coord.y)
 		max_y = max(max_y, coord.y)
 
+	local_min_x = min_x
+	local_min_y = min_y
+
 	var cells_wide = (max_x - min_x) + 1.0
 	var cells_high = (max_y - min_y) + 1.0
 
@@ -60,72 +103,99 @@ func build_piece_from_layout() -> void:
 		((min_y + max_y) / 2.0) * dynamic_cell_size
 	)
 
+	var main_sprite = get_node_or_null("Sprite2D") as Sprite2D
+	if fruit_profile != null and main_sprite:
+		main_sprite.texture = fruit_profile.texture
+
 	for i in range(block_layout.size()):
 		var coord = block_layout[i]
-		
 		var detector = Area2D.new()
 		detector.name = "Block_%d" % i
 		detector.position = (coord * dynamic_cell_size) - layout_center_offset
 		
 		var collision = CollisionShape2D.new()
 		var rect_shape = RectangleShape2D.new()
-		rect_shape.size = Vector2(dynamic_cell_size - 6.0, dynamic_cell_size - 6.0)
+		rect_shape.size = Vector2(dynamic_cell_size - 4.0, dynamic_cell_size - 4.0)
 		
 		collision.shape = rect_shape
 		detector.add_child(collision)
 		block_detectors.add_child(detector)
 
-	var main_sprite = get_node_or_null("Sprite2D") as Sprite2D
 	if main_sprite and main_sprite.texture:
-		var raw_tex_size = main_sprite.texture.get_size()
-		var target_width = cells_wide * dynamic_cell_size
-		var target_height = cells_high * dynamic_cell_size
+		var native_block_pixel_size: float = 120.0
+		var uniform_scale = dynamic_cell_size / native_block_pixel_size
+		main_sprite.scale = Vector2(uniform_scale, uniform_scale)
+		main_sprite.centered = false
 		
-		main_sprite.scale = Vector2(target_width / raw_tex_size.x, target_height / raw_tex_size.y)
-		main_sprite.position = Vector2.ZERO 
+		var structure_top_left = Vector2(min_x, min_y) * dynamic_cell_size
+		var half_cell_compensation = Vector2(dynamic_cell_size, dynamic_cell_size) / 2.0
+		main_sprite.position = structure_top_left - layout_center_offset - half_cell_compensation
 
 	var click_shape = main_click_area.get_child(0) as CollisionShape2D
 	if click_shape and click_shape.shape is RectangleShape2D:
 		var unique_shape = click_shape.shape.duplicate() as RectangleShape2D
 		unique_shape.size = Vector2(cells_wide * dynamic_cell_size, cells_high * dynamic_cell_size)
 		click_shape.shape = unique_shape
-		
 		main_click_area.position = Vector2.ZERO
-		click_shape.position = Vector2.ZERO 
-
-	print("[CENTERED BUILD] Piece '%s' initialized." % name)
+		click_shape.position = Vector2.ZERO
 
 func _process(_delta: float) -> void:
 	if is_dragging:
 		global_position = get_global_mouse_position()
 
-func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			is_dragging = true
-			check_placement_on_rotation_complete = false # Reset deferred drops
-			if is_locked:
-				for tile in locked_tiles:
-					tile.set_meta("is_occupied", false)
-				locked_tiles.clear()
-				is_locked = false
-			global_position = get_global_mouse_position()
+# Master bounding click processor
+func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var local_mouse_pos = to_local(get_global_mouse_position())
+		var block_space_pos = local_mouse_pos + layout_center_offset
+		
+		var clicked_cell_x = round(block_space_pos.x / dynamic_cell_size)
+		var clicked_cell_y = round(block_space_pos.y / dynamic_cell_size)
+		var targeted_cell = Vector2(clicked_cell_x, clicked_cell_y)
+		
+		if not targeted_cell in block_layout:
+			return 
 			
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
-		if event.pressed and not is_locked:
-			rotate_piece_90_degrees()
+		is_dragging = true
+		check_placement_on_rotation_complete = false 
+		z_index = 100
+		
+		if is_locked:
+			for tile in locked_tiles:
+				tile.set_meta("is_occupied", false)
+				if tile.has_meta("occupied_by_fruit"):
+					tile.remove_meta("occupied_by_fruit")
+			locked_tiles.clear()
+			is_locked = false
+			
+		global_position = get_global_mouse_position()
+		
+		# --- MODIFIER RUNTIME TRIGGERS ---
+		if change_shape_on_pickup:
+			trigger_random_transformation()
+			
+		if shapeshift_while_held:
+			shifting_timer.start()
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		if is_dragging:
+	if not is_dragging:
+		return
+		
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			is_dragging = false
 			
-			# If we are mid-spin, queue up the drop to occur automatically when it finishes
+			# Stop the constant shift cycles upon releasing the piece
+			if shifting_timer:
+				shifting_timer.stop()
+			
 			if is_rotating:
-				print("[DEFER] Drop requested mid-rotation. Cueing up snap check execution...")
 				check_placement_on_rotation_complete = true
 			else:
 				attempt_physical_placement()
+				
+		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and not is_locked:
+			rotate_piece_90_degrees()
 
 func rotate_piece_90_degrees() -> void:
 	is_rotating = true
@@ -133,29 +203,62 @@ func rotate_piece_90_degrees() -> void:
 	
 	var tween = create_tween()
 	tween.tween_property(self, "rotation", target_rotation, 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	
-	# Listen directly for the animation complete signal
 	tween.finished.connect(_on_rotation_finished)
 
 func _on_rotation_finished() -> void:
 	is_rotating = false
-	print("[ROTATION COMPLETE] Clean angle locked: ", rad_to_deg(rotation), "°")
-	
-	# Execute placement now if the player released the click during the tween spin duration
 	if check_placement_on_rotation_complete:
 		check_placement_on_rotation_complete = false
 		attempt_physical_placement()
 
+# --- MODIFIER UTILITY ENGINES ---
+
+func setup_shifting_timer() -> void:
+	shifting_timer = Timer.new()
+	shifting_timer.wait_time = 1.0
+	shifting_timer.one_shot = false
+	shifting_timer.timeout.connect(trigger_random_transformation)
+	add_child(shifting_timer)
+
+func trigger_random_transformation() -> void:
+	# Fallback safety: If nothing is explicitly assigned to variant_pool, populate it from resource files
+	if variant_pool.is_empty():
+		populate_fallback_variant_pool("res://")
+		
+	if variant_pool.is_empty():
+		print("[MODIFIER WARN] No valid FruitData resources found for transformation processing.")
+		return
+		
+	var random_profile = variant_pool.pick_random()
+	change_fruit_profile(random_profile)
+
+# Scans project directories to dynamically harvest compatible profile configurations
+func populate_fallback_variant_pool(path: String) -> void:
+	var dir = DirAccess.open(path)
+	if dir:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and not file_name.begins_with("."):
+				populate_fallback_variant_pool(path + file_name + "/")
+			elif file_name.ends_with(".tres"):
+				var res = load(path + file_name)
+				if res is FruitData and not res in variant_pool:
+					variant_pool.append(res)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+
+# --- FIXED MULTI-BOARD INSTANCE DETECTOR ---
 func attempt_physical_placement() -> void:
 	if block_detectors.get_child_count() == 0:
 		return_to_spawn()
 		return
 
-	# Explicit structural check to confirm angle values are clean cardinal directions
 	rotation = target_rotation
 
 	var dynamic_anchor_block: Area2D = null
 	var anchor_tile: Node2D = null
+	var target_grid_node: Node2D = null
 	var shortest_distance: float = 999999.0
 	
 	for detector in block_detectors.get_children():
@@ -164,31 +267,39 @@ func attempt_physical_placement() -> void:
 			for area in overlapping_areas:
 				if area.name == "TileArea":
 					var tile = area.get_parent()
+					var possible_grid = tile.get_parent().get_parent() 
+					
 					var dist = detector.global_position.distance_to(tile.global_position)
 					if dist < shortest_distance:
 						shortest_distance = dist
 						dynamic_anchor_block = detector
 						anchor_tile = tile
+						target_grid_node = possible_grid
 						
-	if dynamic_anchor_block == null or anchor_tile == null:
-		print("[DROP FAILED] Missing tile intersections.")
+	if dynamic_anchor_block == null or anchor_tile == null or target_grid_node == null:
+		return_to_spawn()
+		return
+
+	if "is_blending" in target_grid_node and target_grid_node.is_blending:
+		print("[DROP REJECTED] That specific blender board is currently busy processing!")
 		return_to_spawn()
 		return
 		
 	var anchor_gx = anchor_tile.get_meta("grid_x")
 	var anchor_gy = anchor_tile.get_meta("grid_y")
 	
-	var grid_visuals_node = get_tree().current_scene.find_child("GridVisuals", true, false)
+	var grid_visuals_node = target_grid_node.get_node_or_null("GridVisuals")
 	var tiles_to_occupy: Array[Node2D] = []
 	var placement_valid = true
 	
+	var anchor_global_pos = dynamic_anchor_block.global_position
+	
 	for detector in block_detectors.get_children():
 		if detector is Area2D:
-			var relative_offset = detector.position - dynamic_anchor_block.position
-			var rotated_offset = relative_offset.rotated(rotation)
+			var global_delta = detector.global_position - anchor_global_pos
 			
-			var offset_x = round(snapped(rotated_offset.x, dynamic_cell_size) / dynamic_cell_size)
-			var offset_y = round(snapped(rotated_offset.y, dynamic_cell_size) / dynamic_cell_size)
+			var offset_x = int(roundf(global_delta.x / dynamic_cell_size))
+			var offset_y = int(roundf(global_delta.y / dynamic_cell_size))
 			
 			var target_gx = anchor_gx + offset_x
 			var target_gy = anchor_gy + offset_y
@@ -212,9 +323,11 @@ func attempt_physical_placement() -> void:
 		
 		for tile in tiles_to_occupy:
 			tile.set_meta("is_occupied", true)
+			tile.set_meta("occupied_by_fruit", self)
 			locked_tiles.append(tile)
 			
 		is_locked = true
+		z_index = 0
 	else:
 		return_to_spawn()
 
@@ -225,3 +338,4 @@ func return_to_spawn() -> void:
 	tween.tween_property(self, "global_position", spawn_position, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	target_rotation = 0.0
 	tween.tween_property(self, "rotation", target_rotation, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	z_index = 0

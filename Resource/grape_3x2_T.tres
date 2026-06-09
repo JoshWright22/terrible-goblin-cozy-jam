@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FruitData" format=3 uid="uid://bok2au8eb33jk"]
+
+[ext_resource type="Script" uid="uid://c62xdlsecmv73" path="res://Scripts/Grid/fruit_data.gd" id="1_5ccry"]
+[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://Assets/sprites/temp/T_Tetromino0.webp" id="2_6rv62"]
+
+[resource]
+script = ExtResource("1_5ccry")
+fruit_name = 6
+texture = ExtResource("2_6rv62")
+layout = Array[Vector2]([Vector2(0, 0), Vector2(1, 0), Vector2(2, 0), Vector2(1, 1)])
+metadata/_custom_type_script = "uid://c62xdlsecmv73"

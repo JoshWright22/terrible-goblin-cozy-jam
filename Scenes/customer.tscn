@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://byfod61h6r6x6"]
 
 [ext_resource type="Script" uid="uid://dg7adqs2toi" path="res://customer.gd" id="1_7c3kf"]
-[ext_resource type="Texture2D" uid="uid://b2bc6puid3oqb" path="res://assets/sprites/characterSprites/char1/char1Sprite.PNG" id="2_0v30w"]
+[ext_resource type="Texture2D" uid="uid://bob1ovfnxtq2f" path="res://assets/sprites/characterSprites/char2/char2HappySprite.PNG" id="2_7c3kf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7c3kf"]
 
@@ -10,8 +10,9 @@ top_level = true
 script = ExtResource("1_7c3kf")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1493344575]
+position = Vector2(-25, 0)
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("2_0v30w")
+texture = ExtResource("2_7c3kf")
 
 [node name="emotionTimer" type="Timer" parent="." unique_id=349036859]
 
@@ -28,4 +29,6 @@ position = Vector2(-35, 39)
 scale = Vector2(11.705, 11.705)
 shape = SubResource("CapsuleShape2D_7c3kf")
 
+[connection signal="timeout" from="emotionTimer" to="." method="_on_emotion_timer_timeout"]
 [connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
