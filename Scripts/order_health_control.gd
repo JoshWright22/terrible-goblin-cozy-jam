@@ -29,7 +29,7 @@ var MAX_CHAR_TIME_EASY = 14
 var MAX_CHAR_TIME_MED = 13
 var MAX_CHAR_TIME_HARD = 8
 
-#TIME UNTIL CUSTOMER CHANGES EMOTION + LOSE POINTS
+#TIME UNTIL CUSTOMER CHANGES EMOTION + LOSE POINTS______________________________
 var minWaitTime
 var maxWaitTime
 
@@ -45,20 +45,19 @@ var MIN_WAIT_TIME_HARD = 8
 var itemMin : int #setter variables for below
 var itemMax : int
 
-var ITEM_EASY_MIN : int = 2 
-var ITEM_MED_MIN : int = 3
+var ITEM_EASY_MIN : int = 1 
+var ITEM_MED_MIN : int = 2
 var ITEM_HARD_MIN : int = 3
 
 var ITEM_EASY_MAX : int = 3
 var ITEM_MED_MAX : int = 4
 var ITEM_HARD_MAX : int = 5
-#___________________________________________________________________________
-#EXTREMELY WIP
+#___________________Customer/Order Variables________________________________
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
-var currentOrders : Dictionary = {}
+var currentOrders : Dictionary = {} #tracks customer ID & order Array
 #list of things a customer may want
-
+var ingredients : Array = ["Banana", "Apple", "Blueberry", "Mango", "Strawberry"] 
 
 #assigned to positions left to right, not necessarily the order the customers show up
 
@@ -67,7 +66,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void: #WIP make linear
 	pass#var percentage = healthTimer.time_left / healthTimer.wait_time
-	#percentage = percentage * 30
+	#percentage = percentage * 45
 	#healthBar.value = percentage
 
 
@@ -115,6 +114,15 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 
 func genOrder(custID): #WIP 
 	var order = {}
+	var fruitNo = randi_range(itemMin,itemMax)
+	for i in range(fruitNo):
+		var select = ingredients.pick_random()
+		while select in order:
+			select = ingredients.pick_random()
+		order[select] = 12
+	currentOrders[custID] = order
+	print(currentOrders)
+	
 	currentOrders[custID] = order
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order

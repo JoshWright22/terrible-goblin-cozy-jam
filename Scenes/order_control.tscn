@@ -32,8 +32,8 @@ rotation = -1.5707964
 scale = Vector2(6.8799977, 2.2800004)
 theme_override_styles/background = SubResource("StyleBoxFlat_3c1p4")
 theme_override_styles/fill = SubResource("StyleBoxFlat_0uojq")
-max_value = 30.0
-value = 30.0
+max_value = 45.0
+value = 45.0
 rounded = true
 show_percentage = false
 

@@ -24,8 +24,6 @@ var ID
 
 var b
 
-var ingredients : Array = ["Banana", "Apple", "Blueberry", "Mango", "Strawberry"] 
-
 var characters : Array #initialized in _ready | sprite Node path list 
 var characterSprites : Array  #initialized in _ready | add sprites here
 var neutralSprites : Array
@@ -41,7 +39,6 @@ var mood = 3 #3 happy 2 neutral 1 mad at 0 they leave
 func _ready() -> void:
 	timer.wait_time = randi_range(control.minWaitTime,control.maxWaitTime)
 	timer.start(timer.wait_time)
-	get_tree().set_debug_collisions_hint(true)
 	characterSprites = [charSprite1, charSprite2, charSprite3, charSprite4, charSprite5]
 	neutralSprites = [charNeuSprite1, charNeuSprite2, charNeuSprite3, charNeuSprite4, charNeuSprite5]
 	angrySprites = [charAngSprite1, charAngSprite2, charAngSprite3, charAngSprite4, charAngSprite5]
@@ -51,7 +48,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 	
 func genCustomer(): #creates customer and order Wip___________________
@@ -111,6 +108,7 @@ func _on_emotion_timer_timeout() -> void:
 		fadeAway.finished.connect(queue_free)
 		control.currentCustomer.erase(ID)
 		control.spritesUsed.erase(ID)
+		control.currentOrders.erase(ID)
 		if b != null:
 			b.queue_free()
 	else:
