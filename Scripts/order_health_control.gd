@@ -114,14 +114,18 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 
 func genOrder(custID): #WIP 
 	var order = {}
+	var selectedFruit
 	var fruitNo = randi_range(itemMin,itemMax)
 	for i in range(fruitNo):
 		var select = ingredients.pick_random()
-		while select in order:
+		while select in selectedFruit:
 			select = ingredients.pick_random()
-		order[select] = 12
-	currentOrders[custID] = order
-	print(currentOrders)
+		selectedFruit.append(select)
+	
+	var remainer = 100
+	for i in range( fruitNo-1):
+		pass
+	
 	
 	currentOrders[custID] = order
 
