@@ -23,6 +23,7 @@ position = Vector2(-52, 226)
 scale = Vector2(0.6, 0.6)
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1648816387]
+scale = Vector2(0.8, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1335276008]
 position = Vector2(-35, 39)

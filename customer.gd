@@ -39,7 +39,7 @@ var mood = 3 #3 happy 2 neutral 1 mad at 0 they leave
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	timer.wait_time = genTimer()
+	timer.wait_time = randi_range(control.minWaitTime,control.maxWaitTime)
 	timer.start(timer.wait_time)
 	get_tree().set_debug_collisions_hint(true)
 	characterSprites = [charSprite1, charSprite2, charSprite3, charSprite4, charSprite5]
@@ -56,7 +56,12 @@ func _process(delta: float) -> void:
 	
 func genCustomer(): #creates customer and order Wip___________________
 	var fadeTween = create_tween() 
-	sprite.texture = characterSprites.pick_random() #selects random sprite for customer
+	var text = characterSprites.pick_random() #selects random sprite for customer
+	while text in control.spritesUsed.values():
+		text = characterSprites.pick_random()
+	sprite.texture = text
+	control.spritesUsed[ID] = text
+	spriteCorrection()
 	fadeTween.tween_property(self, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
 
 func changeMood():
@@ -67,29 +72,31 @@ func changeMood():
 		sprite.texture = neutralSprites[spriter]
 	elif mood == 1:
 		sprite.texture = angrySprites[spriter]
-	
-func genTimer():
-	var setter
-	if control.difficulty == "EASY":
-		setter = randi_range(control.MIN_WAIT_TIME_EASY,control.MAX_WAIT_TIME_EASY)
-	elif control.difficulty == "MED":
-		setter = randi_range(control.MIN_WAIT_TIME_MED,control.MAX_WAIT_TIME_MED)
-	else:
-		setter = randi_range(control.MIN_WAIT_TIME_HARD,control.MAX_WAIT_TIME_HARD)
-	return setter
+
 
 func spriteCorrection():
-	if sprite.texture == charSprite2:
-		sprite.position = Vector2(-25,0)
+	if sprite.texture == charSprite1:
+		sprite.position = sprite.position + Vector2(25,0)
+	elif sprite.texture == charSprite3:
+		sprite.position = sprite.position + Vector2(-25,0)
+	elif sprite.texture == charSprite4:
+		sprite.position = sprite.position + Vector2(-25,60)
 
 func _on_area_2d_mouse_entered() -> void:
-	b = orderBubble.instantiate()
-	b.SPRITE = bubble
-	control.add_child(b)
-	b.position = control.currentCustomer[ID] + Vector2(125,200)
+	if control.currentCustomer.has(ID):
+		b = orderBubble.instantiate()
+		if mood == 1:
+			b.SPRITE = angryBubble
+		else:
+			b.SPRITE = bubble
+		control.add_child(b)
+		b.position = control.currentCustomer[ID] + Vector2(125,200)
 
 func _on_area_2d_mouse_exited() -> void:
-	b.queue_free()
+	if b != null:
+		b.queue_free()
+	else:
+		pass
 
 
 func _on_emotion_timer_timeout() -> void:
@@ -97,8 +104,12 @@ func _on_emotion_timer_timeout() -> void:
 		var fadeAway = create_tween()
 		fadeAway.tween_property(self, "modulate",Color(1,1,1,0), FADE_TIME)
 		fadeAway.finished.connect(queue_free)
+		control.currentCustomer.erase(ID)
+		control.spritesUsed.erase(ID)
+		if b != null:
+			b.queue_free()
 	else:
 		mood = mood - 1
 		changeMood()
-		timer.wait_time = genTimer()
+		timer.wait_time = randi_range(control.minWaitTime,control.maxWaitTime)
 		timer.start(timer.wait_time)

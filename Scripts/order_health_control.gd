@@ -7,7 +7,7 @@ extends Node2D
 @onready var gameOverScene = load("res://Scenes/game_over.tscn")
 @onready var customer = load("res://Scenes/customer.tscn")
 
-
+var spritesUsed : Dictionary = {}
 var difficulty = "EASY" # "MED" "HARD" general setter for code
 
 #Timer/health variables______________________________________________________
@@ -16,7 +16,7 @@ var REMAIN_TIME : float #Time remaining, timer paused if no customers
 var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with satisfaction
 
 #Customer spawn time variables_______________________________________________
-var positions : Dictionary = {1 : Vector2(147.4, 323.6), 2 : Vector2(308, 340.8), 3 : Vector2(505, 334.8), 4 : Vector2(728, 338.8)}
+var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
 
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
@@ -30,6 +30,9 @@ var MAX_CHAR_TIME_MED = 13
 var MAX_CHAR_TIME_HARD = 8
 
 #TIME UNTIL CUSTOMER CHANGES EMOTION + LOSE POINTS
+var minWaitTime
+var maxWaitTime
+
 var MAX_WAIT_TIME_EASY = 15
 var MIN_WAIT_TIME_EASY = 10
 
@@ -51,7 +54,7 @@ var ITEM_MED_MAX : int = 4
 var ITEM_HARD_MAX : int = 5
 #___________________________________________________________________________
 #EXTREMELY WIP
-var customerNo #tracks how many customers you've served for difficulty scaling
+var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
 var currentOrders : Dictionary = {}
 #list of things a customer may want
@@ -75,43 +78,65 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	var setterMax
 	var itemSetterMin
 	var itemSetterMax
+	var waitSetterMin
+	var waitSetterMax
+	if customerNo >= 6 && customerNo <= 9:
+		difficulty = "MEDIUM"
+	elif customerNo >= 10:
+		difficulty = "HARD"
+	
 	if difficulty == "EASY":
 		setterMin = MIN_CHAR_TIME_EASY
 		setterMax = MAX_CHAR_TIME_EASY
 		itemSetterMin = ITEM_EASY_MIN
 		itemSetterMax = ITEM_HARD_MAX
-	elif difficulty == "MED":
-		pass
+		waitSetterMin = MIN_WAIT_TIME_EASY
+		waitSetterMax = MAX_WAIT_TIME_EASY
+	elif difficulty == "MEDIUM":
+		setterMin = MIN_CHAR_TIME_MED
+		setterMax = MAX_CHAR_TIME_MED
+		itemSetterMin = ITEM_MED_MIN
+		itemSetterMax = ITEM_MED_MAX
+		waitSetterMin = MIN_WAIT_TIME_MED
+		waitSetterMax = MAX_WAIT_TIME_MED
 	elif difficulty == "HARD":
-		pass
+		setterMin = MIN_CHAR_TIME_HARD
+		setterMax = MAX_CHAR_TIME_HARD
+		itemSetterMin = ITEM_HARD_MIN
+		itemSetterMax = ITEM_HARD_MAX
+		waitSetterMin = MIN_WAIT_TIME_HARD
+		waitSetterMax = MAX_WAIT_TIME_HARD
 	charTimeMin = setterMin
 	charTimeMax = setterMax
 	itemMin = itemSetterMin
 	itemMax = itemSetterMax
+	minWaitTime = waitSetterMin
+	maxWaitTime = waitSetterMax
 
-func genOrder(custID):
-	pass
+func genOrder(custID): #WIP 
+	var order = {}
+	currentOrders[custID] = order
 
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
 	if currentCustomer.size() != 4:
+		customerNo = customerNo + 1
 		customerSpawnTimer.stop()
 		scaleDiff()
 		var c = customer.instantiate()
-		$custWindow/characterSprites/SubViewport.add_child(c)
-		c.name = "Customer_" + str(currentCustomer.size() + 1)
+		c.name = "Customer_" + str(customerNo)
 		var trgPos = positions[randi_range(1,4)]
 		while trgPos in currentCustomer.values():
 			trgPos = positions[randi_range(1,4)]
 		c.position = trgPos
-		c.ID = currentCustomer.size() + 1
-		currentCustomer.get_or_add(currentCustomer.size() + 1,trgPos)
-		genOrder(c)
+		c.ID = customerNo
+		currentCustomer[customerNo] = trgPos
+		$custWindow/characterSprites/SubViewport.add_child(c)
+		genOrder(customerNo)
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	else:
-		pass
-
-
+		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
+		customerSpawnTimer.start(customerSpawnTimer.wait_time)
 
 func _on_timer_timeout() -> void: #GAME OVER | Health ran out
 	healthTimer.stop()
