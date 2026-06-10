@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c6f1ucac5x7h0"
-path="res://.godot/imported/T_Tetromino0.webp-962fec1c066687e582a503d5e397c648.ctex"
+uid="uid://bhpsh7hl1f25d"
+path="res://.godot/imported/banana5Sprite.PNG-9f18fa1a43a0a8c1a40738a3e9a77f6b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/temp/T_Tetromino0.webp"
-dest_files=["res://.godot/imported/T_Tetromino0.webp-962fec1c066687e582a503d5e397c648.ctex"]
+source_file="res://assets/sprites/fruitSprites/banana/banana5Sprite.PNG"
+dest_files=["res://.godot/imported/banana5Sprite.PNG-9f18fa1a43a0a8c1a40738a3e9a77f6b.ctex"]
 
 [params]
 
