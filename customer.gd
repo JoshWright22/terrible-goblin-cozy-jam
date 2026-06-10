@@ -83,18 +83,23 @@ func spriteCorrection():
 		sprite.position = sprite.position + Vector2(-25,60)
 
 func _on_area_2d_mouse_entered() -> void:
+	var openTween = create_tween() 
 	if control.currentCustomer.has(ID):
 		b = orderBubble.instantiate()
 		if mood == 1:
 			b.SPRITE = angryBubble
 		else:
 			b.SPRITE = bubble
+		b.scale = Vector2(0,0)
 		control.add_child(b)
+		openTween.tween_property(b, "scale", Vector2(1,1), .1)
 		b.position = control.currentCustomer[ID] + Vector2(125,200)
 
 func _on_area_2d_mouse_exited() -> void:
 	if b != null:
-		b.queue_free()
+		var closeTween = create_tween()
+		closeTween.tween_property(b, "scale", Vector2(0,0), .1)
+		closeTween.finished.connect(b.queue_free)
 	else:
 		pass
 
