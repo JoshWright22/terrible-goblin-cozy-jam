@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://btyd2kqibpfrp"]
+
+[ext_resource type="Texture2D" uid="uid://bb3jlnm0bmf6l" path="res://assets/sprites/orderWindowSprites/speechBubble.png" id="1_pq7v4"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_e3vrk"]
+
+[node name="orderedPercentages" type="Node2D" unique_id=1839000473]
+
+[node name="SpeechBubble" type="Sprite2D" parent="." unique_id=499173661]
+texture = ExtResource("1_pq7v4")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=483158792]
+offset_left = 12.0
+offset_top = -40.0
+offset_right = 231.0
+offset_bottom = 335.0
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("2_e3vrk")
+theme_override_font_sizes/normal_font_size = 48
+text = ": 20%
+: 20%
+: 20%
+: 20%
+: 20%
+"
+horizontal_alignment = 1

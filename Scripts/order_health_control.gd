@@ -45,9 +45,9 @@ var MIN_WAIT_TIME_HARD = 8
 var itemMin : int #setter variables for below
 var itemMax : int
 
-var ITEM_EASY_MIN : int = 1 
-var ITEM_MED_MIN : int = 2
-var ITEM_HARD_MIN : int = 3
+var ITEM_EASY_MIN : int = 2 
+var ITEM_MED_MIN : int = 3
+var ITEM_HARD_MIN : int = 4
 
 var ITEM_EASY_MAX : int = 3
 var ITEM_MED_MAX : int = 4
@@ -96,7 +96,7 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 		setterMin = MIN_CHAR_TIME_EASY
 		setterMax = MAX_CHAR_TIME_EASY
 		itemSetterMin = ITEM_EASY_MIN
-		itemSetterMax = ITEM_HARD_MAX
+		itemSetterMax = ITEM_EASY_MAX
 		waitSetterMin = MIN_WAIT_TIME_EASY
 		waitSetterMax = MAX_WAIT_TIME_EASY
 	elif difficulty == "MEDIUM":
@@ -120,13 +120,30 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	minWaitTime = waitSetterMin
 	maxWaitTime = waitSetterMax
 
-func genOrder(custID: int) -> void:
-	var fruitNo: int = randi_range(itemMin, itemMax)
-	var order: Array[FruitData.FruitType] = []
-	while order.size() < fruitNo:
-		var pick: FruitData.FruitType = ingredients.pick_random()
-		if not pick in order:
-			order.append(pick)
+func genOrder(custID):
+	var order = {}
+	var selectedFruit = []
+	var fruitPerc = []
+	var fruitNo = randi_range(itemMin,itemMax)
+	var select
+	var total : float = 0 
+	var remainer = 100
+	for i in range(fruitNo):
+		select = ingredients.pick_random()
+		while select in selectedFruit:
+			select = ingredients.pick_random()
+		var adder = randi_range(1,5)
+		total = total + float(adder)
+		fruitPerc.append(adder)
+		selectedFruit.append(select)
+		
+	for i in range(selectedFruit.size()-1): 
+		var fFloat = float(fruitPerc[i])/total
+		var fPerc = int(fFloat * 100)
+		remainer = remainer - fPerc
+		order[selectedFruit[i]] = fPerc
+	var GETTER = selectedFruit.size()-1
+	order[selectedFruit[GETTER]] = remainer
 	currentOrders[custID] = order
 
 ## Maps a SubViewport-local position to world space, accounting for the
