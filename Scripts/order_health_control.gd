@@ -120,7 +120,6 @@ func genOrder(custID):
 	var select
 	var total : float = 0 
 	var remainer = 100
-	print(fruitNo)
 	for i in range(fruitNo):
 		select = ingredients.pick_random()
 		while select in selectedFruit:
