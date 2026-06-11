@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bskt41wkq0c31"]
 
 [ext_resource type="Script" uid="uid://w1ioh3q4el0c" path="res://Scripts/Grid/dragable.gd" id="1_3jwyx"]
-[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://Assets/sprites/temp/T_Tetromino0.webp" id="2_72mdp"]
+[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://assets/sprites/temp/T_Tetromino0.webp" id="2_72mdp"]
 [ext_resource type="Script" uid="uid://coow5owhd2ajb" path="res://Scripts/Grid/grid.gd" id="3_bb1ui"]
 [ext_resource type="Resource" uid="uid://bok2au8eb33jk" path="res://Resource/grape_3x2_T.tres" id="3_uto0t"]
 [ext_resource type="Script" uid="uid://c62xdlsecmv73" path="res://Scripts/Grid/fruit_data.gd" id="4_hv0dx"]
