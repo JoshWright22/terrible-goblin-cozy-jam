@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bh5ox3rbs72j6"]
+
+[ext_resource type="Script" uid="uid://coow5owhd2ajb" path="res://Scripts/Grid/grid.gd" id="1_syg6b"]
+[ext_resource type="PackedScene" uid="uid://dvnp3smm361ab" path="res://Scenes/Smoothie.tscn" id="2_e63qr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e63qr"]
+size = Vector2(64, 64)
+
+[node name="Blender" type="Node2D" unique_id=1163045306]
+
+[node name="Grid" type="Node2D" parent="." unique_id=365471802 node_paths=PackedStringArray("blend_button")]
+script = ExtResource("1_syg6b")
+smoothie_scene = ExtResource("2_e63qr")
+blend_button = NodePath("Button")
+
+[node name="GridAnchor" type="Area2D" parent="Grid" unique_id=1955288939]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Grid/GridAnchor" unique_id=491559310]
+scale = Vector2(1e-05, 1e-05)
+shape = SubResource("RectangleShape2D_e63qr")
+
+[node name="GridVisuals" type="Node2D" parent="Grid" unique_id=112324668]
+
+[node name="Button" type="Button" parent="Grid" unique_id=2132567913]
+offset_left = -425.0
+offset_top = -271.0
+offset_right = -372.0
+offset_bottom = -240.0
+text = "Blend"
