@@ -84,8 +84,8 @@ func spriteCorrection():
 		sprite.position = sprite.position + Vector2(-25,60)
 
 func _on_area_2d_mouse_entered() -> void:
-	var openTween = create_tween() 
 	if control.currentCustomer.has(ID):
+		var openTween = create_tween()
 		b = orderBubble.instantiate()
 		if mood == 1:
 			b.SPRITE = angryBubble
