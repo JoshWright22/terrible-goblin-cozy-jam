@@ -18,8 +18,8 @@ var ADD_TIME : float = 5.0 #Max amount of time a player can win back with satisf
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
 
-var MED_CUSTOMER_MIN = 7 #When it turns med
-var MED_CUSTOMER_MAX = 10 #when it turns hard
+var MED_CUSTOMER_MIN = 4 #When it turns med
+var MED_CUSTOMER_MAX = 6 #when it turns hard
 
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
@@ -92,7 +92,7 @@ func _process(delta: float) -> void: #WIP make linear
 		
 	
 
-func compareValues(): #final bit; score how well player did; add time stars
+func compareValues(): 
 	var score = 4 
 	var trger = GameManager.trgID
 	GameManager.trgID = null
@@ -103,6 +103,7 @@ func compareValues(): #final bit; score how well player did; add time stars
 	if custom.c != null && custom.b != null:
 		custom.c.queue_free()
 		custom.b.queue_free()
+#put dictionary comparrison here_____________________________________
 	for i in range(score):
 		var move = create_tween()
 		var c = star.instantiate()

@@ -4,7 +4,7 @@ var currentScene #setter variable for changeScene()
 
 #scenes
 @onready var mainMenu = load("res://Scenes/main_menu.tscn")
-@onready var levels #stand in for buttons
+
 
 func _ready() -> void:
 	changeScene(mainMenu) 
