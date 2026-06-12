@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://o5816hjyq01c"]
+
+[ext_resource type="Script" uid="uid://dy6d25ws1t6kf" path="res://Scripts/debug/debug_perfect.gd" id="1_p3pie"]
+[ext_resource type="Texture2D" uid="uid://bknc7gsxymbew" path="res://icon.svg" id="2_jn0e5"]
+
+[node name="DebugPerfect" type="Node2D" unique_id=1827650165]
+script = ExtResource("1_p3pie")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1512572626]
+modulate = Color(1, 1, 0, 1)
+texture = ExtResource("2_jn0e5")

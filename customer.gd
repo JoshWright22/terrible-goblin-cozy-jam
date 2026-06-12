@@ -55,7 +55,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 	
-func genCustomer(): #creates customer and order Wip___________________
+func genCustomer() -> void: #creates customer and order Wip___________________
 	var fadeTween = create_tween() 
 	var text = characterSprites.pick_random() #selects random sprite for customer
 	while text in control.spritesUsed.values():
@@ -65,7 +65,7 @@ func genCustomer(): #creates customer and order Wip___________________
 	spriteCorrection()
 	fadeTween.tween_property(self, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
 
-func changeMood():
+func changeMood() -> void:
 	var spriter = characterSprites.find(sprite.texture)
 	if spriter == -1:
 		spriter = neutralSprites.find(sprite.texture)
@@ -75,7 +75,7 @@ func changeMood():
 		sprite.texture = angrySprites[spriter]
 
 
-func spriteCorrection():
+func spriteCorrection() -> void:
 	if sprite.texture == charSprite1:
 		sprite.position = sprite.position + Vector2(25,0)
 	elif sprite.texture == charSprite3:
@@ -84,6 +84,7 @@ func spriteCorrection():
 		sprite.position = sprite.position + Vector2(-25,60)
 
 func _on_area_2d_mouse_entered() -> void:
+	GameManager.trgID = ID
 	if control.currentCustomer.has(ID):
 		var openTween = create_tween()
 		b = orderBubble.instantiate()
@@ -105,6 +106,7 @@ func _on_area_2d_mouse_entered() -> void:
 		
 
 func _on_area_2d_mouse_exited() -> void:
+	GameManager.trgID = null
 	if b != null && c != null:
 		var closeTween = create_tween()
 		closeTween.tween_property(b, "scale", Vector2(0,0), .1)
@@ -115,30 +117,29 @@ func _on_area_2d_mouse_exited() -> void:
 
 
 func serve() -> void:
-	timer.stop()
+	print("ran")
+	var jump = create_tween()
+	jump.tween_property(self, "position", self.position + Vector2(0,-25), .25)
+	jump.tween_property(self, "position", self.position + Vector2(0,25), .25)
+	jump.finished.connect(func():removeCustomer())
+
+func removeCustomer():
+	$Area2D.queue_free()
+	var fadeAway = create_tween()
+	fadeAway.tween_property(self, "modulate",Color(1,1,1,0), FADE_TIME)
+	fadeAway.finished.connect(queue_free)
 	control.currentCustomer.erase(ID)
 	control.spritesUsed.erase(ID)
 	control.currentOrders.erase(ID)
-	control.remove_delivery_zone(ID)
+	#control.remove_delivery_zone(ID)
 	if b != null:
 		b.queue_free()
-	var fadeAway = create_tween()
-	fadeAway.tween_property(self, "modulate", Color(1, 1, 1, 0), FADE_TIME)
-	fadeAway.finished.connect(queue_free)
+	if c != null:
+		c.queue_free()
 
 func _on_emotion_timer_timeout() -> void:
 	if mood == 1:
-		var fadeAway = create_tween()
-		fadeAway.tween_property(self, "modulate",Color(1,1,1,0), FADE_TIME)
-		fadeAway.finished.connect(queue_free)
-		control.currentCustomer.erase(ID)
-		control.spritesUsed.erase(ID)
-		control.currentOrders.erase(ID)
-		control.remove_delivery_zone(ID)
-		if b != null:
-			b.queue_free()
-		if c != null:
-			c.queue_free()
+		removeCustomer()
 	else:
 		mood = mood - 1
 		changeMood()
