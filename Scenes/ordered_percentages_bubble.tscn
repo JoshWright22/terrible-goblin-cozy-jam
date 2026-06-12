@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://r7d6n6s260l6" path="res://Scripts/ordered_percentages_bubble.gd" id="1_shosv"]
 [ext_resource type="Texture2D" uid="uid://bb3jlnm0bmf6l" path="res://assets/sprites/orderWindowSprites/speechBubble.png" id="2_shosv"]
+[ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://assets/sprites/fruitSprites/mangoSprite.PNG" id="3_5pmas"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="4_5pmas"]
 
 [node name="orderedPercentages" type="CanvasLayer" unique_id=1985085690]
 script = ExtResource("1_shosv")
@@ -10,17 +12,39 @@ script = ExtResource("1_shosv")
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_shosv")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1805569841]
-custom_minimum_size = Vector2(50, 50)
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -1126.9999
-offset_top = -42.0
-offset_right = -1061.9999
-offset_bottom = 8.0
-grow_horizontal = 2
-scale = Vector2(5.159999, 4.04)
+[node name="Control" type="Control" parent="." unique_id=382688782]
+custom_minimum_size = Vector2(200, 180)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -95.0
+offset_top = -28.0
+offset_right = 105.0
+offset_bottom = 152.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1761938367]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 180.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VBoxContainer" unique_id=1385515723]
+layout_mode = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Control/VBoxContainer/HBoxContainer" unique_id=625970636]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+texture = ExtResource("3_5pmas")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="Label" parent="Control/VBoxContainer/HBoxContainer" unique_id=1788464226]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_fonts/font = ExtResource("4_5pmas")
+text = ": 30%"
