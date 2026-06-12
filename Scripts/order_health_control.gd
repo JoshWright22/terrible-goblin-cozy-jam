@@ -11,9 +11,9 @@ var spritesUsed : Dictionary = {}
 var difficulty = "EASY" # "MED" "HARD" general setter for code
 
 #Timer/health variables______________________________________________________
-var MAX_TIME : float = 30 #Time till health runs out
-var REMAIN_TIME : float #Time remaining, timer paused if no customers
-var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with satisfaction
+var MAX_TIME : float = 45.0 #Time till health runs out
+var REMAIN_TIME : float = 45.0 #Time remaining, timer paused if no customers
+var ADD_TIME : float = 5.0 #Max amount of time a player can win back with satisfaction
 
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
@@ -69,15 +69,19 @@ var ingredients: Array[FruitData.FruitType] = [
 #assigned to positions left to right, not necessarily the order the customers show up
 
 func _ready() -> void:
-	get_tree().set_debug_collisions_hint(true)
+	get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
 	add_to_group("order_manager")
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
+	healthBar.max_value = MAX_TIME
+	healthBar.value = MAX_TIME
 
-func _process(_delta: float) -> void: #WIP make linear
-	pass#var percentage = healthTimer.time_left / healthTimer.wait_time
-	#percentage = percentage * 45
-	#healthBar.value = percentage
-
+func _process(delta: float) -> void: #WIP make linear
+	if currentCustomer.size() != 0:
+		REMAIN_TIME = REMAIN_TIME - delta
+		healthBar.ratio = REMAIN_TIME / MAX_TIME
+	if healthBar.value == 0:
+		pass
+	
 
 
 
@@ -146,7 +150,6 @@ func genOrder(custID): #generates dict of order and percentages saved in orders 
 	var GETTER = selectedFruit.size()-1
 	order[selectedFruit[GETTER]] = remainer
 	currentOrders[custID] = order
-	print(currentOrders[custID])
 
 ## Maps a SubViewport-local position to world space, accounting for the
 ## custWindow offset and the SubViewportContainer's stretch scaling.
@@ -215,9 +218,3 @@ func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets tim
 	else:
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)
-
-func _on_timer_timeout() -> void: #GAME OVER | Health ran out
-	healthTimer.stop()
-	customerSpawnTimer.stop()
-	var GM = gameOverScene.instantiate()
-	add_child(GM)

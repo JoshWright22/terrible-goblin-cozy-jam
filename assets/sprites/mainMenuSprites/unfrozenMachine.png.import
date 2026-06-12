@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://fxpfabrsoy3k"
-path="res://.godot/imported/unfrozenMachine.png-9f3e5baa46cd56bd3b0768702b129235.ctex"
+path="res://.godot/imported/unfrozenMachine.png-2414901ae29377066757cb3d8262ff94.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/mainMenuSprites/unfrozenMachine.png"
-dest_files=["res://.godot/imported/unfrozenMachine.png-9f3e5baa46cd56bd3b0768702b129235.ctex"]
+source_file="res://assets/sprites/mainMenuSprites/unfrozenMachine.png"
+dest_files=["res://.godot/imported/unfrozenMachine.png-2414901ae29377066757cb3d8262ff94.ctex"]
 
 [params]
 

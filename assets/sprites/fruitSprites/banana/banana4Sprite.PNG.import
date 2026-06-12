@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c74b25nh7xmo7"
-path="res://.godot/imported/banana4Sprite.PNG-7850794c00f937fe7cbab2102246d14c.ctex"
+path="res://.godot/imported/banana4Sprite.PNG-ea4deed39e87da1de44b431f9bc562d7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/fruitSprites/banana/banana4Sprite.PNG"
-dest_files=["res://.godot/imported/banana4Sprite.PNG-7850794c00f937fe7cbab2102246d14c.ctex"]
+source_file="res://assets/sprites/fruitSprites/banana/banana4Sprite.PNG"
+dest_files=["res://.godot/imported/banana4Sprite.PNG-ea4deed39e87da1de44b431f9bc562d7.ctex"]
 
 [params]
 
