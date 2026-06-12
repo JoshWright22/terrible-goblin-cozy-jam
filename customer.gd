@@ -114,6 +114,18 @@ func _on_area_2d_mouse_exited() -> void:
 		pass
 
 
+func serve() -> void:
+	timer.stop()
+	control.currentCustomer.erase(ID)
+	control.spritesUsed.erase(ID)
+	control.currentOrders.erase(ID)
+	control.remove_delivery_zone(ID)
+	if b != null:
+		b.queue_free()
+	var fadeAway = create_tween()
+	fadeAway.tween_property(self, "modulate", Color(1, 1, 1, 0), FADE_TIME)
+	fadeAway.finished.connect(queue_free)
+
 func _on_emotion_timer_timeout() -> void:
 	if mood == 1:
 		var fadeAway = create_tween()
@@ -122,6 +134,7 @@ func _on_emotion_timer_timeout() -> void:
 		control.currentCustomer.erase(ID)
 		control.spritesUsed.erase(ID)
 		control.currentOrders.erase(ID)
+		control.remove_delivery_zone(ID)
 		if b != null:
 			b.queue_free()
 		if c != null:

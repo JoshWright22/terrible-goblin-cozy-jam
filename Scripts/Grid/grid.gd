@@ -6,7 +6,8 @@ extends Node2D
 @export var tile_texture: Texture2D  
 
 # --- SMOOTHIE BLENDER CONFIGURATION ---
-@export var smoothie_texture: Texture2D  # Assign your full-grid smoothie image asset here
+# CHANGED: Changed from Texture2D to PackedScene so you can design it in the editor
+@export var smoothie_scene: PackedScene  
 @export var reset_delay_seconds: float = 3.0  # Time before the smoothie disappears and grid resets
 
 # --- AUTOMATIC BUTTON LAYOUT CONFIGURATION ---
@@ -35,7 +36,6 @@ func calculate_grid_dimensions() -> void:
 	var total_grid_height: float = grid_rows * tile_size.y
 	
 	# FIX: Calculate relative to the GridAnchor's LOCAL position instead of global world coordinates.
-	# This ensures that moving the Grid root node moves all visual elements cleanly with it.
 	grid_start_pos = grid_anchor.position - Vector2(total_grid_width / 2.0, total_grid_height / 2.0)
 
 func generate_physical_grid() -> void:
@@ -70,18 +70,15 @@ func generate_physical_grid() -> void:
 			tile_area.add_child(tile_collision)
 			tile_node.add_child(tile_area)
 			
-			# FIX: Position tiles using relative local offsets added to our base grid starting position
 			var local_offset = Vector2((x * tile_size.x) + (tile_size.x / 2.0), (y * tile_size.y) + (tile_size.y / 2.0))
 			tile_node.position = grid_start_pos + local_offset
 			grid_visuals.add_child(tile_node)
 
-# --- FIXED LOCAL LAYOUT ALIGNMENT PASS ---
 func position_and_wire_blend_button() -> void:
 	if not blend_button:
 		print("[UI WARN] No blend button assigned in the Grid inspector slot.")
 		return
 		
-	# Ensure the button lives inside our local transform space hierarchy
 	if blend_button.get_parent() != self:
 		blend_button.get_parent().remove_child(blend_button)
 		add_child(blend_button)
@@ -94,21 +91,15 @@ func position_and_wire_blend_button() -> void:
 	
 	var total_grid_height = grid_rows * tile_size.y
 	
-	# FIX: Calculate the layout using local positions relative to the Grid root node origin.
-	# Center horizontally along the GridAnchor's local x axis, and drop below the bottom grid bounds.
 	var target_local_center_x = grid_anchor.position.x
 	var target_local_bottom_y = grid_anchor.position.y + (total_grid_height / 2.0) + button_spacing_y
 	
-	# Set local position while adjusting for the button's own layout width midpoint
 	blend_button.position = Vector2(
 		target_local_center_x - (blend_button.size.x / 2.0),
 		target_local_bottom_y
 	)
 
-# --- BLENDING AND TIMED RESET LOOPS ---
-
 func blend_grid_into_smoothie() -> void:
-	# Block interaction if the script is already processing a blend loop
 	if not grid_visuals or blend_button.disabled or is_blending:
 		return
 		
@@ -127,59 +118,74 @@ func blend_grid_into_smoothie() -> void:
 		print("[SMOOTHIE WARN] Blender empty! Place pieces on the grid first.")
 		return
 
-	# Set the guards to lock operations completely
 	is_blending = true
 	blend_button.disabled = true
 
+	var ingredient_data: Array = []
 	for fruit in collected_fruits:
+		if "fruit_profile" in fruit and fruit.fruit_profile != null:
+			ingredient_data.append(fruit.fruit_profile)
 		fruit.queue_free()
-		
+
 	for tile in grid_visuals.get_children():
 		tile.set_meta("is_occupied", false)
 		if tile.has_meta("occupied_by_fruit"):
 			tile.remove_meta("occupied_by_fruit")
 
-	create_smoothie_overlay()
+	create_smoothie_overlay(ingredient_data)
 
-func create_smoothie_overlay() -> void:
-	var smoothie_container = Node2D.new()
-	smoothie_container.name = "SmoothieOverlay"
-	grid_visuals.add_child(smoothie_container)
+# --- REFACTORED TO INSTANTIATE SCENE ---
+func create_smoothie_overlay(ingredients: Array = []) -> void:
+	if not smoothie_scene:
+		print("[SMOOTHIE WARN] No smoothie scene assigned in the inspector!")
+		is_blending = false
+		blend_button.disabled = false
+		return
+
+	# 1. Instantiate your pre-made scene node
+	var smoothie_instance = smoothie_scene.instantiate() as Node2D
+	smoothie_instance.name = "SmoothieOverlay"
 	
-	var smoothie_sprite = Sprite2D.new()
-	smoothie_sprite.name = "SmoothieSprite"
-	smoothie_sprite.texture = smoothie_texture if smoothie_texture != null else load("res://icon.svg")
-	smoothie_sprite.centered = false
-	smoothie_container.add_child(smoothie_sprite)
-	
-	# FIX: Anchor container precisely to our relative local grid start coordinates
-	smoothie_container.position = grid_start_pos
-	
-	# FIX: Scale uniformly to span the full grid footprint layout matrix boundaries
-	var tex_size = smoothie_sprite.texture.get_size()
-	var total_grid_width = grid_columns * tile_size.x
-	var total_grid_height = grid_rows * tile_size.y
-	
-	smoothie_sprite.scale = Vector2(
-		total_grid_width / tex_size.x,
-		total_grid_height / tex_size.y
-	)
-		
-	smoothie_sprite.z_index = 50
-	
-	smoothie_sprite.modulate.a = 0.0
+	# 2. Position at grid center so the sprite's centered=true aligns with the collision origin
+	smoothie_instance.position = grid_anchor.position
+
+	# 3. Add it to the visual hierarchy
+	grid_visuals.add_child(smoothie_instance)
+
+	if smoothie_instance.has_method("initialize_smoothie_data"):
+		smoothie_instance.initialize_smoothie_data(ingredients, Array([], TYPE_VECTOR2, &"", null))
+
+	# Scale the sprite to fill the grid, then re-sync the collision shape to match
+	var sprite = smoothie_instance if smoothie_instance is Sprite2D else smoothie_instance.get_node_or_null("Sprite2D") as Sprite2D
+	if sprite and sprite.texture:
+		var tex_size = sprite.texture.get_size()
+		var total_grid_width = grid_columns * tile_size.x
+		var total_grid_height = grid_rows * tile_size.y
+		sprite.scale = Vector2(total_grid_width / tex_size.x, total_grid_height / tex_size.y)
+		sprite.centered = true
+		sprite.position = Vector2.ZERO
+		if smoothie_instance.has_method("enforce_strict_centering"):
+			smoothie_instance.enforce_strict_centering()
+
+	# --- SMOOTHIE LIFECYCLE MANAGEMENT ---
+	smoothie_instance.modulate.a = 0.0
 	var tween = create_tween()
-	tween.tween_property(smoothie_sprite, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	
-	# --- TIMER DELAY REVERT RUNTIME LOOP ---
+	tween.tween_property(smoothie_instance, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
 	await get_tree().create_timer(reset_delay_seconds).timeout
-	
+
+	if not is_instance_valid(smoothie_instance):
+		is_blending = false
+		blend_button.disabled = false
+		return
+
 	var fade_out_tween = create_tween()
-	fade_out_tween.tween_property(smoothie_sprite, "modulate:a", 0.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	fade_out_tween.tween_property(smoothie_instance, "modulate:a", 0.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	await fade_out_tween.finished
+
+	if is_instance_valid(smoothie_instance):
+		smoothie_instance.queue_free()
 	
-	smoothie_container.queue_free()
-	
-	# Clear the guards to allow placing/blending again
+	# Clear guards for layout interactions
 	is_blending = false
 	blend_button.disabled = false

@@ -56,12 +56,20 @@ var ITEM_HARD_MAX : int = 5
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
 var currentOrders : Dictionary = {} #tracks customer ID & order Array
-#list of things a customer may want
-var ingredients : Array = ["Banana", "Apple", "Blueberry", "Mango", "Strawberry"] 
+var delivery_zones: Dictionary = {} #tracks customer ID -> Area2D in main scene
+# Canonical ingredient list — uses the same FruitType enum as FruitData resources
+var ingredients: Array[FruitData.FruitType] = [
+	FruitData.FruitType.BANANA,
+	FruitData.FruitType.STRAWBERRY,
+	FruitData.FruitType.BLUEBERRY,
+	FruitData.FruitType.MANGO,
+	FruitData.FruitType.APPLE,
+]
 
 #assigned to positions left to right, not necessarily the order the customers show up
 
 func _ready() -> void:
+	add_to_group("order_manager")
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 
 func _process(delta: float) -> void: #WIP make linear
@@ -138,6 +146,52 @@ func genOrder(custID): #generates dict of order and percentages saved in orders 
 	order[selectedFruit[GETTER]] = remainer
 	currentOrders[custID] = order
 
+## Maps a SubViewport-local position to world space, accounting for the
+## custWindow offset and the SubViewportContainer's stretch scaling.
+func _subviewport_to_world(sv_pos: Vector2) -> Vector2:
+	var container := $custWindow/characterSprites as SubViewportContainer
+	var sv_size := Vector2($custWindow/characterSprites/SubViewport.size)
+	var rect := container.get_rect()
+	var scaled := Vector2(sv_pos.x * rect.size.x / sv_size.x, sv_pos.y * rect.size.y / sv_size.y)
+	return $custWindow.to_global(rect.position + scaled)
+
+func _create_delivery_zone(customer_id: int, sv_pos: Vector2) -> void:
+	var zone := Area2D.new()
+	zone.name = "CustomerDeliveryZone"
+	zone.set_meta("customer_id", customer_id)
+	var col := CollisionShape2D.new()
+	var shape := CapsuleShape2D.new()
+	shape.radius = 60.0
+	shape.height = 120.0
+	col.shape = shape
+	zone.add_child(col)
+	add_child(zone)
+	zone.global_position = _subviewport_to_world(sv_pos)
+	delivery_zones[customer_id] = zone
+	print("[ORDER] Delivery zone created for customer ", customer_id, " at world pos ", zone.global_position)
+
+func remove_delivery_zone(customer_id: int) -> void:
+	if delivery_zones.has(customer_id):
+		delivery_zones[customer_id].queue_free()
+		delivery_zones.erase(customer_id)
+
+func receive_smoothie_delivery(delivered: Array, customer_id: int) -> void:
+	if not currentCustomer.has(customer_id):
+		return
+
+	# Convert delivered FruitData resources → FruitType enum values for comparison
+	var delivered_types: Array[FruitData.FruitType] = []
+	for item in delivered:
+		if item is FruitData:
+			delivered_types.append(item.fruit_name)
+
+	var _order: Array = currentOrders.get(customer_id, [])
+	# _order and delivered_types are both Array[FruitData.FruitType] — ready for match logic here
+
+	var customer_node = $custWindow/characterSprites/SubViewport.get_node_or_null("Customer_" + str(customer_id))
+	if customer_node and customer_node.has_method("serve"):
+		customer_node.serve()
+
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
 	if currentCustomer.size() != 4:
 		customerNo = customerNo + 1
@@ -152,6 +206,7 @@ func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets tim
 		c.ID = customerNo
 		currentCustomer[customerNo] = trgPos
 		$custWindow/characterSprites/SubViewport.add_child(c)
+		_create_delivery_zone(customerNo, trgPos)
 		genOrder(customerNo)
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)

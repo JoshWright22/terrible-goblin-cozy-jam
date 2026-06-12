@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c6j08mr8f6udy"
-path="res://.godot/imported/blenderButtonSprite.PNG-933eb8035ecb9f8cd95518f5a2641a8e.ctex"
+path="res://.godot/imported/blenderButtonSprite.PNG-2416d4f8ef075d866c0c7e78d8d1e9df.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/blender/blenderButtonSprite.PNG"
-dest_files=["res://.godot/imported/blenderButtonSprite.PNG-933eb8035ecb9f8cd95518f5a2641a8e.ctex"]
+source_file="res://Assets/sprites/blender/blenderButtonSprite.PNG"
+dest_files=["res://.godot/imported/blenderButtonSprite.PNG-2416d4f8ef075d866c0c7e78d8d1e9df.ctex"]
 
 [params]
 
