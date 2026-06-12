@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://r8xqbm37pu8s" path="res://Scripts/order_health_control.gd" id="1_735xl"]
 [ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://Assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="2_735xl"]
 [ext_resource type="Texture2D" uid="uid://hvvpjt45gxo7" path="res://Assets/sprites/orderWindowSprites/customerBGSPrite.PNG" id="3_lmoxa"]
-[ext_resource type="PackedScene" uid="uid://bskt41wkq0c31" path="res://Scenes/grid.tscn" id="5_0uojq"]
 [ext_resource type="Texture2D" uid="uid://bij2pj2nqrm7x" path="res://Assets/sprites/orderWindowSprites/customerFGSprite.PNG" id="6_hsnre"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c1p4"]
@@ -71,9 +70,6 @@ texture = ExtResource("6_hsnre")
 
 [node name="customerSpawner" type="Timer" parent="." unique_id=627961247]
 wait_time = 3.0
-
-[node name="GridScene" parent="." unique_id=1036425377 instance=ExtResource("5_0uojq")]
-position = Vector2(-107, 431)
 
 [connection signal="timeout" from="healthbar/Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]
