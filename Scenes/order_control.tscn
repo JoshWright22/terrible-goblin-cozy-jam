@@ -11,7 +11,9 @@ bg_color = Color(2.3102762e-06, 0.83722603, 0.97005206, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0uojq"]
 bg_color = Color(3.272891e-06, 0.5973928, 0.78205675, 1)
 
-[node name="orderControl" type="Node2D" unique_id=1560439912]
+[node name="orderControl" type="Control" unique_id=730564731]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_735xl")
 
 [node name="healthbar" type="Node2D" parent="." unique_id=2058069000]

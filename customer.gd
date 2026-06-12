@@ -20,9 +20,13 @@ var ID
 @onready var bubble = load("res://assets/sprites/orderWindowSprites/speechBubble.png")
 @onready var angryBubble = load("res://assets/sprites/orderWindowSprites/speechBubbleAngry.png")
 @onready var orderBubble = load("res://Scenes/order_bubble.tscn")
+@onready var orderAmount = load("res://Scenes/ordered_percentages_bubble.tscn")
 @onready var control = find_parent("orderControl")
 
 var b
+var c
+
+var yFIx = 329
 
 var characters : Array #initialized in _ready | sprite Node path list 
 var characterSprites : Array  #initialized in _ready | add sprites here
@@ -87,15 +91,24 @@ func _on_area_2d_mouse_entered() -> void:
 			b.SPRITE = angryBubble
 		else:
 			b.SPRITE = bubble
+		c = orderAmount.instantiate()
+		c.offset = control.currentCustomer[ID] + Vector2(0,yFIx)
+		c.cusID = ID
 		b.scale = Vector2(0,0)
 		control.add_child(b)
 		openTween.tween_property(b, "scale", Vector2(1,1), .1)
+		openTween.finished.connect(func(): 
+			if is_instance_valid(c):
+					control.add_child(c)
+		)
 		b.position = control.currentCustomer[ID] + Vector2(125,200)
+		
 
 func _on_area_2d_mouse_exited() -> void:
-	if b != null:
+	if b != null && c != null:
 		var closeTween = create_tween()
 		closeTween.tween_property(b, "scale", Vector2(0,0), .1)
+		c.queue_free()
 		closeTween.finished.connect(b.queue_free)
 	else:
 		pass
@@ -111,6 +124,8 @@ func _on_emotion_timer_timeout() -> void:
 		control.currentOrders.erase(ID)
 		if b != null:
 			b.queue_free()
+		if c != null:
+			c.queue_free()
 	else:
 		mood = mood - 1
 		changeMood()

@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 #Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
 @onready var healthTimer = $healthbar/Timer
@@ -112,7 +112,7 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	minWaitTime = waitSetterMin
 	maxWaitTime = waitSetterMax
 
-func genOrder(custID):
+func genOrder(custID): #generates dict of order and percentages saved in orders dict
 	var order = {}
 	var selectedFruit = []
 	var fruitPerc = []
