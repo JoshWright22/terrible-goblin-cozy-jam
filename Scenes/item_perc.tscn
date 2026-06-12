@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://md8ts13d1iqt"]
+
+[ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://assets/sprites/fruitSprites/mangoSprite.PNG" id="1_mkdwt"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_515gx"]
+
+[sub_resource type="GDScript" id="GDScript_mkdwt"]
+script/source = "extends HBoxContainer
+
+var spriter
+var texter = \"\"
+
+func _ready() -> void:
+	$TextureRect.texture = spriter
+	$RichTextLabel.text = \": \" + texter + \"%\"
+"
+
+[node name="itemPerc" type="HBoxContainer" unique_id=2016562291]
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+alignment = 1
+script = SubResource("GDScript_mkdwt")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=777738793]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+texture = ExtResource("1_mkdwt")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RichTextLabel" type="Label" parent="." unique_id=1393817158]
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+theme_override_fonts/font = ExtResource("2_515gx")
+theme_override_font_sizes/font_size = 35
+text = ": 30%"

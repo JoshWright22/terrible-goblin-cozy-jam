@@ -1,27 +1,30 @@
 extends Node2D
 #Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
-@onready var healthTimer = $healthbar/Timer
 @onready var customerSpawnTimer = $customerSpawner
 #____________________#loaded character sprites_________________________________
 @onready var gameOverScene = load("res://Scenes/game_over.tscn")
 @onready var customer = load("res://Scenes/customer.tscn")
 
+var gameOver = false
 var spritesUsed : Dictionary = {}
 var difficulty = "EASY" # "MED" "HARD" general setter for code
 
 #Timer/health variables______________________________________________________
-var MAX_TIME : float = 30 #Time till health runs out
-var REMAIN_TIME : float #Time remaining, timer paused if no customers
-var MAX_ADD_TIME : float = 15 #Max amount of time a player can win back with satisfaction
+var MAX_TIME : float = 45.0 #Time till health runs out
+var REMAIN_TIME : float = 45.0 #Time remaining, timer paused if no customers
+var ADD_TIME : float = 5.0 #Max amount of time a player can win back with satisfaction
 
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
 
+var MED_CUSTOMER_MIN = 4 #When it turns med
+var MED_CUSTOMER_MAX = 6 #when it turns hard
+
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
 
-var MIN_CHAR_TIME_EASY = 8
+var MIN_CHAR_TIME_EASY = 8 #time for character spawn
 var MIN_CHAR_TIME_MED = 7
 var MIN_CHAR_TIME_HARD = 5
 
@@ -46,17 +49,18 @@ var itemMin : int #setter variables for below
 var itemMax : int
 
 var ITEM_EASY_MIN : int = 2 
-var ITEM_MED_MIN : int = 3
-var ITEM_HARD_MIN : int = 4
-
 var ITEM_EASY_MAX : int = 3
+
+var ITEM_MED_MIN : int = 3
 var ITEM_MED_MAX : int = 4
+
+var ITEM_HARD_MIN : int = 4
 var ITEM_HARD_MAX : int = 5
 #___________________Customer/Order Variables________________________________
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
 var currentOrders : Dictionary = {} #tracks customer ID & order Array
-var delivery_zones: Dictionary = {} #tracks customer ID -> Area2D in main scene
+#var delivery_zones: Dictionary = {} #tracks customer ID 
 # Canonical ingredient list — uses the same FruitType enum as FruitData resources
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
@@ -69,16 +73,51 @@ var ingredients: Array[FruitData.FruitType] = [
 #assigned to positions left to right, not necessarily the order the customers show up
 
 func _ready() -> void:
-	add_to_group("order_manager")
+	#get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
+	#add_to_group("order_manager")
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
+	healthBar.max_value = MAX_TIME
+	healthBar.value = MAX_TIME
 
 func _process(delta: float) -> void: #WIP make linear
-	pass#var percentage = healthTimer.time_left / healthTimer.wait_time
-	#percentage = percentage * 45
-	#healthBar.value = percentage
+	if currentCustomer.size() != 0:
+		REMAIN_TIME = REMAIN_TIME - delta
+		healthBar.ratio = REMAIN_TIME / MAX_TIME
+	if REMAIN_TIME <= 0 && !gameOver:
+		gameOver = true
+		customerSpawnTimer.stop()
+		currentCustomer.clear()
+		var GM = gameOverScene.instantiate()
+		add_child(GM)
+		
+	
 
-
-
+func compareValues(): 
+	var score = 4 
+	var trger = GameManager.trgID
+	GameManager.trgID = null
+	var star = load("res://Scenes/control_add_time.tscn")
+	var custom = find_child("Customer_" + str(trger), true, false)
+	if custom.area != null:
+		custom.area.queue_free()
+	if custom.c != null && custom.b != null:
+		custom.c.queue_free()
+		custom.b.queue_free()
+#put dictionary comparrison here_____________________________________
+	for i in range(score):
+		var move = create_tween()
+		var c = star.instantiate()
+		c.position = currentCustomer[trger] + Vector2(100, 0)
+		add_child(c)
+		move.tween_property(c, "position", c.position + Vector2(0, -250), .3)
+		move.tween_property(c, "position", Vector2(102, 88), .25)
+		move.finished.connect(func():
+			REMAIN_TIME = clamp(REMAIN_TIME + 5, 0, MAX_TIME)
+			healthBar.ratio = REMAIN_TIME / MAX_TIME
+			c.queue_free()
+		)
+		await move.finished
+	custom.serve()
 
 func scaleDiff(): #simply checks and sets diffculty variables | add cust completed check
 	var setterMin
@@ -87,9 +126,9 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	var itemSetterMax
 	var waitSetterMin
 	var waitSetterMax
-	if customerNo >= 6 && customerNo <= 9:
+	if customerNo >= MED_CUSTOMER_MIN && customerNo <= MED_CUSTOMER_MAX:
 		difficulty = "MEDIUM"
-	elif customerNo >= 10:
+	elif customerNo >= MED_CUSTOMER_MAX + 1:
 		difficulty = "HARD"
 	
 	if difficulty == "EASY":
@@ -120,7 +159,7 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	minWaitTime = waitSetterMin
 	maxWaitTime = waitSetterMax
 
-func genOrder(custID):
+func genOrder(custID): #generates dict of order and percentages saved in orders dict
 	var order = {}
 	var selectedFruit = []
 	var fruitPerc = []
@@ -146,52 +185,6 @@ func genOrder(custID):
 	order[selectedFruit[GETTER]] = remainer
 	currentOrders[custID] = order
 
-## Maps a SubViewport-local position to world space, accounting for the
-## custWindow offset and the SubViewportContainer's stretch scaling.
-func _subviewport_to_world(sv_pos: Vector2) -> Vector2:
-	var container := $custWindow/characterSprites as SubViewportContainer
-	var sv_size := Vector2($custWindow/characterSprites/SubViewport.size)
-	var rect := container.get_rect()
-	var scaled := Vector2(sv_pos.x * rect.size.x / sv_size.x, sv_pos.y * rect.size.y / sv_size.y)
-	return $custWindow.to_global(rect.position + scaled)
-
-func _create_delivery_zone(customer_id: int, sv_pos: Vector2) -> void:
-	var zone := Area2D.new()
-	zone.name = "CustomerDeliveryZone"
-	zone.set_meta("customer_id", customer_id)
-	var col := CollisionShape2D.new()
-	var shape := CapsuleShape2D.new()
-	shape.radius = 60.0
-	shape.height = 120.0
-	col.shape = shape
-	zone.add_child(col)
-	add_child(zone)
-	zone.global_position = _subviewport_to_world(sv_pos)
-	delivery_zones[customer_id] = zone
-	print("[ORDER] Delivery zone created for customer ", customer_id, " at world pos ", zone.global_position)
-
-func remove_delivery_zone(customer_id: int) -> void:
-	if delivery_zones.has(customer_id):
-		delivery_zones[customer_id].queue_free()
-		delivery_zones.erase(customer_id)
-
-func receive_smoothie_delivery(delivered: Array, customer_id: int) -> void:
-	if not currentCustomer.has(customer_id):
-		return
-
-	# Convert delivered FruitData resources → FruitType enum values for comparison
-	var delivered_types: Array[FruitData.FruitType] = []
-	for item in delivered:
-		if item is FruitData:
-			delivered_types.append(item.fruit_name)
-
-	var _order: Array = currentOrders.get(customer_id, [])
-	# _order and delivered_types are both Array[FruitData.FruitType] — ready for match logic here
-
-	var customer_node = $custWindow/characterSprites/SubViewport.get_node_or_null("Customer_" + str(customer_id))
-	if customer_node and customer_node.has_method("serve"):
-		customer_node.serve()
-
 func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets timer/sets diff/sets order
 	if currentCustomer.size() != 4:
 		customerNo = customerNo + 1
@@ -206,16 +199,10 @@ func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets tim
 		c.ID = customerNo
 		currentCustomer[customerNo] = trgPos
 		$custWindow/characterSprites/SubViewport.add_child(c)
-		_create_delivery_zone(customerNo, trgPos)
+		#_create_delivery_zone(customerNo, trgPos)
 		genOrder(customerNo)
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	else:
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)
-
-func _on_timer_timeout() -> void: #GAME OVER | Health ran out
-	healthTimer.stop()
-	customerSpawnTimer.stop()
-	var GM = gameOverScene.instantiate()
-	add_child(GM)

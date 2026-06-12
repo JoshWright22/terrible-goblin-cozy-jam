@@ -1,5 +1,6 @@
 extends Node2D
 var ID
+@onready var area = $Area2D
 @onready var timer = $emotionTimer
 @onready var sprite = $Sprite2D
 @onready var charSprite1 = load("res://assets/sprites/characterSprites/char1/char1HappySprite.PNG")
@@ -20,9 +21,13 @@ var ID
 @onready var bubble = load("res://assets/sprites/orderWindowSprites/speechBubble.png")
 @onready var angryBubble = load("res://assets/sprites/orderWindowSprites/speechBubbleAngry.png")
 @onready var orderBubble = load("res://Scenes/order_bubble.tscn")
+@onready var orderAmount = load("res://Scenes/ordered_percentages_bubble.tscn")
 @onready var control = find_parent("orderControl")
 
 var b
+var c
+
+var yFIx = 329
 
 var characters : Array #initialized in _ready | sprite Node path list 
 var characterSprites : Array  #initialized in _ready | add sprites here
@@ -51,7 +56,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	pass
 	
-func genCustomer(): #creates customer and order Wip___________________
+func genCustomer() -> void: #creates customer and order Wip___________________
 	var fadeTween = create_tween() 
 	var text = characterSprites.pick_random() #selects random sprite for customer
 	while text in control.spritesUsed.values():
@@ -61,7 +66,7 @@ func genCustomer(): #creates customer and order Wip___________________
 	spriteCorrection()
 	fadeTween.tween_property(self, "modulate",Color(1,1,1,1.0), FADE_TIME)#controls customers "fading in"
 
-func changeMood():
+func changeMood() -> void:
 	var spriter = characterSprites.find(sprite.texture)
 	if spriter == -1:
 		spriter = neutralSprites.find(sprite.texture)
@@ -71,7 +76,7 @@ func changeMood():
 		sprite.texture = angrySprites[spriter]
 
 
-func spriteCorrection():
+func spriteCorrection() -> void:
 	if sprite.texture == charSprite1:
 		sprite.position = sprite.position + Vector2(25,0)
 	elif sprite.texture == charSprite3:
@@ -80,50 +85,60 @@ func spriteCorrection():
 		sprite.position = sprite.position + Vector2(-25,60)
 
 func _on_area_2d_mouse_entered() -> void:
-	var openTween = create_tween() 
+	GameManager.trgID = ID
 	if control.currentCustomer.has(ID):
+		var openTween = create_tween()
 		b = orderBubble.instantiate()
 		if mood == 1:
 			b.SPRITE = angryBubble
 		else:
 			b.SPRITE = bubble
+		c = orderAmount.instantiate()
+		c.offset = control.currentCustomer[ID] + Vector2(0,yFIx)
+		c.cusID = ID
 		b.scale = Vector2(0,0)
 		control.add_child(b)
 		openTween.tween_property(b, "scale", Vector2(1,1), .1)
+		openTween.finished.connect(func(): 
+			if is_instance_valid(c) and not c.is_inside_tree():
+				control.add_child(c)
+		)
 		b.position = control.currentCustomer[ID] + Vector2(125,200)
+		
 
 func _on_area_2d_mouse_exited() -> void:
-	if b != null:
+	GameManager.trgID = null
+	if b != null && c != null:
 		var closeTween = create_tween()
 		closeTween.tween_property(b, "scale", Vector2(0,0), .1)
+		c.queue_free()
 		closeTween.finished.connect(b.queue_free)
 	else:
 		pass
 
 
 func serve() -> void:
-	timer.stop()
+	var jump = create_tween()
+	jump.tween_property(self, "position", self.position + Vector2(0,-25), .25)
+	jump.tween_property(self, "position", self.position + Vector2(0,25), .25)
+	jump.finished.connect(func():removeCustomer())
+
+func removeCustomer():
+	var fadeAway = create_tween()
+	fadeAway.tween_property(self, "modulate",Color(1,1,1,0), FADE_TIME)
+	fadeAway.finished.connect(queue_free)
 	control.currentCustomer.erase(ID)
 	control.spritesUsed.erase(ID)
 	control.currentOrders.erase(ID)
-	control.remove_delivery_zone(ID)
+	#control.remove_delivery_zone(ID)
 	if b != null:
 		b.queue_free()
-	var fadeAway = create_tween()
-	fadeAway.tween_property(self, "modulate", Color(1, 1, 1, 0), FADE_TIME)
-	fadeAway.finished.connect(queue_free)
+	if c != null:
+		c.queue_free()
 
 func _on_emotion_timer_timeout() -> void:
 	if mood == 1:
-		var fadeAway = create_tween()
-		fadeAway.tween_property(self, "modulate",Color(1,1,1,0), FADE_TIME)
-		fadeAway.finished.connect(queue_free)
-		control.currentCustomer.erase(ID)
-		control.spritesUsed.erase(ID)
-		control.currentOrders.erase(ID)
-		control.remove_delivery_zone(ID)
-		if b != null:
-			b.queue_free()
+		removeCustomer()
 	else:
 		mood = mood - 1
 		changeMood()

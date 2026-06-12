@@ -85,7 +85,7 @@ func attempt_delivery_drop() -> void:
 		print("[SMOOTHIE]   area name='", area.name, "' parent='", area.get_parent().name, "'")
 
 	for area in overlapping_areas:
-		if area.name == "CustomerDeliveryZone":
+		if area.has_meta("customer_id"):
 			var customer_id: int = area.get_meta("customer_id", -1)
 			print("[SMOOTHIE] Delivered to customer_id=", customer_id, " ingredients=", accumulated_ingredients.size())
 			var order_control = get_tree().get_first_node_in_group("order_manager")

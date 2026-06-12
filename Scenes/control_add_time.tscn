@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://qyih5vojl5p1"]
+
+[ext_resource type="Texture2D" uid="uid://cpua4as03emfn" path="res://assets/sprites/orderWindowSprites/IMG_1190.png" id="1_cdewk"]
+
+[sub_resource type="GDScript" id="GDScript_6rx3u"]
+resource_name = "addTimeStar"
+script/source = "extends Node2D
+
+
+
+func _ready() -> void:
+	pass # Replace with function body.
+"
+
+[node name="controlAddTime" type="Node2D" unique_id=1841758303]
+script = SubResource("GDScript_6rx3u")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1193385938]
+position = Vector2(-72, 157)
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("1_cdewk")
