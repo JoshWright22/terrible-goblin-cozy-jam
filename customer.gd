@@ -1,5 +1,6 @@
 extends Node2D
 var ID
+@onready var area = $Area2D
 @onready var timer = $emotionTimer
 @onready var sprite = $Sprite2D
 @onready var charSprite1 = load("res://assets/sprites/characterSprites/char1/char1HappySprite.PNG")
@@ -117,14 +118,12 @@ func _on_area_2d_mouse_exited() -> void:
 
 
 func serve() -> void:
-	print("ran")
 	var jump = create_tween()
 	jump.tween_property(self, "position", self.position + Vector2(0,-25), .25)
 	jump.tween_property(self, "position", self.position + Vector2(0,25), .25)
 	jump.finished.connect(func():removeCustomer())
 
 func removeCustomer():
-	$Area2D.queue_free()
 	var fadeAway = create_tween()
 	fadeAway.tween_property(self, "modulate",Color(1,1,1,0), FADE_TIME)
 	fadeAway.finished.connect(queue_free)

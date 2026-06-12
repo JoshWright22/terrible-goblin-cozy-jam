@@ -18,10 +18,13 @@ var ADD_TIME : float = 5.0 #Max amount of time a player can win back with satisf
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
 
+var MED_CUSTOMER_MIN = 7 #When it turns med
+var MED_CUSTOMER_MAX = 10 #when it turns hard
+
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
 
-var MIN_CHAR_TIME_EASY = 8
+var MIN_CHAR_TIME_EASY = 8 #time for character spawn
 var MIN_CHAR_TIME_MED = 7
 var MIN_CHAR_TIME_HARD = 5
 
@@ -46,17 +49,18 @@ var itemMin : int #setter variables for below
 var itemMax : int
 
 var ITEM_EASY_MIN : int = 2 
-var ITEM_MED_MIN : int = 3
-var ITEM_HARD_MIN : int = 4
-
 var ITEM_EASY_MAX : int = 3
+
+var ITEM_MED_MIN : int = 3
 var ITEM_MED_MAX : int = 4
+
+var ITEM_HARD_MIN : int = 4
 var ITEM_HARD_MAX : int = 5
 #___________________Customer/Order Variables________________________________
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
 var currentOrders : Dictionary = {} #tracks customer ID & order Array
-#var delivery_zones: Dictionary = {} #tracks customer ID -> Area2D in main scene
+#var delivery_zones: Dictionary = {} #tracks customer ID 
 # Canonical ingredient list — uses the same FruitType enum as FruitData resources
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
@@ -91,8 +95,14 @@ func _process(delta: float) -> void: #WIP make linear
 func compareValues(): #final bit; score how well player did; add time stars
 	var score = 4 
 	var trger = GameManager.trgID
+	GameManager.trgID = null
 	var star = load("res://Scenes/control_add_time.tscn")
-	var custom = find_child("Customer_" + str(GameManager.trgID), true, false)
+	var custom = find_child("Customer_" + str(trger), true, false)
+	if custom.area != null:
+		custom.area.queue_free()
+	if custom.c != null && custom.b != null:
+		custom.c.queue_free()
+		custom.b.queue_free()
 	for i in range(score):
 		var move = create_tween()
 		var c = star.instantiate()
@@ -115,9 +125,9 @@ func scaleDiff(): #simply checks and sets diffculty variables | add cust complet
 	var itemSetterMax
 	var waitSetterMin
 	var waitSetterMax
-	if customerNo >= 6 && customerNo <= 9:
+	if customerNo >= MED_CUSTOMER_MIN && customerNo <= MED_CUSTOMER_MAX:
 		difficulty = "MEDIUM"
-	elif customerNo >= 10:
+	elif customerNo >= MED_CUSTOMER_MAX + 1:
 		difficulty = "HARD"
 	
 	if difficulty == "EASY":
