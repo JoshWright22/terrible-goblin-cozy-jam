@@ -69,10 +69,11 @@ var ingredients: Array[FruitData.FruitType] = [
 #assigned to positions left to right, not necessarily the order the customers show up
 
 func _ready() -> void:
+	get_tree().set_debug_collisions_hint(true)
 	add_to_group("order_manager")
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 
-func _process(delta: float) -> void: #WIP make linear
+func _process(_delta: float) -> void: #WIP make linear
 	pass#var percentage = healthTimer.time_left / healthTimer.wait_time
 	#percentage = percentage * 45
 	#healthBar.value = percentage
@@ -145,6 +146,7 @@ func genOrder(custID): #generates dict of order and percentages saved in orders 
 	var GETTER = selectedFruit.size()-1
 	order[selectedFruit[GETTER]] = remainer
 	currentOrders[custID] = order
+	print(currentOrders[custID])
 
 ## Maps a SubViewport-local position to world space, accounting for the
 ## custWindow offset and the SubViewportContainer's stretch scaling.

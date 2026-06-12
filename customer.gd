@@ -98,8 +98,8 @@ func _on_area_2d_mouse_entered() -> void:
 		control.add_child(b)
 		openTween.tween_property(b, "scale", Vector2(1,1), .1)
 		openTween.finished.connect(func(): 
-			if is_instance_valid(c):
-					control.add_child(c)
+			if is_instance_valid(c) and not c.is_inside_tree():
+				control.add_child(c)
 		)
 		b.position = control.currentCustomer[ID] + Vector2(125,200)
 		
