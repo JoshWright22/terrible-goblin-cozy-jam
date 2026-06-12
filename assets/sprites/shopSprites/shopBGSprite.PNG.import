@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cxoh5u4j26hm3"
-path="res://.godot/imported/shopBGSprite.PNG-bea0496d688b6f405da87bc906658cbb.ctex"
+path="res://.godot/imported/shopBGSprite.PNG-5f8d7a245d43d3be38421bad266234ab.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/shopSprites/shopBGSprite.PNG"
-dest_files=["res://.godot/imported/shopBGSprite.PNG-bea0496d688b6f405da87bc906658cbb.ctex"]
+source_file="res://Assets/sprites/shopSprites/shopBGSprite.PNG"
+dest_files=["res://.godot/imported/shopBGSprite.PNG-5f8d7a245d43d3be38421bad266234ab.ctex"]
 
 [params]
 

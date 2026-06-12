@@ -3,12 +3,12 @@
 importer="bitmap"
 type="BitMap"
 uid="uid://c845rjwklfsrw"
-path="res://.godot/imported/machineBitMap.png-4a4cdd189ae2c91d9813ec9a064ab981.res"
+path="res://.godot/imported/machineBitMap.png-b7de13434408015335812471bcaf4672.res"
 
 [deps]
 
-source_file="res://assets/sprites/mainMenuSprites/machineBitMap.png"
-dest_files=["res://.godot/imported/machineBitMap.png-4a4cdd189ae2c91d9813ec9a064ab981.res"]
+source_file="res://Assets/sprites/mainMenuSprites/machineBitMap.png"
+dest_files=["res://.godot/imported/machineBitMap.png-b7de13434408015335812471bcaf4672.res"]
 
 [params]
 

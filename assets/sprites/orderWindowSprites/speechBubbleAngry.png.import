@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bg5doa4mmeq48"
-path="res://.godot/imported/speechBubbleAngry.png-229fea1ebcb21d739e764541931459f0.ctex"
+path="res://.godot/imported/speechBubbleAngry.png-ee2db1d1bb355e36d90db49788a2d7f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/orderWindowSprites/speechBubbleAngry.png"
-dest_files=["res://.godot/imported/speechBubbleAngry.png-229fea1ebcb21d739e764541931459f0.ctex"]
+source_file="res://Assets/sprites/orderWindowSprites/speechBubbleAngry.png"
+dest_files=["res://.godot/imported/speechBubbleAngry.png-ee2db1d1bb355e36d90db49788a2d7f7.ctex"]
 
 [params]
 

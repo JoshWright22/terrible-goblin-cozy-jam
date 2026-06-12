@@ -1,4 +1,4 @@
-extends Control
+extends Node2D
 #Node paths and loads________________________________________________________
 @onready var healthBar = $healthbar/ProgressBar
 @onready var healthTimer = $healthbar/Timer
@@ -185,7 +185,7 @@ func receive_smoothie_delivery(delivered: Array, customer_id: int) -> void:
 		if item is FruitData:
 			delivered_types.append(item.fruit_name)
 
-	var _order: Array = currentOrders.get(customer_id, [])
+	var _order: Dictionary = currentOrders.get(customer_id, {})
 	# _order and delivered_types are both Array[FruitData.FruitType] — ready for match logic here
 
 	var customer_node = $custWindow/characterSprites/SubViewport.get_node_or_null("Customer_" + str(customer_id))
