@@ -140,6 +140,10 @@ func removeCustomer():
 
 func _on_emotion_timer_timeout() -> void:
 	if mood == 1:
+		if $Area2D != null:
+			$Area2D.queue_free()
+		if GameManager.trgID == ID:
+			GameManager.trgID = null
 		removeCustomer()
 	else:
 		if randi_range(1,changeMaxChance) == 1:

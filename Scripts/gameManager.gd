@@ -13,5 +13,4 @@ func _ready() -> void:
 
 
 func slushiData(output) -> void:
-	smoothie = output
-	get_tree().call_group("orderControl", "compareValues")
+	get_tree().call_group("orderControl", "compareValues", output)
