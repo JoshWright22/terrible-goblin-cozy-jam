@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://yr1bpq4s3oov"
-path="res://.godot/imported/blueberry5Sprite.PNG-e96515c8485b40c59603dda098934dc5.ctex"
+uid="uid://dgeql64ab7wy5"
+path="res://.godot/imported/blenderBarSprite.PNG-c25b3590ec14ee802b9cc1a5c5065003.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/fruitSprites/blueberry/blueberry5Sprite.PNG"
-dest_files=["res://.godot/imported/blueberry5Sprite.PNG-e96515c8485b40c59603dda098934dc5.ctex"]
+source_file="res://Assets/sprites/orderWindowSprites/blenderBarSprite.PNG"
+dest_files=["res://.godot/imported/blenderBarSprite.PNG-c25b3590ec14ee802b9cc1a5c5065003.ctex"]
 
 [params]
 

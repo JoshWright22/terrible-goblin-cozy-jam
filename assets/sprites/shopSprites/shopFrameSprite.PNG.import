@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://db6dunxyh2hkg"
-path="res://.godot/imported/shopFrameSprite.PNG-2e10f2b64653767cd6d374661f743981.ctex"
+path="res://.godot/imported/shopFrameSprite.PNG-082e08d4566f7646c547d7afa44121b7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/shopSprites/shopFrameSprite.PNG"
-dest_files=["res://.godot/imported/shopFrameSprite.PNG-2e10f2b64653767cd6d374661f743981.ctex"]
+source_file="res://Assets/sprites/shopSprites/shopFrameSprite.PNG"
+dest_files=["res://.godot/imported/shopFrameSprite.PNG-082e08d4566f7646c547d7afa44121b7.ctex"]
 
 [params]
 
