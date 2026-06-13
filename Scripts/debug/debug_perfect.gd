@@ -21,7 +21,7 @@ func _input(event):
 			is_dragging = false
 			position = Vector2(814,755) #return smoothie
 			if GameManager.trgID != null && GameManager.hold: #since theres a trgID; pass this Dict 
-				var slushi = find_parent("orderControl").currentOrders[GameManager.trgID] #cheats to find order
+				var slushi := {0 : 22, 1 : 22, 2: 15, 3: 41}
 				GameManager.slushiData(slushi)
 				position = Vector2(814,755) #return smoothie
 			else:
