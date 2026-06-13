@@ -18,8 +18,8 @@ var ID
 @onready var charNeuSprite3 = load("res://assets/sprites/characterSprites/char3/char3NeutralSprite.PNG")
 @onready var charNeuSprite4 = load("res://assets/sprites/characterSprites/char4/char4NeutralSprite.PNG")
 @onready var charNeuSprite5= load("res://assets/sprites/characterSprites/char5/char5NeutralSprite.PNG")
-@onready var bubble = load("res://assets/sprites/orderWindowSprites/speechBubble.png")
-@onready var angryBubble = load("res://assets/sprites/orderWindowSprites/speechBubbleAngry.png")
+@onready var bubble = load("res://assets/sprites/orderWindowSprites/bubble1Sprite.PNG")
+@onready var angryBubble = load("res://assets/sprites/orderWindowSprites/bubble2Sprite.PNG")
 @onready var orderBubble = load("res://Scenes/order_bubble.tscn")
 @onready var orderAmount = load("res://Scenes/ordered_percentages_bubble.tscn")
 @onready var control = find_parent("orderControl")
@@ -28,6 +28,8 @@ var b
 var c
 
 var yFIx = 329
+
+var changeMaxChance = 3 #1/3 so 33% they change their order
 
 var characters : Array #initialized in _ready | sprite Node path list 
 var characterSprites : Array  #initialized in _ready | add sprites here
@@ -140,6 +142,9 @@ func _on_emotion_timer_timeout() -> void:
 	if mood == 1:
 		removeCustomer()
 	else:
+		if randi_range(1,changeMaxChance) == 1:
+			control.currentOrders.erase(ID)
+			control.genOrder(ID)
 		mood = mood - 1
 		changeMood()
 		timer.wait_time = randi_range(control.minWaitTime,control.maxWaitTime)

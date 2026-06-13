@@ -14,12 +14,12 @@ var difficulty = "EASY" # "MED" "HARD" general setter for code
 var MAX_TIME : float = 45.0 #Time till health runs out
 var REMAIN_TIME : float = 45.0 #Time remaining, timer paused if no customers
 var ADD_TIME : float = 5.0 #Max amount of time a player can win back with satisfaction
-
+var handBreak = false #helps with smooth animation
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
 
-var MED_CUSTOMER_MIN = 4 #When it turns med
-var MED_CUSTOMER_MAX = 6 #when it turns hard
+var MED_CUSTOMER_MIN = 6 #When it turns med
+var MED_CUSTOMER_MAX = 10 #when it turns hard
 
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
@@ -80,7 +80,7 @@ func _ready() -> void:
 	healthBar.value = MAX_TIME
 
 func _process(delta: float) -> void: #WIP make linear
-	if currentCustomer.size() != 0:
+	if currentCustomer.size() != 0 && !handBreak:
 		REMAIN_TIME = REMAIN_TIME - delta
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 	if REMAIN_TIME <= 0 && !gameOver:
@@ -93,6 +93,7 @@ func _process(delta: float) -> void: #WIP make linear
 	
 
 func compareValues(): 
+	var texturez = load("res://assets/sprites/orderWindowSprites/face1Sprite.PNG")
 	var score = 4 
 	var trger = GameManager.trgID
 	GameManager.trgID = null
@@ -103,20 +104,32 @@ func compareValues():
 	if custom.c != null && custom.b != null:
 		custom.c.queue_free()
 		custom.b.queue_free()
+	var moodScore = 3 - custom.mood
+	score = score - moodScore
 #put dictionary comparrison here_____________________________________
+	#score = 1
+	if score == 3:
+		texturez = load("res://assets/sprites/orderWindowSprites/face2Sprite.PNG")
+	elif score == 2:
+		texturez = load("res://assets/sprites/orderWindowSprites/face3Sprite.PNG")
+	elif score == 1:
+		texturez = load("res://assets/sprites/orderWindowSprites/face4Sprite.PNG")
+	handBreak = true
 	for i in range(score):
 		var move = create_tween()
 		var c = star.instantiate()
+		c.textures = texturez
 		c.position = currentCustomer[trger] + Vector2(100, 0)
 		add_child(c)
-		move.tween_property(c, "position", c.position + Vector2(0, -250), .3)
-		move.tween_property(c, "position", Vector2(102, 88), .25)
+		move.tween_property(c, "position", c.position + Vector2(0, -250), .25)
+		move.tween_property(c, "position", Vector2(102, 80), .2)
 		move.finished.connect(func():
-			REMAIN_TIME = clamp(REMAIN_TIME + 5, 0, MAX_TIME)
+			REMAIN_TIME = clamp(REMAIN_TIME + ADD_TIME, 0, MAX_TIME)
 			healthBar.ratio = REMAIN_TIME / MAX_TIME
 			c.queue_free()
 		)
 		await move.finished
+	handBreak = false
 	custom.serve()
 
 func scaleDiff(): #simply checks and sets diffculty variables | add cust completed check
