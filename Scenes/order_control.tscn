@@ -69,6 +69,6 @@ texture = ExtResource("6_hsnre")
 wait_time = 3.0
 
 [node name="DebugPerfect" parent="." unique_id=1827650165 instance=ExtResource("5_0uojq")]
-position = Vector2(814, 755)
+position = Vector2(900, 743)
 
 [connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]

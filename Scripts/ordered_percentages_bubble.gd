@@ -44,4 +44,4 @@ func sizeFlags():
 		4:
 			vbox.add_theme_constant_override("separation", -25)
 		5:
-			vbox.add_theme_constant_override("separation", -25)
+			vbox.add_theme_constant_override("separation", -20)
