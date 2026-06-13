@@ -157,8 +157,9 @@ func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: i
 			return 
 			
 		is_dragging = true
-		check_placement_on_rotation_complete = false 
-		z_index = 100
+		check_placement_on_rotation_complete = false
+		z_as_relative = false
+		z_index = 200
 		
 		if is_locked:
 			for tile in locked_tiles:
@@ -327,15 +328,20 @@ func attempt_physical_placement() -> void:
 			locked_tiles.append(tile)
 			
 		is_locked = true
+		z_as_relative = true
 		z_index = 0
+		var bounce = create_tween()
+		bounce.tween_property(self, "scale", Vector2(1.2, 1.2), 0.08).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		bounce.tween_property(self, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	else:
 		return_to_spawn()
 
 func return_to_spawn() -> void:
 	check_placement_on_rotation_complete = false
+	z_as_relative = true
+	z_index = 0
 	var tween = create_tween()
 	tween.set_parallel(true)
 	tween.tween_property(self, "global_position", spawn_position, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	target_rotation = 0.0
 	tween.tween_property(self, "rotation", target_rotation, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	z_index = 0

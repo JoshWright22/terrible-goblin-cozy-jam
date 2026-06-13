@@ -1,24 +1,30 @@
 extends Node2D
 
-@export var grid_rows: int = 3
-@export var grid_columns: int = 3
-@export var cell_pixel_size: float = 64.0  # The piece automatically stretches to match this value!
-@export var tile_texture: Texture2D  
+@export var grid_rows: int = 4
+@export var grid_columns: int = 4
+@export var cell_pixel_size: float = 64.0 # The piece automatically stretches to match this value!
+@export var tile_texture: Texture2D
+@export var blender_texture: Texture2D
+@export var blender_scale: float = 1.9
+@export var blender_offset: Vector2 = Vector2.ZERO
+@export var blend_button_normal_texture: Texture2D
+@export var blend_button_pressed_texture: Texture2D
+@export var blend_button_sprite_scale: float = 0.5
 
 # --- SMOOTHIE BLENDER CONFIGURATION ---
 # CHANGED: Changed from Texture2D to PackedScene so you can design it in the editor
-@export var smoothie_scene: PackedScene  
-@export var reset_delay_seconds: float = 3.0  # Time before the smoothie disappears and grid resets
+@export var smoothie_scene: PackedScene
+@export var reset_delay_seconds: float = 3.0 # Time before the smoothie disappears and grid resets
 
 # --- AUTOMATIC BUTTON LAYOUT CONFIGURATION ---
-@export var blend_button: Button  # Drag your Button node into this slot in the inspector!
-@export var button_spacing_y: float = 20.0  # Pixels of clearance below the grid row boundary
+@export var blend_button: Button # Drag your Button node into this slot in the inspector!
+@export var button_spacing_y: float = 20.0 # Pixels of clearance below the grid row boundary
 
 var tile_size: Vector2 = Vector2.ZERO
 var grid_start_pos: Vector2 = Vector2.ZERO
 
 # --- STATE GUARD ---
-var is_blending: bool = false  # Read this from your piece scripts to block drop logic!
+var is_blending: bool = false # Read this from your piece scripts to block drop logic!
 
 @onready var grid_anchor: Area2D = $GridAnchor
 @onready var grid_visuals: Node2D = $GridVisuals
@@ -45,7 +51,19 @@ func generate_physical_grid() -> void:
 
 	for child in grid_visuals.get_children():
 		child.queue_free()
-		
+
+	if blender_texture:
+		var bg = Sprite2D.new()
+		bg.name = "BlenderBackground"
+		bg.texture = blender_texture
+		bg.centered = true
+		bg.position = grid_anchor.position + blender_offset
+		var total_h = grid_rows * tile_size.y * blender_scale
+		var uniform_scale = total_h / blender_texture.get_height()
+		bg.scale = Vector2(uniform_scale, uniform_scale)
+		bg.z_index = -1
+		grid_visuals.add_child(bg)
+
 	for x in range(grid_columns):
 		for y in range(grid_rows):
 			var tile_node = Node2D.new()
@@ -78,35 +96,92 @@ func position_and_wire_blend_button() -> void:
 	if not blend_button:
 		print("[UI WARN] No blend button assigned in the Grid inspector slot.")
 		return
-		
+
 	if blend_button.get_parent() != self:
 		blend_button.get_parent().remove_child(blend_button)
 		add_child(blend_button)
-		
+
 	if not blend_button.pressed.is_connected(blend_grid_into_smoothie):
 		blend_button.pressed.connect(blend_grid_into_smoothie)
-		
+
 	blend_button.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	blend_button.grow_vertical = Control.GROW_DIRECTION_BOTH
-	
+
 	var total_grid_height = grid_rows * tile_size.y
-	
+	var blender_half_height = (total_grid_height * blender_scale) / 2.0
+
 	var target_local_center_x = grid_anchor.position.x
-	var target_local_bottom_y = grid_anchor.position.y + (total_grid_height / 2.0) + button_spacing_y
-	
+	var target_local_bottom_y = grid_anchor.position.y + blender_half_height - button_spacing_y
+
+	# Size the button to the sprite's rendered dimensions so the full sprite is clickable
+	var btn_size = blend_button.size
+	if blend_button_normal_texture:
+		btn_size = blend_button_normal_texture.get_size() * blend_button_sprite_scale
+		blend_button.custom_minimum_size = btn_size
+		blend_button.size = btn_size
+
 	blend_button.position = Vector2(
-		target_local_center_x - (blend_button.size.x / 2.0),
-		target_local_bottom_y
+		target_local_center_x - btn_size.x / 2.0,
+		target_local_bottom_y - btn_size.y / 2.0
 	)
 
+	_setup_blend_button_sprites(btn_size)
+
+func _setup_blend_button_sprites(btn_size: Vector2) -> void:
+	for child in blend_button.get_children():
+		child.queue_free()
+
+	if not blend_button_normal_texture and not blend_button_pressed_texture:
+		return
+
+	blend_button.text = ""
+	var center = btn_size / 2.0
+
+	if blend_button_normal_texture:
+		var normal_spr = Sprite2D.new()
+		normal_spr.name = "NormalSprite"
+		normal_spr.texture = blend_button_normal_texture
+		normal_spr.centered = true
+		normal_spr.position = center
+		normal_spr.scale = Vector2(blend_button_sprite_scale, blend_button_sprite_scale)
+		blend_button.add_child(normal_spr)
+
+	if blend_button_pressed_texture:
+		var pressed_spr = Sprite2D.new()
+		pressed_spr.name = "PressedSprite"
+		pressed_spr.texture = blend_button_pressed_texture
+		pressed_spr.centered = true
+		pressed_spr.position = center
+		pressed_spr.scale = Vector2(blend_button_sprite_scale, blend_button_sprite_scale)
+		pressed_spr.visible = false
+		blend_button.add_child(pressed_spr)
+
+	if not blend_button.button_down.is_connected(_on_blend_button_down):
+		blend_button.button_down.connect(_on_blend_button_down)
+		blend_button.button_up.connect(_on_blend_button_up)
+
+func _on_blend_button_down() -> void:
+	blend_button.get_node_or_null("NormalSprite").visible = false if blend_button.get_node_or_null("NormalSprite") else null
+	var p = blend_button.get_node_or_null("PressedSprite")
+	if p: p.visible = true
+
+func _on_blend_button_up() -> void:
+	var n = blend_button.get_node_or_null("NormalSprite")
+	if n: n.visible = true
+	var p = blend_button.get_node_or_null("PressedSprite")
+	if p: p.visible = false
+
+
 func blend_grid_into_smoothie() -> void:
-	if not grid_visuals or blend_button.disabled or is_blending:
+	if not grid_visuals or is_blending:
 		return
 		
 	var collected_fruits: Array[Node2D] = []
 	var has_pieces: bool = false
 	
 	for tile in grid_visuals.get_children():
+		if not tile.has_meta("is_occupied"):
+			continue
 		if tile.get_meta("is_occupied") == true:
 			has_pieces = true
 			if tile.has_meta("occupied_by_fruit"):
@@ -119,8 +194,7 @@ func blend_grid_into_smoothie() -> void:
 		return
 
 	is_blending = true
-	blend_button.disabled = true
-
+	
 	var ingredient_data: Array = []
 	for fruit in collected_fruits:
 		if "fruit_profile" in fruit and fruit.fruit_profile != null:
@@ -128,6 +202,8 @@ func blend_grid_into_smoothie() -> void:
 		fruit.queue_free()
 
 	for tile in grid_visuals.get_children():
+		if not tile.has_meta("is_occupied"):
+			continue
 		tile.set_meta("is_occupied", false)
 		if tile.has_meta("occupied_by_fruit"):
 			tile.remove_meta("occupied_by_fruit")
@@ -139,7 +215,6 @@ func create_smoothie_overlay(ingredients: Array = []) -> void:
 	if not smoothie_scene:
 		print("[SMOOTHIE WARN] No smoothie scene assigned in the inspector!")
 		is_blending = false
-		blend_button.disabled = false
 		return
 
 	# 1. Instantiate your pre-made scene node
@@ -176,7 +251,6 @@ func create_smoothie_overlay(ingredients: Array = []) -> void:
 
 	if not is_instance_valid(smoothie_instance):
 		is_blending = false
-		blend_button.disabled = false
 		return
 
 	var fade_out_tween = create_tween()
@@ -188,4 +262,3 @@ func create_smoothie_overlay(ingredients: Array = []) -> void:
 	
 	# Clear guards for layout interactions
 	is_blending = false
-	blend_button.disabled = false

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://yr1bpq4s3oov"
-path="res://.godot/imported/blueberry5Sprite.PNG-b400500916725de944359f20766e6bfd.ctex"
+path="res://.godot/imported/blueberry5Sprite.PNG-e96515c8485b40c59603dda098934dc5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/fruitSprites/blueberry/blueberry5Sprite.PNG"
-dest_files=["res://.godot/imported/blueberry5Sprite.PNG-b400500916725de944359f20766e6bfd.ctex"]
+source_file="res://Assets/sprites/fruitSprites/blueberry/blueberry5Sprite.PNG"
+dest_files=["res://.godot/imported/blueberry5Sprite.PNG-e96515c8485b40c59603dda098934dc5.ctex"]
 
 [params]
 
