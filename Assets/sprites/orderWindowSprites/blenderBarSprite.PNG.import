@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dgeql64ab7wy5"
-path="res://.godot/imported/blenderBarSprite.PNG-f625b4354a12ced7cf320cf002197af3.ctex"
+path="res://.godot/imported/blenderBarSprite.PNG-c25b3590ec14ee802b9cc1a5c5065003.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/orderWindowSprites/blenderBarSprite.PNG"
-dest_files=["res://.godot/imported/blenderBarSprite.PNG-f625b4354a12ced7cf320cf002197af3.ctex"]
+source_file="res://Assets/sprites/orderWindowSprites/blenderBarSprite.PNG"
+dest_files=["res://.godot/imported/blenderBarSprite.PNG-c25b3590ec14ee802b9cc1a5c5065003.ctex"]
 
 [params]
 

@@ -6,6 +6,9 @@ func _ready() -> void:
 
 const fruitpiece = [Vector2i(10,10), Vector2i(10,10), Vector2i(10,10), Vector2i(10,10)]
 
+var move_amount := Vector2(200,0)
+var seconds := 2
+
 var fruit_piece_packed: PackedScene = load("res://Scenes/FruitPiece.tscn")
 var fruit_piece = fruit_piece_packed.instantiate()
 
@@ -19,8 +22,8 @@ func get_random_piece(called_by_piece) -> Array:
 
 
 func spawn_piece(fruitpiece):
+	var moveTween = create_tween() 
 	var piece = fruit_piece
+	moveTween.tween_method(piece, "position", piece.position + move_amount, seconds)
 	add_child(piece);
-	fruit_piece.position.x += 1000
-	await get_tree().create_timer(4.0).timeout
-	fruit_piece.queue_free()
+	moveTween.finished.connect(piece.queue_free)
