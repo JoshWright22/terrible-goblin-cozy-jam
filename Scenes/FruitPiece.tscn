@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://bok2au8eb33jk" path="res://Resource/grape_3x2_T.tres" id="2_obchn"]
 [ext_resource type="Script" uid="uid://c62xdlsecmv73" path="res://Scripts/Grid/fruit_data.gd" id="3_ymmkw"]
 [ext_resource type="Resource" uid="uid://bn4iqyl5o3myf" path="res://Resource/pineapple_3x2_L.tres" id="4_k8yg1"]
-[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://Assets/sprites/temp/T_Tetromino0.webp" id="5_cr30u"]
+[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://assets/sprites/temp/T_Tetromino0.webp" id="5_cr30u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0b0xd"]
 size = Vector2(47, 45)

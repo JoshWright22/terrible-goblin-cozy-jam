@@ -13,13 +13,13 @@ var difficulty = "EASY" # "MED" "HARD" general setter for code
 #Timer/health variables______________________________________________________
 var MAX_TIME : float = 45.0 #Time till health runs out
 var REMAIN_TIME : float = 45.0 #Time remaining, timer paused if no customers
-var ADD_TIME : float = 5.0 #Max amount of time a player can win back with satisfaction
-
+var ADD_TIME : float = 3.0 #Max amount of time a player can win back with satisfaction
+var handBreak = false #helps with smooth animation
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
 
-var MED_CUSTOMER_MIN = 4 #When it turns med
-var MED_CUSTOMER_MAX = 6 #when it turns hard
+var MED_CUSTOMER_MIN = 6 #When it turns med
+var MED_CUSTOMER_MAX = 10 #when it turns hard
 
 var charTimeMin : float #setter variables for below
 var charTimeMax : float
@@ -56,6 +56,9 @@ var ITEM_MED_MAX : int = 4
 
 var ITEM_HARD_MIN : int = 4
 var ITEM_HARD_MAX : int = 5
+
+var bestScore = 75 #whole number percentage of matching to get perfect
+var medScore = 50 #stopping point at half
 #___________________Customer/Order Variables________________________________
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
@@ -74,13 +77,12 @@ var ingredients: Array[FruitData.FruitType] = [
 
 func _ready() -> void:
 	#get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
-	#add_to_group("order_manager")
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
 
 func _process(delta: float) -> void: #WIP make linear
-	if currentCustomer.size() != 0:
+	if currentCustomer.size() != 0 && !handBreak:
 		REMAIN_TIME = REMAIN_TIME - delta
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 	if REMAIN_TIME <= 0 && !gameOver:
@@ -92,8 +94,12 @@ func _process(delta: float) -> void: #WIP make linear
 		
 	
 
-func compareValues(): 
+func compareValues(inputer): 
+	var texturez = load("res://assets/sprites/orderWindowSprites/face1Sprite.PNG")
+	var cake = load("res://Scenes/percent_score.tscn")
+	var cc = cake.instantiate()
 	var score = 4 
+	var percent = 0
 	var trger = GameManager.trgID
 	GameManager.trgID = null
 	var star = load("res://Scenes/control_add_time.tscn")
@@ -103,20 +109,56 @@ func compareValues():
 	if custom.c != null && custom.b != null:
 		custom.c.queue_free()
 		custom.b.queue_free()
-#put dictionary comparrison here_____________________________________
-	for i in range(score):
-		var move = create_tween()
-		var c = star.instantiate()
-		c.position = currentCustomer[trger] + Vector2(100, 0)
-		add_child(c)
-		move.tween_property(c, "position", c.position + Vector2(0, -250), .3)
-		move.tween_property(c, "position", Vector2(102, 88), .25)
-		move.finished.connect(func():
-			REMAIN_TIME = clamp(REMAIN_TIME + 5, 0, MAX_TIME)
-			healthBar.ratio = REMAIN_TIME / MAX_TIME
-			c.queue_free()
-		)
-		await move.finished
+	var moodScore = 3 - custom.mood
+	score = score - moodScore
+	for key in inputer:
+		if key not in currentOrders[trger]:
+			pass
+		else:
+			var ord = currentOrders[trger][key]
+			var inp = inputer[key]
+			var tot
+			if ord >= inp:
+				tot = inp
+			else:
+				tot = currentOrders[trger][key]
+			percent = percent + tot
+	if percent >= bestScore:
+		cc.modulate = Color(0,1,.25)
+	elif percent >= medScore:
+		score = score - 1
+		cc.modulate = Color(1, 1, 0)
+	else:
+		score = score - 3
+		cc.modulate = Color(1, 0.0, 0.0)
+	if score == 3:
+		texturez = load("res://assets/sprites/orderWindowSprites/face2Sprite.PNG")
+	elif score == 2:
+		texturez = load("res://assets/sprites/orderWindowSprites/face3Sprite.PNG")
+	elif score == 1:
+		texturez = load("res://assets/sprites/orderWindowSprites/face4Sprite.PNG")
+	if score < 1:
+		pass
+	else:
+		handBreak = true
+		for i in range(score):
+			var move = create_tween()
+			var c = star.instantiate()
+			c.textures = texturez
+			c.position = currentCustomer[trger] + Vector2(100, 0)
+			add_child(c)
+			move.tween_property(c, "position", c.position + Vector2(0, -250), .25)
+			move.tween_property(c, "position", Vector2(102, 80), .2)
+			move.finished.connect(func():
+				REMAIN_TIME = clamp(REMAIN_TIME + ADD_TIME, 0, MAX_TIME)
+				healthBar.ratio = REMAIN_TIME / MAX_TIME
+				c.queue_free()
+			)
+			await move.finished
+		handBreak = false
+	cc.sets = percent
+	cc.position = currentCustomer[trger]
+	add_child(cc)
 	custom.serve()
 
 func scaleDiff(): #simply checks and sets diffculty variables | add cust completed check
@@ -199,7 +241,6 @@ func _on_customer_s_pawner_timeout() -> void: #next customer walks up/resets tim
 		c.ID = customerNo
 		currentCustomer[customerNo] = trgPos
 		$custWindow/characterSprites/SubViewport.add_child(c)
-		#_create_delivery_zone(customerNo, trgPos)
 		genOrder(customerNo)
 		customerSpawnTimer.wait_time = randi_range(charTimeMin, charTimeMax)
 		customerSpawnTimer.start(customerSpawnTimer.wait_time)

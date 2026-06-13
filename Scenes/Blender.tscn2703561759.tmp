@@ -10,28 +10,17 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e63qr"]
 size = Vector2(64, 64)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f7tdn"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_folm5"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yn1qn"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_206j7"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_r625w"]
-
 [node name="Blender" type="Node2D" unique_id=1163045306]
 
 [node name="Grid" type="Node2D" parent="." unique_id=365471802 node_paths=PackedStringArray("blend_button")]
 script = ExtResource("1_syg6b")
 tile_texture = ExtResource("2_i0tqm")
 blender_texture = ExtResource("3_f8vfp")
-blender_offset = Vector2(9, 13)
+blender_offset = Vector2(7, 10)
 blend_button_normal_texture = ExtResource("4_f7tdn")
 blend_button_pressed_texture = ExtResource("5_folm5")
 smoothie_scene = ExtResource("2_e63qr")
 blend_button = NodePath("Button")
-button_spacing_y = 60.0
 
 [node name="GridAnchor" type="Area2D" parent="Grid" unique_id=1955288939]
 
@@ -46,8 +35,4 @@ offset_left = -425.0
 offset_top = -271.0
 offset_right = -372.0
 offset_bottom = -240.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_f7tdn")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_folm5")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_yn1qn")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_206j7")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_r625w")
+text = "Blend"
