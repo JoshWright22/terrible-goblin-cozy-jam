@@ -1,8 +1,13 @@
 extends Node
 
-const fruitpiece = [Vector2i(0,0), Vector2i(-1,0), Vector2i(-2,0), Vector2i(1,0)]
+func _ready() -> void:
+	await(spawn_piece(fruitpiece))
+	pass
 
-var pieces_node = load("res://Scenes/FruitPiece.tscn.tscn").instantiate();
+const fruitpiece = [Vector2i(10,10), Vector2i(10,10), Vector2i(10,10), Vector2i(10,10)]
+
+var fruit_piece_packed: PackedScene = load("res://Scenes/FruitPiece.tscn")
+var fruit_piece = fruit_piece_packed.instantiate()
 
 func get_random_piece(called_by_piece) -> Array:
 	var piece = []
@@ -11,6 +16,11 @@ func get_random_piece(called_by_piece) -> Array:
 		0: piece += fruitpiece
 	return piece
 
-func spawn_piece(piece_name):
-	var piece = pieces_node.get_node(piece_name).duplicate();
+
+
+func spawn_piece(fruitpiece):
+	var piece = fruit_piece
 	add_child(piece);
+	fruit_piece.position.x += 1000
+	await get_tree().create_timer(4.0).timeout
+	fruit_piece.queue_free()
