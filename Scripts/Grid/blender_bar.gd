@@ -26,6 +26,7 @@ func _process(_delta: float) -> void:
 	if current != _last_dict:
 		_last_dict = current
 		_rebuild_segments(current)
+		print("Blender: ", current)
 	queue_redraw()
 
 func _read_grid() -> Dictionary:

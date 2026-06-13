@@ -15,3 +15,18 @@ position = Vector2(330, 170)
 [node name="BlenderBar" parent="." unique_id=1721027322 instance=ExtResource("3_bb1ui")]
 position = Vector2(1319.0001, 492)
 scale = Vector2(0.3, 0.3)
+
+[node name="FruitPiece2" parent="." unique_id=304572313 instance=ExtResource("2_bb1ui")]
+position = Vector2(330, 170)
+
+[node name="FruitPiece2" parent="FruitPiece2" unique_id=499520669 instance=ExtResource("2_bb1ui")]
+position = Vector2(330, 170)
+
+[node name="FruitPiece2" parent="FruitPiece2/FruitPiece2" unique_id=766644181 instance=ExtResource("2_bb1ui")]
+position = Vector2(330, 170)
+
+[node name="FruitPiece2" parent="FruitPiece2/FruitPiece2/FruitPiece2" unique_id=830091791 instance=ExtResource("2_bb1ui")]
+position = Vector2(330, 170)
+
+[node name="FruitPiece2" parent="FruitPiece2/FruitPiece2/FruitPiece2/FruitPiece2" unique_id=2087050640 instance=ExtResource("2_bb1ui")]
+position = Vector2(330, 170)

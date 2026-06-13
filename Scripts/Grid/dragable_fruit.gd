@@ -28,6 +28,7 @@ var check_placement_on_rotation_complete: bool = false
 var locked_tiles: Array[Node2D] = []
 var dynamic_cell_size: float = 64.0
 var layout_center_offset: Vector2 = Vector2.ZERO
+var blank_cell_layout: Array[Vector2] = []
 
 # 2. PUBLIC DATA READOUTS
 var current_fruit_type: int = 0
@@ -58,7 +59,8 @@ func _ready() -> void:
 	if fruit_profile != null:
 		current_fruit_type = fruit_profile.fruit_name
 		block_layout = fruit_profile.layout
-		
+		blank_cell_layout = fruit_profile.blank_cells
+
 	total_block_count = block_layout.size()
 	build_piece_from_layout()
 	
@@ -71,6 +73,7 @@ func change_fruit_profile(new_profile: FruitData) -> void:
 	fruit_profile = new_profile
 	current_fruit_type = fruit_profile.fruit_name
 	block_layout = fruit_profile.layout
+	blank_cell_layout = fruit_profile.blank_cells
 	total_block_count = block_layout.size()
 	build_piece_from_layout()
 
@@ -81,12 +84,25 @@ func build_piece_from_layout() -> void:
 	for child in block_detectors.get_children():
 		child.queue_free()
 
-	var min_x: float = 99999.0
-	var max_x: float = -99999.0
-	var min_y: float = 99999.0
-	var max_y: float = -99999.0
+	# Filled-only bounds — used for the rotation/drag pivot
+	var fill_min_x: float = 99999.0
+	var fill_max_x: float = -99999.0
+	var fill_min_y: float = 99999.0
+	var fill_max_y: float = -99999.0
 
 	for coord in block_layout:
+		fill_min_x = min(fill_min_x, coord.x)
+		fill_max_x = max(fill_max_x, coord.x)
+		fill_min_y = min(fill_min_y, coord.y)
+		fill_max_y = max(fill_max_y, coord.y)
+
+	# Full bounds including blank cells — used for sprite sizing and click area
+	var min_x: float = fill_min_x
+	var max_x: float = fill_max_x
+	var min_y: float = fill_min_y
+	var max_y: float = fill_max_y
+
+	for coord in blank_cell_layout:
 		min_x = min(min_x, coord.x)
 		max_x = max(max_x, coord.x)
 		min_y = min(min_y, coord.y)
@@ -99,8 +115,8 @@ func build_piece_from_layout() -> void:
 	var cells_high = (max_y - min_y) + 1.0
 
 	layout_center_offset = Vector2(
-		((min_x + max_x) / 2.0) * dynamic_cell_size,
-		((min_y + max_y) / 2.0) * dynamic_cell_size
+		((fill_min_x + fill_max_x) / 2.0) * dynamic_cell_size,
+		((fill_min_y + fill_max_y) / 2.0) * dynamic_cell_size
 	)
 
 	var main_sprite = get_node_or_null("Sprite2D") as Sprite2D

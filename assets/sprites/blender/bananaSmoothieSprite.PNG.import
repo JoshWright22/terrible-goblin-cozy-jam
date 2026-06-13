@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://vp5n7sprk5hs"
-path="res://.godot/imported/bananaSmoothieSprite.PNG-0a673ab6c53595ebf6a1e09315587a63.ctex"
+path="res://.godot/imported/bananaSmoothieSprite.PNG-c98f0d033a6ce61569a14b26de4ff9c6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/blender/bananaSmoothieSprite.PNG"
-dest_files=["res://.godot/imported/bananaSmoothieSprite.PNG-0a673ab6c53595ebf6a1e09315587a63.ctex"]
+source_file="res://Assets/sprites/blender/bananaSmoothieSprite.PNG"
+dest_files=["res://.godot/imported/bananaSmoothieSprite.PNG-c98f0d033a6ce61569a14b26de4ff9c6.ctex"]
 
 [params]
 
