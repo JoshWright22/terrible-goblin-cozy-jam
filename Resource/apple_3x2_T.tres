@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FruitData" format=3 uid="uid://da4bxp7ksaxmn"]
+
+[ext_resource type="Script" uid="uid://c62xdlsecmv73" path="res://Scripts/Grid/fruit_data.gd" id="1_ap1x9"]
+[ext_resource type="Texture2D" uid="uid://bv16cs13p013k" path="res://Assets/sprites/fruitSprites/apple/apple6Sprite.PNG" id="2_jowg1"]
+
+[resource]
+script = ExtResource("1_ap1x9")
+fruit_name = 4
+texture = ExtResource("2_jowg1")
+layout = Array[Vector2]([Vector2(0, 0), Vector2(1, 0), Vector2(2, 0), Vector2(1, 1)])
+metadata/_custom_type_script = "uid://c62xdlsecmv73"

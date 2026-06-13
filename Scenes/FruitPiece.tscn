@@ -1,10 +1,8 @@
 [gd_scene format=3 uid="uid://c8vxgdj80rqho"]
 
 [ext_resource type="Script" uid="uid://w1ioh3q4el0c" path="res://Scripts/Grid/dragable_fruit.gd" id="1_6tw45"]
-[ext_resource type="Resource" uid="uid://bok2au8eb33jk" path="res://Resource/grape_3x2_T.tres" id="2_obchn"]
-[ext_resource type="Script" uid="uid://c62xdlsecmv73" path="res://Scripts/Grid/fruit_data.gd" id="3_ymmkw"]
-[ext_resource type="Resource" uid="uid://bn4iqyl5o3myf" path="res://Resource/pineapple_3x2_L.tres" id="4_k8yg1"]
-[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://assets/sprites/temp/T_Tetromino0.webp" id="5_cr30u"]
+[ext_resource type="Resource" uid="uid://bap2x1a000001" path="res://Resource/apple_2x1.tres" id="2_3lmlu"]
+[ext_resource type="Texture2D" uid="uid://c6f1ucac5x7h0" path="res://Assets/sprites/temp/T_Tetromino0.webp" id="5_cr30u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0b0xd"]
 size = Vector2(47, 45)
@@ -25,9 +23,8 @@ size = Vector2(146, 96)
 
 [node name="FruitPiece" type="Node2D" parent="." unique_id=548656284]
 script = ExtResource("1_6tw45")
-fruit_profile = ExtResource("2_obchn")
-shapeshift_while_held = true
-variant_pool = Array[ExtResource("3_ymmkw")]([ExtResource("2_obchn"), ExtResource("4_k8yg1")])
+fruit_profile = ExtResource("2_3lmlu")
+change_shape_on_pickup = true
 
 [node name="BlockDetectors" type="Node2D" parent="FruitPiece" unique_id=1560230985]
 

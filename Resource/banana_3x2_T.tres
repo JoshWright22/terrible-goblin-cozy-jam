@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="FruitData" format=3 uid="uid://c72myv4inredf"]
+
+[ext_resource type="Script" uid="uid://c62xdlsecmv73" path="res://Scripts/Grid/fruit_data.gd" id="1_yyt8q"]
+[ext_resource type="Texture2D" uid="uid://drqad7yv7axpc" path="res://Assets/sprites/fruitSprites/banana/banana6Sprite.PNG" id="2_yyt8q"]
+
+[resource]
+script = ExtResource("1_yyt8q")
+fruit_name = 0
+texture = ExtResource("2_yyt8q")
+layout = Array[Vector2]([Vector2(0, 0), Vector2(1, 0), Vector2(2, 0), Vector2(1, 1)])
+metadata/_custom_type_script = "uid://c62xdlsecmv73"
