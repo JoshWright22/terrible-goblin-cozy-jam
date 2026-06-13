@@ -56,7 +56,10 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
-	pass
+	if GameManager.paused:
+		timer.paused = true
+	else:
+		timer.paused = false
 	
 func genCustomer() -> void: #creates customer and order Wip___________________
 	var fadeTween = create_tween() 

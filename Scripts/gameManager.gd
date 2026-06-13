@@ -1,5 +1,11 @@
 extends Node2D
 
+@onready var mainMenu = load("res://Scenes/Primary/main_menu.tscn")
+@onready var gameLoop = load("res://Scenes/Primary/game_loop.tscn")
+@onready var pauseScene = load("res://Scenes/pause_menu.tscn")
+
+var paused : bool = false #tells system if game paused
+
 #check if theres a trgID 
 #pass dict in same format as currectOrders through GameMaster.slushiData(yourDict)
 #see debug scene example code

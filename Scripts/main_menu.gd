@@ -12,4 +12,4 @@ func _process(delta: float) -> void:
 
 
 func _on_startbutt_button_down() -> void: #middle button to either start game/pick level
-	pass
+	get_tree().call_group("hostController", "changeScene", GameManager.gameLoop)

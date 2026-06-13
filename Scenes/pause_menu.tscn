@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b0hmbiwjbr5o"]
+
+[ext_resource type="Texture2D" uid="uid://bknc7gsxymbew" path="res://icon.svg" id="1_emv3i"]
+[ext_resource type="Script" uid="uid://bt22uq0my282f" path="res://Scripts/help_scene.gd" id="1_k0w1u"]
+
+[node name="pauseMenu" type="Node2D" unique_id=190232550]
+script = ExtResource("1_k0w1u")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=1185930994]
+position = Vector2(562, 279)
+texture = ExtResource("1_emv3i")

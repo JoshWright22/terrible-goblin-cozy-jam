@@ -2,20 +2,22 @@ extends Node2D
 
 var currentScene #setter variable for changeScene()
 
-#scenes
-@onready var mainMenu = load("res://Scenes/main_menu.tscn")
+
+
 
 
 func _ready() -> void:
-	changeScene(mainMenu) 
-func _process(delta: float) -> void:
-	pass
+	changeScene(GameManager.mainMenu) 
+
+
+
+
 
 
 func changeScene(scene) -> void:  #changes scene with input 'scene' based off of #scenes
-	currentScene = scene
-	var instance
-	if get_child_count() >= 1:
+	var instance = scene.instantiate()
+	print("pass")
+	if get_child_count() >= 1 && scene != GameManager.pauseScene:
 		get_child(0).queue_free()
-	instance = currentScene.instantiate()
+	print(instance)
 	add_child(instance)

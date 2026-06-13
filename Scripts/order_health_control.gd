@@ -73,7 +73,6 @@ var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.APPLE,
 ]
 
-#assigned to positions left to right, not necessarily the order the customers show up
 
 func _ready() -> void:
 	#get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
@@ -81,8 +80,8 @@ func _ready() -> void:
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
 
-func _process(delta: float) -> void: #WIP make linear
-	if currentCustomer.size() != 0 && !handBreak:
+func _process(delta: float) -> void: 
+	if currentCustomer.size() != 0 && !handBreak && !GameManager.paused:
 		REMAIN_TIME = REMAIN_TIME - delta
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 	if REMAIN_TIME <= 0 && !gameOver:
@@ -91,7 +90,20 @@ func _process(delta: float) -> void: #WIP make linear
 		currentCustomer.clear()
 		var GM = gameOverScene.instantiate()
 		add_child(GM)
-		
+	if GameManager.paused:
+		customerSpawnTimer.paused = true
+	elif !GameManager.paused:
+		if customerSpawnTimer.is_paused():
+			customerSpawnTimer.paused = false
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		if !GameManager.paused:
+			GameManager.paused = true
+			get_tree().call_group("hostController", "changeScene", GameManager.pauseScene)
+		else:
+			GameManager.paused = false
+
 	
 
 func compareValues(inputer): 

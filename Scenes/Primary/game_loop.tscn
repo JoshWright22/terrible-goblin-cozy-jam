@@ -1,3 +1,8 @@
 [gd_scene format=3 uid="uid://y0hbprnhjvhs"]
 
+[ext_resource type="PackedScene" uid="uid://c73boq4msi581" path="res://Scenes/order_control.tscn" id="1_qg871"]
+
 [node name="gameLoop" type="Node2D" unique_id=488953765]
+
+[node name="orderControl" parent="." unique_id=1560439912 instance=ExtResource("1_qg871")]
+position = Vector2(-12, -9)

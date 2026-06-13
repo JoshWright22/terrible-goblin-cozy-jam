@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Terrible-Goblin-Cozy-Jam"
-run/main_scene="uid://bskt41wkq0c31"
+run/main_scene="uid://b7gcf2cfvgq4e"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -35,6 +35,7 @@ enabled=PackedStringArray("res://addons/find-everywhere/plugin.cfg")
 [global_group]
 
 orderControl=""
+hostController=""
 
 [physics]
 
