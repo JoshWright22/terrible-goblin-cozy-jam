@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bu4t5nswuixpl"
-path="res://.godot/imported/apple3Sprite.PNG-68700b840d3c2cb6ef83d7483f9c4c52.ctex"
+path="res://.godot/imported/apple3Sprite.PNG-b8cef98c6d336c93d868402503683e30.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/fruitSprites/apple/apple3Sprite.PNG"
-dest_files=["res://.godot/imported/apple3Sprite.PNG-68700b840d3c2cb6ef83d7483f9c4c52.ctex"]
+source_file="res://assets/sprites/fruitSprites/apple/apple3Sprite.PNG"
+dest_files=["res://.godot/imported/apple3Sprite.PNG-b8cef98c6d336c93d868402503683e30.ctex"]
 
 [params]
 
