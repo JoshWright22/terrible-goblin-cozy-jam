@@ -22,8 +22,8 @@ func get_random_piece(called_by_piece) -> Array:
 
 
 func spawn_piece(fruitpiece):
-	var moveTween = create_tween() 
 	var piece = fruit_piece
-	moveTween.tween_method(piece, "position", piece.position + move_amount, seconds)
-	add_child(piece);
+	add_child(piece)
+	var moveTween = create_tween()
+	moveTween.tween_property(piece, "position", piece.position + move_amount, seconds)
 	moveTween.finished.connect(piece.queue_free)
