@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://baqs3o40x0nvw"]
+
+[ext_resource type="Texture2D" uid="uid://bw1gddh5tmpwy" path="res://Assets/sprites/mainMenuSprites/frozenMachine.png" id="1_1ehe0"]
+[ext_resource type="Script" uid="uid://dw0w8nrwoxfp0" path="res://Scripts/main_menu.gd" id="1_ce3w2"]
+[ext_resource type="Texture2D" uid="uid://fxpfabrsoy3k" path="res://Assets/sprites/mainMenuSprites/unfrozenMachine.png" id="2_ce3w2"]
+[ext_resource type="BitMap" uid="uid://c845rjwklfsrw" path="res://Assets/sprites/mainMenuSprites/machineBitMap.png" id="3_n45e2"]
+
+[node name="mainMenu" type="Node2D" unique_id=365446402]
+script = ExtResource("1_ce3w2")
+
+[node name="uiControl" type="Control" parent="." unique_id=2131386965]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -267.0
+offset_bottom = -267.0
+
+[node name="achievements" type="TextureButton" parent="uiControl" unique_id=2027130576]
+layout_mode = 0
+offset_left = -854.99994
+offset_top = 162.99998
+offset_right = 2985.0
+offset_bottom = 2323.0
+scale = Vector2(0.565, 0.565)
+action_mode = 0
+texture_normal = ExtResource("1_1ehe0")
+texture_hover = ExtResource("2_ce3w2")
+texture_click_mask = ExtResource("3_n45e2")
+ignore_texture_size = true
+
+[node name="startbutt" type="TextureButton" parent="uiControl" unique_id=2032574939]
+layout_mode = 0
+offset_left = -194.99998
+offset_top = 162.99998
+offset_right = 3645.0
+offset_bottom = 2323.0
+scale = Vector2(0.565, 0.565)
+action_mode = 0
+texture_normal = ExtResource("1_1ehe0")
+texture_hover = ExtResource("2_ce3w2")
+texture_click_mask = ExtResource("3_n45e2")
+ignore_texture_size = true
+
+[node name="saves" type="TextureButton" parent="uiControl" unique_id=1474733402]
+layout_mode = 0
+offset_left = 468.99997
+offset_top = 162.99998
+offset_right = 4309.0
+offset_bottom = 2323.0
+scale = Vector2(0.565, 0.565)
+action_mode = 0
+texture_normal = ExtResource("1_1ehe0")
+texture_hover = ExtResource("2_ce3w2")
+texture_click_mask = ExtResource("3_n45e2")
+ignore_texture_size = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=1411515759]
+offset_left = 491.0
+offset_top = 40.0
+offset_right = 1444.0
+offset_bottom = 142.0
+theme_override_colors/default_color = Color(1, 0.29411766, 1, 1)
+theme_override_font_sizes/normal_font_size = 74
+text = "SUPER FANCY GAME NAME"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+autowrap_trim_flags = 0
+
+[node name="highlight" type="ColorRect" parent="RichTextLabel" unique_id=1997699668]
+show_behind_parent = true
+layout_mode = 0
+offset_top = 27.0
+offset_right = 40.0
+offset_bottom = 67.0
+scale = Vector2(23.891033, 1.3291179)
+color = Color(0.48235294, 1, 1, 1)
+
+[connection signal="button_down" from="uiControl/startbutt" to="." method="_on_startbutt_button_down"]
