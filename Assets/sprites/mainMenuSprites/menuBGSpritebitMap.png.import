@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://dlv1f7plidfhj"
+path="res://.godot/imported/menuBGSpritebitMap.png-50bd403b2b3b676b26b257293a906f18.res"
+
+[deps]
+
+source_file="res://Assets/sprites/mainMenuSprites/menuBGSpritebitMap.png"
+dest_files=["res://.godot/imported/menuBGSpritebitMap.png-50bd403b2b3b676b26b257293a906f18.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

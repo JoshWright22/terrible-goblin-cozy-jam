@@ -11,5 +11,6 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_startbutt_button_down() -> void: #middle button to either start game/pick level
+
+func _on_texture_button_button_down() -> void:
 	get_tree().call_group("hostController", "changeScene", GameManager.gameLoop)
