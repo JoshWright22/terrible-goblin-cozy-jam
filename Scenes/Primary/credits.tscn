@@ -58,6 +58,7 @@ offset_left = 439.0
 offset_top = 314.0
 offset_right = 1348.0
 offset_bottom = 566.0
+scale = Vector2(0.9899249, 0.99584746)
 pivot_offset = Vector2(228, 0)
 theme_override_fonts/normal_font = ExtResource("2_cfch2")
 theme_override_font_sizes/normal_font_size = 49

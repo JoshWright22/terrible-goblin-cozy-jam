@@ -7,7 +7,6 @@ extends Node2D
 #@onready var settingsScene = load()
 var paused : bool = false #tells system if game paused
 
-var firstRun : bool = true #controls if this is the players first run
 
 #check if theres a trgID 
 #pass dict in same format as currectOrders through GameMaster.slushiData(yourDict)
