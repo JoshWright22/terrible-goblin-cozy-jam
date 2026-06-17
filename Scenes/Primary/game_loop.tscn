@@ -2,78 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://6vib1risoh6x" path="res://Scenes/Fruit_Conveyor.tscn" id="1_m76iy"]
 [ext_resource type="PackedScene" uid="uid://c73boq4msi581" path="res://Scenes/order_control.tscn" id="1_qg871"]
-[ext_resource type="Texture2D" uid="uid://dj1wauh75lhlm" path="res://Assets/sprites/shopSprites/belt animation/beltSprite1.png" id="1_yequ5"]
-[ext_resource type="Texture2D" uid="uid://dfocfy152bx7" path="res://Assets/sprites/shopSprites/belt animation/beltSprite2.png" id="2_nbx2m"]
-[ext_resource type="Texture2D" uid="uid://b8a5s8aa1lu6c" path="res://Assets/sprites/shopSprites/belt animation/beltSprite3.png" id="3_qgstt"]
-[ext_resource type="Texture2D" uid="uid://hf28rohkgmgv" path="res://Assets/sprites/shopSprites/belt animation/beltSprite4.png" id="4_w605e"]
-[ext_resource type="Texture2D" uid="uid://wk0klcgpiwo7" path="res://Assets/sprites/shopSprites/belt animation/beltSprite5.png" id="5_f5nne"]
-[ext_resource type="Texture2D" uid="uid://dc3lbrmsjfljm" path="res://Assets/sprites/shopSprites/belt animation/beltSprite6.png" id="6_ltomr"]
-[ext_resource type="Texture2D" uid="uid://cspckyaayavyv" path="res://Assets/sprites/shopSprites/belt animation/beltSprite7.png" id="7_qqipw"]
-[ext_resource type="Texture2D" uid="uid://cbv2h3wmi231b" path="res://Assets/sprites/shopSprites/belt animation/beltSprite8.png" id="8_073hs"]
-[ext_resource type="Texture2D" uid="uid://bjdvuwe18a46t" path="res://Assets/sprites/shopSprites/belt animation/beltSprite9.png" id="9_kqn7j"]
-[ext_resource type="Texture2D" uid="uid://cx5lec5oyjpf7" path="res://Assets/sprites/shopSprites/belt animation/beltSprite10.png" id="10_141vg"]
-[ext_resource type="Texture2D" uid="uid://dfv385mpy5e1k" path="res://Assets/sprites/shopSprites/belt animation/beltSprite11.png" id="11_jn3ii"]
-[ext_resource type="Texture2D" uid="uid://cjjdwwe4f6cq" path="res://Assets/sprites/shopSprites/belt animation/beltSprite12.png" id="12_kt0ux"]
-[ext_resource type="Texture2D" uid="uid://dv4ipqkjqatmw" path="res://Assets/sprites/shopSprites/belt animation/beltSprite13.png" id="13_pxqws"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_b7jvj"]
-animations = [{
-"frames": [{
-"duration": 0.5,
-"texture": ExtResource("1_yequ5")
-}, {
-"duration": 0.5,
-"texture": ExtResource("2_nbx2m")
-}, {
-"duration": 0.5,
-"texture": ExtResource("3_qgstt")
-}, {
-"duration": 0.5,
-"texture": ExtResource("4_w605e")
-}, {
-"duration": 0.5,
-"texture": ExtResource("5_f5nne")
-}, {
-"duration": 0.5,
-"texture": ExtResource("6_ltomr")
-}, {
-"duration": 0.5,
-"texture": ExtResource("7_qqipw")
-}, {
-"duration": 0.5,
-"texture": ExtResource("8_073hs")
-}, {
-"duration": 0.5,
-"texture": ExtResource("9_kqn7j")
-}, {
-"duration": 0.5,
-"texture": ExtResource("10_141vg")
-}, {
-"duration": 0.5,
-"texture": ExtResource("11_jn3ii")
-}, {
-"duration": 0.5,
-"texture": ExtResource("12_kt0ux")
-}, {
-"duration": 0.5,
-"texture": ExtResource("13_pxqws")
-}],
-"loop": true,
-"name": &"default",
-"speed": 12.0
-}]
 
 [node name="gameLoop" type="Node2D" unique_id=488953765]
 
-[node name="conveyorBelt" type="AnimatedSprite2D" parent="." unique_id=245897298]
-position = Vector2(968, 968)
-scale = Vector2(1.0999999, 1.0999999)
-sprite_frames = SubResource("SpriteFrames_b7jvj")
-autoplay = "default"
-frame_progress = 0.81635016
+[node name="Conveyor" parent="." unique_id=1335769398 instance=ExtResource("1_m76iy")]
+position = Vector2(33, 800)
 
 [node name="orderControl" parent="." unique_id=1560439912 instance=ExtResource("1_qg871")]
 position = Vector2(-12, -9)
-
-[node name="Conveyor" parent="." unique_id=1335769398 instance=ExtResource("1_m76iy")]
-position = Vector2(160, 838)

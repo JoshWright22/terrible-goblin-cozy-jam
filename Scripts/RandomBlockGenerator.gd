@@ -1,8 +1,20 @@
 extends Node
 
+@onready var belt = $conveyorBelt
+
+var moveTween = create_tween()
+
 func _ready() -> void:
 	await(spawn_piece(fruitpiece))
 	pass
+
+func _process(_delta: float) -> void:
+	if GameManager.paused:
+		belt.pause()
+		moveTween.pause()
+	else:
+		belt.play()
+		moveTween.play()
 
 const fruitpiece = [Vector2i(10,10), Vector2i(10,10), Vector2i(10,10), Vector2i(10,10)]
 
@@ -25,6 +37,5 @@ func spawn_piece(fruitpiece):
 	var piece = fruit_piece
 	piece.position = Vector2(1800, 125)
 	add_child(piece)
-	var moveTween = create_tween()
 	moveTween.tween_property(piece, "position", piece.position + move_amount, seconds)
 	moveTween.finished.connect(piece.queue_free)

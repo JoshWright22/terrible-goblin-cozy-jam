@@ -1,6 +1,72 @@
 [gd_scene format=3 uid="uid://6vib1risoh6x"]
 
 [ext_resource type="Script" uid="uid://d4l0b2yuhkhb5" path="res://Scripts/RandomBlockGenerator.gd" id="1_q2aj5"]
+[ext_resource type="Texture2D" uid="uid://dj1wauh75lhlm" path="res://Assets/sprites/shopSprites/belt animation/beltSprite1.png" id="2_p1uaq"]
+[ext_resource type="Texture2D" uid="uid://dfocfy152bx7" path="res://Assets/sprites/shopSprites/belt animation/beltSprite2.png" id="3_68k6k"]
+[ext_resource type="Texture2D" uid="uid://b8a5s8aa1lu6c" path="res://Assets/sprites/shopSprites/belt animation/beltSprite3.png" id="4_6in80"]
+[ext_resource type="Texture2D" uid="uid://hf28rohkgmgv" path="res://Assets/sprites/shopSprites/belt animation/beltSprite4.png" id="5_2gi7l"]
+[ext_resource type="Texture2D" uid="uid://wk0klcgpiwo7" path="res://Assets/sprites/shopSprites/belt animation/beltSprite5.png" id="6_wq7ue"]
+[ext_resource type="Texture2D" uid="uid://dc3lbrmsjfljm" path="res://Assets/sprites/shopSprites/belt animation/beltSprite6.png" id="7_j8plt"]
+[ext_resource type="Texture2D" uid="uid://cspckyaayavyv" path="res://Assets/sprites/shopSprites/belt animation/beltSprite7.png" id="8_06kv2"]
+[ext_resource type="Texture2D" uid="uid://cbv2h3wmi231b" path="res://Assets/sprites/shopSprites/belt animation/beltSprite8.png" id="9_spdvk"]
+[ext_resource type="Texture2D" uid="uid://bjdvuwe18a46t" path="res://Assets/sprites/shopSprites/belt animation/beltSprite9.png" id="10_fxf1m"]
+[ext_resource type="Texture2D" uid="uid://cx5lec5oyjpf7" path="res://Assets/sprites/shopSprites/belt animation/beltSprite10.png" id="11_51u4f"]
+[ext_resource type="Texture2D" uid="uid://dfv385mpy5e1k" path="res://Assets/sprites/shopSprites/belt animation/beltSprite11.png" id="12_tuhm3"]
+[ext_resource type="Texture2D" uid="uid://cjjdwwe4f6cq" path="res://Assets/sprites/shopSprites/belt animation/beltSprite12.png" id="13_w0v10"]
+[ext_resource type="Texture2D" uid="uid://dv4ipqkjqatmw" path="res://Assets/sprites/shopSprites/belt animation/beltSprite13.png" id="14_mdf1w"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_5jvig"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": ExtResource("2_p1uaq")
+}, {
+"duration": 0.5,
+"texture": ExtResource("3_68k6k")
+}, {
+"duration": 0.5,
+"texture": ExtResource("4_6in80")
+}, {
+"duration": 0.5,
+"texture": ExtResource("5_2gi7l")
+}, {
+"duration": 0.5,
+"texture": ExtResource("6_wq7ue")
+}, {
+"duration": 0.5,
+"texture": ExtResource("7_j8plt")
+}, {
+"duration": 0.5,
+"texture": ExtResource("8_06kv2")
+}, {
+"duration": 0.5,
+"texture": ExtResource("9_spdvk")
+}, {
+"duration": 0.5,
+"texture": ExtResource("10_fxf1m")
+}, {
+"duration": 0.5,
+"texture": ExtResource("11_51u4f")
+}, {
+"duration": 0.5,
+"texture": ExtResource("12_tuhm3")
+}, {
+"duration": 0.5,
+"texture": ExtResource("13_w0v10")
+}, {
+"duration": 0.5,
+"texture": ExtResource("14_mdf1w")
+}],
+"loop": true,
+"name": &"default",
+"speed": 12.0
+}]
 
 [node name="Node2D" type="Node2D" unique_id=1335769398]
 script = ExtResource("1_q2aj5")
+
+[node name="conveyorBelt" type="AnimatedSprite2D" parent="." unique_id=756200708]
+position = Vector2(964, 133)
+scale = Vector2(1.0999999, 1.0999999)
+sprite_frames = SubResource("SpriteFrames_5jvig")
+autoplay = "default"

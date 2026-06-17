@@ -6,6 +6,8 @@ extends Node2D
 
 var paused : bool = false #tells system if game paused
 
+var firstRun : bool = true #controls if this is the players first run
+
 #check if theres a trgID 
 #pass dict in same format as currectOrders through GameMaster.slushiData(yourDict)
 #see debug scene example code

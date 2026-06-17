@@ -76,6 +76,10 @@ var ingredients: Array[FruitData.FruitType] = [
 
 func _ready() -> void:
 	#get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
+	if GameManager.firstRun:
+		GameManager.paused = true
+		var helper = load("res://Scenes/help_scene.tscn").instantiate()
+		add_child(helper)
 	REMAIN_TIME = MAX_TIME
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	healthBar.max_value = MAX_TIME

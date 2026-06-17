@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://c73boq4msi581"]
 
 [ext_resource type="Script" uid="uid://r8xqbm37pu8s" path="res://Scripts/order_health_control.gd" id="1_735xl"]
-[ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="2_735xl"]
-[ext_resource type="Texture2D" uid="uid://hvvpjt45gxo7" path="res://assets/sprites/orderWindowSprites/customerBGSPrite.PNG" id="3_lmoxa"]
-[ext_resource type="Texture2D" uid="uid://bij2pj2nqrm7x" path="res://assets/sprites/orderWindowSprites/customerFGSprite.PNG" id="6_hsnre"]
+[ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://Assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="2_735xl"]
+[ext_resource type="Texture2D" uid="uid://hvvpjt45gxo7" path="res://Assets/sprites/orderWindowSprites/customerBGSPrite.PNG" id="3_lmoxa"]
+[ext_resource type="Texture2D" uid="uid://bij2pj2nqrm7x" path="res://Assets/sprites/orderWindowSprites/customerFGSprite.PNG" id="6_hsnre"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3c1p4"]
 bg_color = Color(2.3102762e-06, 0.83722603, 0.97005206, 1)
