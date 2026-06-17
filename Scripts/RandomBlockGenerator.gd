@@ -38,4 +38,5 @@ func spawn_piece(fruitpiece):
 	piece.position = Vector2(1800, 125)
 	add_child(piece)
 	moveTween.tween_property(piece, "position", piece.position + move_amount, seconds)
+	moveTween.finished.pause(piece.queue_free)
 	moveTween.finished.connect(piece.queue_free)
