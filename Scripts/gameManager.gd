@@ -3,6 +3,7 @@ extends Node2D
 @onready var mainMenu = load("res://Scenes/Primary/main_menu.tscn")
 @onready var gameLoop = load("res://Scenes/Primary/game_loop.tscn")
 @onready var pauseScene = load("res://Scenes/pause_menu.tscn")
+@onready var creditsScene = load("res://Scenes/Primary/credits.tscn")
 
 var paused : bool = false #tells system if game paused
 

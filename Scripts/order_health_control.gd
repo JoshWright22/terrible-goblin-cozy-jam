@@ -63,8 +63,6 @@ var medScore = 50 #stopping point at half
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
 var currentOrders : Dictionary = {} #tracks customer ID & order Array
-#var delivery_zones: Dictionary = {} #tracks customer ID 
-# Canonical ingredient list — uses the same FruitType enum as FruitData resources
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
 	FruitData.FruitType.STRAWBERRY,

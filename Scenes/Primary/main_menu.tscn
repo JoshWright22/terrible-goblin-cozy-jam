@@ -5,6 +5,12 @@
 [ext_resource type="Texture2D" uid="uid://dtchkuf2qpnp2" path="res://Assets/sprites/mainMenuSprites/startButton1Sprite.PNG" id="3_ce3w2"]
 [ext_resource type="Texture2D" uid="uid://1ifhbmeoaux8" path="res://Assets/sprites/mainMenuSprites/startButton2Sprite.PNG" id="4_n45e2"]
 [ext_resource type="BitMap" uid="uid://dlv1f7plidfhj" path="res://Assets/sprites/mainMenuSprites/menuBGSpritebitMap.png" id="5_n45e2"]
+[ext_resource type="Texture2D" uid="uid://daw7frc8g0qp6" path="res://Assets/sprites/mainMenuSprites/settingsButton1Sprite.PNG" id="6_e7kpc"]
+[ext_resource type="Texture2D" uid="uid://4s3fi00aliin" path="res://Assets/sprites/mainMenuSprites/settingsButton2Sprite.PNG" id="7_qfjt5"]
+[ext_resource type="BitMap" uid="uid://dab7xs1823ekh" path="res://Assets/sprites/mainMenuSprites/settingsButton1SpritebitMap.png" id="8_qfjt5"]
+[ext_resource type="Texture2D" uid="uid://r30pj4cqoaos" path="res://Assets/sprites/mainMenuSprites/creditsButton1Sprite.PNG" id="9_2t5om"]
+[ext_resource type="Texture2D" uid="uid://cpyd63yko2r65" path="res://Assets/sprites/mainMenuSprites/creditsButton2Sprite.PNG" id="10_mlueh"]
+[ext_resource type="BitMap" uid="uid://btq2rjg6ifmk4" path="res://Assets/sprites/mainMenuSprites/creditsButton1SpriteclickMask.png" id="11_q4a8g"]
 
 [node name="mainMenu" type="Node2D" unique_id=365446402]
 script = ExtResource("1_ce3w2")
@@ -20,10 +26,10 @@ anchors_preset = 0
 
 [node name="TextureButton" type="TextureButton" parent="uiControl" unique_id=1057060059]
 layout_mode = 0
-offset_left = -1641.0
-offset_top = -72.0
-offset_right = 2199.0
-offset_bottom = 2088.0
+offset_left = -1638.0
+offset_top = -233.0
+offset_right = 2202.0
+offset_bottom = 1927.0
 scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(3122, 510)
 action_mode = 0
@@ -31,4 +37,34 @@ texture_normal = ExtResource("3_ce3w2")
 texture_hover = ExtResource("4_n45e2")
 texture_click_mask = ExtResource("5_n45e2")
 
+[node name="TextureButton2" type="TextureButton" parent="uiControl" unique_id=1487027952]
+layout_mode = 0
+offset_left = -1666.0
+offset_top = -232.0
+offset_right = 2174.0
+offset_bottom = 1928.0
+rotation = -0.053730473
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(3122, 510)
+action_mode = 0
+texture_normal = ExtResource("6_e7kpc")
+texture_hover = ExtResource("7_qfjt5")
+texture_click_mask = ExtResource("8_qfjt5")
+
+[node name="TextureButton3" type="TextureButton" parent="uiControl" unique_id=1552821310]
+layout_mode = 0
+offset_left = -1621.0
+offset_top = -206.0
+offset_right = 2219.0
+offset_bottom = 1954.0
+rotation = 0.022901163
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(3122, 510)
+action_mode = 0
+texture_normal = ExtResource("9_2t5om")
+texture_hover = ExtResource("10_mlueh")
+texture_click_mask = ExtResource("11_q4a8g")
+
 [connection signal="button_down" from="uiControl/TextureButton" to="." method="_on_texture_button_button_down"]
+[connection signal="button_down" from="uiControl/TextureButton2" to="." method="_on_texture_button_2_button_down"]
+[connection signal="button_down" from="uiControl/TextureButton3" to="." method="_on_texture_button_3_button_down"]
