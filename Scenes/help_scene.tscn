@@ -11,6 +11,53 @@
 [ext_resource type="Texture2D" uid="uid://cp8bxtej117lj" path="res://Assets/sprites/orderWindowSprites/cursor-mouse-arrow-transparent-png-stickpng-15.png" id="9_ansn0"]
 [ext_resource type="Texture2D" uid="uid://c0f025vw3djvl" path="res://Assets/sprites/characterSprites/char2/char2AngrySprite.PNG" id="10_51a3o"]
 [ext_resource type="Texture2D" uid="uid://xjcsdtqfmcon" path="res://Assets/sprites/orderWindowSprites/bubble2Sprite.PNG" id="11_nbsnu"]
+[ext_resource type="Texture2D" uid="uid://b5gg4rru0m45l" path="res://Assets/sprites/orderWindowSprites/face1Sprite.PNG" id="12_pr5ib"]
+[ext_resource type="Texture2D" uid="uid://pgfdjqwxt3gh" path="res://Assets/sprites/orderWindowSprites/face2Sprite.PNG" id="13_ickqn"]
+[ext_resource type="Texture2D" uid="uid://b04c1mra88acw" path="res://Assets/sprites/orderWindowSprites/face3Sprite.PNG" id="14_sbhml"]
+[ext_resource type="Texture2D" uid="uid://b03qt8myuukvu" path="res://Assets/sprites/orderWindowSprites/face4Sprite.PNG" id="15_2djdv"]
+[ext_resource type="Texture2D" uid="uid://by8kassge4rr3" path="res://Assets/sprites/blender/blenderBGSprite.PNG" id="16_5dshu"]
+[ext_resource type="Texture2D" uid="uid://c6j08mr8f6udy" path="res://Assets/sprites/blender/blenderButtonSprite.PNG" id="17_ebpko"]
+[ext_resource type="Texture2D" uid="uid://u3b67rqlg8y6" path="res://Assets/sprites/blender/blueberrySmoothieSprite.PNG" id="18_p0flt"]
+[ext_resource type="Texture2D" uid="uid://duaupsi5kpj8l" path="res://Assets/sprites/blender/strawberrySmoothieSprite.PNG" id="19_dig3o"]
+[ext_resource type="Texture2D" uid="uid://hrh1a17uw0u5" path="res://Assets/sprites/fruitSprites/blueberry/blueberry3Sprite.PNG" id="20_sbhml"]
+[ext_resource type="Texture2D" uid="uid://bu4t5nswuixpl" path="res://Assets/sprites/fruitSprites/apple/apple3Sprite.PNG" id="21_2djdv"]
+[ext_resource type="Texture2D" uid="uid://kcixqbgxr807" path="res://Assets/sprites/fruitSprites/mango/mango6Sprite.PNG" id="22_p0flt"]
+[ext_resource type="Texture2D" uid="uid://cok1018xkywgn" path="res://Assets/sprites/fruitSprites/banana/banana2Sprite.PNG" id="23_dig3o"]
+[ext_resource type="Texture2D" uid="uid://dqty18ac3r287" path="res://Assets/sprites/fruitSprites/strawberry/strawberry5Sprite.PNG" id="24_4lyhu"]
+[ext_resource type="Texture2D" uid="uid://be2yhi6kv2aat" path="res://Assets/sprites/fruitSprites/apple/apple7Sprite.PNG" id="25_jmdt4"]
+
+[sub_resource type="GDScript" id="GDScript_lpsud"]
+script/source = "extends Control
+
+@onready var mouse = $TextureRect4
+@onready var grab = $VBoxContainer/TextureRect6
+@onready var grabbed = $TextureRect6
+
+var moveTo = Vector2(1262, 702)
+var moveTo2 = Vector2(1038, 588)
+
+var movTween = create_tween()
+
+func _ready() -> void:
+	movTween.set_loops(0)
+	grabbed.visible = true
+	grab.visible = false
+	movTween.set_parallel(true)
+	movTween.tween_property(mouse, \"position\", moveTo, 2.5)
+	movTween.tween_property(grabbed, \"position\", moveTo2, 2.5)
+	movTween.chain().tween_interval(.5) 
+	movTween.chain().tween_callback(func():
+		grab.visible = true
+		grabbed.visible = false
+		mouse.position = Vector2(247.0, 702)
+		grabbed.position = Vector2(23.0, 588)
+	)
+	movTween.chain().tween_interval(0.2)
+	movTween.chain().tween_callback(func():
+		grabbed.visible = true
+		grab.visible = false
+	)
+"
 
 [node name="helpScene" type="Node2D" unique_id=97516703]
 script = ExtResource("1_kmmeu")
@@ -24,7 +71,6 @@ scale = Vector2(47.84, 18.020794)
 color = Color(0.4719187, 0.30005732, 0.20292535, 1)
 
 [node name="pg1" type="Control" parent="." unique_id=329130500]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -114,6 +160,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_nbsnu")
 
 [node name="pg2" type="Control" parent="." unique_id=1504191204]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -202,6 +249,182 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
+[node name="pg3" type="Control" parent="." unique_id=1658531849]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="pg3" unique_id=1977920964]
+layout_mode = 0
+offset_left = 489.0
+offset_top = 244.0
+offset_right = 1498.0
+offset_bottom = 586.0
+theme_override_fonts/normal_font = ExtResource("2_5m6pi")
+theme_override_font_sizes/normal_font_size = 45
+text = "Complete orders in a timely manner 
+while keeping the orders accurate 
+for maximum satisfaction!"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="pg3" unique_id=740919798]
+layout_mode = 0
+offset_left = 117.0
+offset_top = 184.0
+offset_right = 289.0
+offset_bottom = 836.0
+
+[node name="TextureRect" type="TextureRect" parent="pg3/VBoxContainer" unique_id=1345066652]
+layout_mode = 2
+texture = ExtResource("12_pr5ib")
+
+[node name="TextureRect2" type="TextureRect" parent="pg3/VBoxContainer" unique_id=720189236]
+layout_mode = 2
+texture = ExtResource("13_ickqn")
+
+[node name="TextureRect3" type="TextureRect" parent="pg3/VBoxContainer" unique_id=2140671740]
+layout_mode = 2
+texture = ExtResource("14_sbhml")
+
+[node name="TextureRect4" type="TextureRect" parent="pg3/VBoxContainer" unique_id=1014128906]
+layout_mode = 2
+texture = ExtResource("15_2djdv")
+
+[node name="TextureRect" type="TextureRect" parent="pg3" unique_id=1686241265]
+layout_mode = 0
+offset_left = 1450.0
+offset_top = 329.0
+offset_right = 2160.0
+offset_bottom = 1214.0
+scale = Vector2(0.56, 0.56)
+texture = ExtResource("16_5dshu")
+
+[node name="TextureRect2" type="TextureRect" parent="pg3" unique_id=1199781566]
+layout_mode = 0
+offset_left = 1587.0
+offset_top = 683.0
+offset_right = 2297.0
+offset_bottom = 1568.0
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("17_ebpko")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="pg3" unique_id=163631440]
+layout_mode = 0
+offset_left = 630.0
+offset_top = 479.0
+offset_right = 1610.0
+offset_bottom = 1085.0
+scale = Vector2(0.46, 0.46)
+
+[node name="TextureRect2" type="TextureRect" parent="pg3/HBoxContainer" unique_id=1096148256]
+layout_mode = 2
+texture = ExtResource("18_p0flt")
+
+[node name="TextureRect3" type="TextureRect" parent="pg3/HBoxContainer" unique_id=1714649252]
+layout_mode = 2
+texture = ExtResource("6_nbsnu")
+
+[node name="TextureRect4" type="TextureRect" parent="pg3/HBoxContainer" unique_id=176514597]
+layout_mode = 2
+texture = ExtResource("19_dig3o")
+
+[node name="pg4" type="Control" parent="." unique_id=1424920008]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = SubResource("GDScript_lpsud")
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="pg4" unique_id=105561]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 173.0
+offset_right = 1406.0
+offset_bottom = 629.0
+theme_override_fonts/normal_font = ExtResource("2_5m6pi")
+theme_override_font_sizes/normal_font_size = 45
+text = "Use the left click while holding to rotate
+the piece you're holding!  
+
+Make the best of the space you have: but 
+be warned, a work day is stressful!
+You may pick up a fruit only to find its
+not what you remember it being!"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="TextureRect" type="TextureRect" parent="pg4" unique_id=177831983]
+layout_mode = 0
+offset_left = 1464.0
+offset_top = 322.0
+offset_right = 2174.0
+offset_bottom = 1207.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("16_5dshu")
+
+[node name="TextureRect2" type="TextureRect" parent="pg4" unique_id=1704711078]
+layout_mode = 0
+offset_left = 1606.0
+offset_top = 405.0
+offset_right = 2316.0
+offset_bottom = 1290.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("20_sbhml")
+
+[node name="TextureRect3" type="TextureRect" parent="pg4" unique_id=1978247753]
+layout_mode = 0
+offset_left = 1659.9999
+offset_top = 628.0
+offset_right = 2370.0
+offset_bottom = 1513.0
+rotation = -3.1387317
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("21_2djdv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="pg4" unique_id=890147530]
+layout_mode = 0
+offset_left = 40.999996
+offset_top = 271.0
+offset_right = 401.0
+offset_bottom = 1014.0
+scale = Vector2(0.655, 0.655)
+
+[node name="TextureRect4" type="TextureRect" parent="pg4/VBoxContainer" unique_id=1289912567]
+layout_mode = 2
+texture = ExtResource("22_p0flt")
+
+[node name="TextureRect5" type="TextureRect" parent="pg4/VBoxContainer" unique_id=1301263139]
+layout_mode = 2
+texture = ExtResource("23_dig3o")
+
+[node name="TextureRect6" type="TextureRect" parent="pg4/VBoxContainer" unique_id=1341037910]
+layout_mode = 2
+texture = ExtResource("24_4lyhu")
+
+[node name="TextureRect6" type="TextureRect" parent="pg4" unique_id=597804157]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 588.0
+offset_right = 383.0
+offset_bottom = 833.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("25_jmdt4")
+
+[node name="TextureRect4" type="TextureRect" parent="pg4" unique_id=315546503]
+layout_mode = 0
+offset_left = 247.0
+offset_top = 702.0
+offset_right = 1849.0001
+offset_bottom = 3102.0
+scale = Vector2(0.025, 0.025)
+texture = ExtResource("9_ansn0")
+
 [node name="Label" type="Label" parent="." unique_id=2110796017]
 offset_left = 934.0
 offset_top = 773.0
@@ -245,6 +468,16 @@ scale = Vector2(1, 0.39999878)
 theme_override_constants/outline_size = 66
 theme_override_font_sizes/font_size = 100
 text = "→"
+
+[node name="Label3" type="Label" parent="." unique_id=536810120]
+offset_left = 1733.0
+offset_top = 163.0
+offset_right = 2148.0
+offset_bottom = 282.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_font_sizes/font_size = 37
+text = "ESC : start"
 
 [connection signal="button_down" from="Label/Button2" to="." method="_on_button_2_button_down"]
 [connection signal="button_down" from="Label2/button" to="." method="_on_button_button_down"]
