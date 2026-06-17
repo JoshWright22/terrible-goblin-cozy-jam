@@ -63,8 +63,6 @@ var medScore = 50 #stopping point at half
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
 var currentCustomer : Dictionary = {} #tracks current customer + loc
 var currentOrders : Dictionary = {} #tracks customer ID & order Array
-#var delivery_zones: Dictionary = {} #tracks customer ID 
-# Canonical ingredient list — uses the same FruitType enum as FruitData resources
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
 	FruitData.FruitType.STRAWBERRY,
@@ -76,11 +74,9 @@ var ingredients: Array[FruitData.FruitType] = [
 
 func _ready() -> void:
 	#get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
-	if GameManager.firstRun:
-		GameManager.paused = true
-		GameManager.firstRun = false
-		var helper = load("res://Scenes/help_scene.tscn").instantiate()
-		add_child(helper)
+	GameManager.paused = true
+	var helper = load("res://Scenes/help_scene.tscn").instantiate()
+	add_child(helper)
 	REMAIN_TIME = MAX_TIME
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	healthBar.max_value = MAX_TIME

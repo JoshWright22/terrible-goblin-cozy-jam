@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ba3cyy0fuknb4" path="res://Assets/sprites/fruitSprites/appleSprite.PNG" id="4_a1jem"]
 [ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://Assets/sprites/fruitSprites/mangoSprite.PNG" id="5_51a3o"]
 [ext_resource type="Texture2D" uid="uid://jf5sx4i2eo4n" path="res://Assets/sprites/blender/mangoSmoothieSprite.PNG" id="6_nbsnu"]
+[ext_resource type="Texture2D" uid="uid://8ujntvhtec0w" path="res://Assets/sprites/fruitSprites/blueberrySprite.PNG" id="7_dig3o"]
 [ext_resource type="Texture2D" uid="uid://bob1ovfnxtq2f" path="res://Assets/sprites/characterSprites/char2/char2HappySprite.PNG" id="7_skvbw"]
 [ext_resource type="Texture2D" uid="uid://cvoqh1s5x72n2" path="res://Assets/sprites/orderWindowSprites/bubble1Sprite.PNG" id="8_8fc1r"]
 [ext_resource type="Texture2D" uid="uid://cp8bxtej117lj" path="res://Assets/sprites/orderWindowSprites/cursor-mouse-arrow-transparent-png-stickpng-15.png" id="9_ansn0"]
@@ -158,6 +159,16 @@ offset_right = 1827.0
 offset_bottom = 837.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_nbsnu")
+
+[node name="TextureRect5" type="TextureRect" parent="pg1" unique_id=1934035787]
+layout_mode = 0
+offset_left = 103.0
+offset_top = 503.0
+offset_right = 379.0
+offset_bottom = 791.0
+rotation = 0.17171586
+scale = Vector2(0.63, 0.63)
+texture = ExtResource("7_dig3o")
 
 [node name="pg2" type="Control" parent="." unique_id=1504191204]
 visible = false
@@ -348,7 +359,7 @@ offset_right = 1406.0
 offset_bottom = 629.0
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
-text = "Use the left click while holding to rotate
+text = "Use the right click to rotate
 the piece you're holding!  
 
 Make the best of the space you have: but 
