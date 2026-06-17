@@ -1,12 +1,33 @@
 [gd_scene format=3 uid="uid://t100sqm3ynpw"]
 
 [ext_resource type="Script" uid="uid://cm0ly5v4kqaoc" path="res://Scripts/game_over.gd" id="1_ojehl"]
-[ext_resource type="Texture2D" uid="uid://dlcam0ogg8dcn" path="res://assets/sprites/orderWindowSprites/tempGameOverAsset.jpg" id="2_8fo1c"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_8fo1c"]
 
 [node name="gameOver" type="Node2D" unique_id=939538374]
 script = ExtResource("1_ojehl")
 
-[node name="TempGameOverAsset" type="Sprite2D" parent="." unique_id=846552199]
-position = Vector2(956, 538)
-scale = Vector2(3, 3)
-texture = ExtResource("2_8fo1c")
+[node name="Control" type="Control" parent="." unique_id=1387821143]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 960.0
+offset_top = 540.0
+offset_right = 960.0
+offset_bottom = 540.0
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=573603388]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(-12.932617, 19.425173)
+pivot_offset = Vector2(18.792328, 19.989334)
+color = Color(0.9129843, 0.7377115, 0.27596578, 1)
+
+[node name="Button" type="Button" parent="Control" unique_id=577704706]
+layout_mode = 0
+offset_left = -90.0
+offset_top = -125.000046
+offset_right = -10.0
+offset_bottom = -94.000046
+scale = Vector2(2.5, 2.5)
+theme_override_fonts/font = ExtResource("2_8fo1c")
+text = "Restart"

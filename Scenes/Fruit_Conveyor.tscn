@@ -1,12 +1,6 @@
 [gd_scene format=3 uid="uid://6vib1risoh6x"]
 
 [ext_resource type="Script" uid="uid://d4l0b2yuhkhb5" path="res://Scripts/RandomBlockGenerator.gd" id="1_q2aj5"]
-[ext_resource type="Texture2D" uid="uid://bknc7gsxymbew" path="res://icon.svg" id="2_266an"]
 
 [node name="Node2D" type="Node2D" unique_id=1335769398]
 script = ExtResource("1_q2aj5")
-
-[node name="Icon" type="Sprite2D" parent="." unique_id=803533591]
-visible = false
-position = Vector2(1800, 10)
-texture = ExtResource("2_266an")

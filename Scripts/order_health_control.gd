@@ -12,8 +12,8 @@ var difficulty = "EASY" # "MED" "HARD" general setter for code
 
 #Timer/health variables______________________________________________________
 var MAX_TIME : float = 45.0 #Time till health runs out
-var REMAIN_TIME : float = 45.0 #Time remaining, timer paused if no customers
-var ADD_TIME : float = 3.0 #Max amount of time a player can win back with satisfaction
+var REMAIN_TIME : float #Time remaining, timer paused if no customers
+var ADD_TIME : float = 3.0 #Max amount of time per score a player can win back with satisfaction
 var handBreak = false #helps with smooth animation
 #Customer spawn time variables_______________________________________________
 var positions : Dictionary = {1 : Vector2(147.4, 340.8), 2 : Vector2(358, 340.8), 3 : Vector2(575, 340.8), 4 : Vector2(778, 340.8)}
@@ -57,7 +57,7 @@ var ITEM_MED_MAX : int = 4
 var ITEM_HARD_MIN : int = 4
 var ITEM_HARD_MAX : int = 5
 
-var bestScore = 75 #whole number percentage of matching to get perfect
+var bestScore = 75 #whole number percentage of matching to get perfect (i.e <= 75% is perfect score) 
 var medScore = 50 #stopping point at half
 #___________________Customer/Order Variables________________________________
 var customerNo : int = 0 #tracks how many customers you've served for difficulty scaling
@@ -76,6 +76,7 @@ var ingredients: Array[FruitData.FruitType] = [
 
 func _ready() -> void:
 	#get_tree().set_debug_collisions_hint(true) #Shows area 2Ds
+	REMAIN_TIME = MAX_TIME
 	customerSpawnTimer.start(customerSpawnTimer.wait_time)
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
@@ -127,10 +128,10 @@ func compareValues(inputer):
 		if key not in currentOrders[trger]:
 			pass
 		else:
-			var ord = currentOrders[trger][key]
+			var orde = currentOrders[trger][key]
 			var inp = inputer[key]
 			var tot
-			if ord >= inp:
+			if orde >= inp:
 				tot = inp
 			else:
 				tot = currentOrders[trger][key]

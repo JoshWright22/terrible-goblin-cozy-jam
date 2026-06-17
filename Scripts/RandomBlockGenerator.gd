@@ -7,7 +7,7 @@ func _ready() -> void:
 const fruitpiece = [Vector2i(10,10), Vector2i(10,10), Vector2i(10,10), Vector2i(10,10)]
 
 var move_amount := Vector2(-2000,0)
-var seconds := 30
+var seconds := 20
 
 var fruit_piece_packed: PackedScene = load("res://Scenes/FruitPiece.tscn")
 var fruit_piece = fruit_piece_packed.instantiate()
