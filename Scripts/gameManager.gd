@@ -4,7 +4,7 @@ extends Node2D
 @onready var gameLoop = load("res://Scenes/Primary/game_loop.tscn")
 @onready var pauseScene = load("res://Scenes/pause_menu.tscn")
 @onready var creditsScene = load("res://Scenes/Primary/credits.tscn")
-
+#@onready var settingsScene = load()
 var paused : bool = false #tells system if game paused
 
 var firstRun : bool = true #controls if this is the players first run

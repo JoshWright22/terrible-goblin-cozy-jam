@@ -1,11 +1,28 @@
 [gd_scene format=3 uid="uid://b0hmbiwjbr5o"]
 
-[ext_resource type="Texture2D" uid="uid://bknc7gsxymbew" path="res://icon.svg" id="1_emv3i"]
 [ext_resource type="Script" uid="uid://bt22uq0my282f" path="res://Scripts/help_scene.gd" id="1_k0w1u"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_k0w1u"]
 
 [node name="pauseMenu" type="Node2D" unique_id=190232550]
 script = ExtResource("1_k0w1u")
 
-[node name="Icon" type="Sprite2D" parent="." unique_id=1185930994]
-position = Vector2(562, 279)
-texture = ExtResource("1_emv3i")
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1711078888]
+offset_left = 800.0
+offset_top = 208.0
+offset_right = 840.0
+offset_bottom = 248.0
+scale = Vector2(10.1368685, 14.598584)
+color = Color(0.7238882, 0.42543676, 0, 1)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=37795888]
+modulate = Color(0, 0, 0, 1)
+offset_left = 885.0
+offset_top = 227.0
+offset_right = 1353.0
+offset_bottom = 370.0
+pivot_offset = Vector2(228, 0)
+theme_override_fonts/normal_font = ExtResource("2_k0w1u")
+theme_override_font_sizes/normal_font_size = 58
+text = "Paused"
+fit_content = true
+autowrap_mode = 0
