@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b7h0qnvv28pe0"]
 
-[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://Assets/sprites/backgroundSprite.PNG" id="1_meb0d"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_cfch2"]
+[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://assets/sprites/backgroundSprite.PNG" id="1_meb0d"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_cfch2"]
 
 [sub_resource type="GDScript" id="GDScript_meb0d"]
 script/source = "extends Node2D
@@ -47,7 +47,7 @@ offset_bottom = 313.0
 pivot_offset = Vector2(228, 0)
 theme_override_fonts/normal_font = ExtResource("2_cfch2")
 theme_override_font_sizes/normal_font_size = 104
-text = "CREDITs"
+text = "CREDITS"
 fit_content = true
 autowrap_mode = 0
 
@@ -62,7 +62,7 @@ scale = Vector2(0.9899249, 0.99584746)
 pivot_offset = Vector2(228, 0)
 theme_override_fonts/normal_font = ExtResource("2_cfch2")
 theme_override_font_sizes/normal_font_size = 49
-text = "Aurora | Rorannn - Asset/Art Dev
+text = "RoranArt | Aurora - Asset/Art Dev
 Robert Taquechel - Godot Dev
 Joshua Wright - Godot Dev
 Jack | H4rb1nger - Godot Dev
@@ -88,9 +88,9 @@ theme_override_constants/separation = -3
 modulate = Color(0, 0, 0, 1)
 layout_mode = 2
 theme_override_font_sizes/font_size = 49
-text = "Itch.io Page"
+text = "Instagram"
 underline = 1
-uri = "https://rorannn.itch.io/"
+uri = "https://www.instagram.com/roranart/"
 
 [node name="RobLink" type="LinkButton" parent="Control/VBoxContainer" unique_id=1120306128]
 modulate = Color(0, 0, 0, 1)
@@ -116,6 +116,7 @@ default_color = Color(0, 0, 0, 1)
 
 [node name="Line2D" type="Line2D" parent="Control" unique_id=2107602148]
 points = PackedVector2Array(314, 408, 436, 408)
+closed = true
 default_color = Color(0, 0, 0, 1)
 
 [node name="Line2D2" type="Line2D" parent="Control" unique_id=473415797]
