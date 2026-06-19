@@ -18,7 +18,7 @@ var trgID = null
 
 # Settings
 var auto_show_orders: bool = true       # show order bubbles without hovering
-var change_order_on_anger: bool = false # customers reroll order when mood drops
+var change_order_on_anger: bool = true # customers reroll order when they turn angry
 
 var score: int = 0
 var fruit_held: bool = false  # prevents picking up two pieces at once

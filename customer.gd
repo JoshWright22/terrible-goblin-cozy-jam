@@ -147,7 +147,7 @@ func _refresh_bubble() -> void:
 	if not control.currentCustomer.has(ID):
 		return
 	c = orderAmount.instantiate()
-	c.offset = control.currentCustomer[ID] + Vector2(0, yFIx)
+	c.offset = control.currentCustomer[ID] + Vector2(25, yFIx)
 	c.cusID = ID
 	if not c.is_inside_tree():
 		control.add_child(c)
@@ -205,11 +205,11 @@ func _on_emotion_timer_timeout() -> void:
 		control.customer_left()
 		removeCustomer()
 	else:
-		if GameManager.change_order_on_anger and randi_range(1, changeMaxChance) == 1:
+		mood -= 1
+		changeMood()
+		if mood == 1 and GameManager.change_order_on_anger:
 			control.currentOrders.erase(ID)
 			control.genOrder(ID)
 			_refresh_bubble()
-		mood -= 1
-		changeMood()
 		timer.wait_time = randi_range(control.minWaitTime, control.maxWaitTime)
 		timer.start(timer.wait_time)

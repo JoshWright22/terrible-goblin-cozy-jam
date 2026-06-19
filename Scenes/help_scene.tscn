@@ -233,18 +233,21 @@ texture = ExtResource("11_nbsnu")
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="pg2" unique_id=1942272613]
 layout_mode = 0
-offset_left = 265.0
-offset_top = 668.0
-offset_right = 1515.0
-offset_bottom = 1010.0
+offset_left = 389.0
+offset_top = 491.0
+offset_right = 1639.0
+offset_bottom = 833.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
 bbcode_enabled = true
-text = "[center]Keep customers happy or 
-they'll leave and come back 
-even harder to please![/center]"
+text = "[center]Keep customers happy or
+they'll leave and come back
+even harder to please!
+
+An angry customer will
+change their order![/center]"
 fit_content = true
 scroll_active = false
 autowrap_mode = 2
@@ -258,10 +261,10 @@ offset_bottom = 40.0
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="pg3" unique_id=1977920964]
 layout_mode = 0
-offset_left = 371.0
-offset_top = 204.0
-offset_right = 1621.0
-offset_bottom = 546.0
+offset_left = 379.0
+offset_top = 133.0
+offset_right = 1629.0
+offset_bottom = 475.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
@@ -269,7 +272,10 @@ theme_override_font_sizes/normal_font_size = 45
 bbcode_enabled = true
 text = "Complete orders in a timely manner
 while keeping the orders accurate
-for maximum satisfaction!"
+for maximum satisfaction!
+
+The closer your blend
+the greater your score."
 fit_content = true
 scroll_active = false
 autowrap_mode = 2

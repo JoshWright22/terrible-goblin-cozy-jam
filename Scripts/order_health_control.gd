@@ -159,6 +159,7 @@ func _start_game_music() -> void:
 		return
 	_music_player = AudioStreamPlayer.new()
 	_music_player.stream = game_music
+	_music_player.bus = "Music"
 	_music_player.volume_db = -60.0
 	add_child(_music_player)
 	_music_player.finished.connect(_music_player.play)

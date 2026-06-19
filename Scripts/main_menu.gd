@@ -127,13 +127,7 @@ func _play_intro() -> void:
 	_beat_timer.wait_time = 60.0 / bpm
 	_beat_timer.start()
 
-	if _music.stream:
-		_music.volume_db = -60.0
-		_music.play()
-		_music.finished.connect(_music.play)
-		create_tween() \
-			.tween_property(_music, "volume_db", 0.0, MUSIC_FADE_IN_TIME) \
-			.set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+	AudioManager.start_menu_music(MUSIC_FADE_IN_TIME)
 
 func _process(_delta: float) -> void:
 	if not _intro_done:
@@ -161,14 +155,7 @@ func _on_beat_timer_timeout() -> void:
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _fade_music_then(callback: Callable) -> void:
-	if _music.finished.is_connected(_music.play):
-		_music.finished.disconnect(_music.play)
-	if _music.stream and _music.playing:
-		var tw := _music.create_tween()
-		tw.tween_property(_music, "volume_db", -60.0, MUSIC_FADE_OUT_TIME)
-		tw.finished.connect(callback)
-	else:
-		callback.call()
+	AudioManager.stop_menu_music(callback, MUSIC_FADE_OUT_TIME)
 
 func _hover_in(btn: TextureButton) -> void:
 	AudioManager.play_button_hover()
@@ -184,10 +171,13 @@ func _press(btn: TextureButton) -> void:
 	btn.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT) \
 		.tween_property(btn, "scale", PRESS_SCALE, 0.06)
 
-func _quick_release_then(btn: TextureButton, callback: Callable) -> void:
+func _quick_release_then(btn: TextureButton, callback: Callable, fade_music: bool = true) -> void:
 	var tw := btn.create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.tween_property(btn, "scale", BASE_SCALE, 0.05)
-	tw.finished.connect(func(): _fade_music_then(callback))
+	if fade_music:
+		tw.finished.connect(func(): _fade_music_then(callback))
+	else:
+		tw.finished.connect(callback)
 
 func _on_start_released() -> void:
 	_quick_release_then($uiControl/TextureButton, func():
@@ -196,13 +186,13 @@ func _on_start_released() -> void:
 
 func _on_settings_released() -> void:
 	_quick_release_then($uiControl/TextureButton2, func():
-		get_tree().call_group("hostController", "changeScene", GameManager.settingsScene)
-	)
+		get_tree().call_group("hostController", "transition_to_scene", GameManager.settingsScene)
+	, false)
 
 func _on_credits_released() -> void:
 	_quick_release_then($uiControl/TextureButton3, func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.creditsScene)
-	)
+	, false)
 
 func _on_texture_button_button_down() -> void:
 	pass
