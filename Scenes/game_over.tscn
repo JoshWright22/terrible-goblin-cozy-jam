@@ -1,98 +1,95 @@
 [gd_scene format=3 uid="uid://t100sqm3ynpw"]
 
 [ext_resource type="Script" uid="uid://cm0ly5v4kqaoc" path="res://Scripts/game_over.gd" id="1_ojehl"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_8fo1c"]
+[ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="2_go"]
+[ext_resource type="Texture2D" uid="uid://droqks88vso3y" path="res://Assets/sprites/ui sprites/playButtonSprite.PNG" id="3_go"]
+[ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_go"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="5_go"]
 
-[node name="gameOver" type="Node2D" unique_id=939538374]
+[node name="gameOver" type="CanvasLayer"]
+layer = 10
+process_mode = 3
 script = ExtResource("1_ojehl")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1512090581]
-offset_left = 800.0
-offset_top = 208.0
-offset_right = 840.0
-offset_bottom = 248.0
-scale = Vector2(10.1368685, 14.598584)
-color = Color(0.7238882, 0.42543676, 0, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=968669601]
-modulate = Color(0, 0, 0, 1)
-offset_left = 836.0
-offset_top = 227.0
-offset_right = 1304.0
-offset_bottom = 370.0
-pivot_offset = Vector2(228, 0)
-theme_override_fonts/normal_font = ExtResource("2_8fo1c")
-theme_override_font_sizes/normal_font_size = 58
-text = "GameOver"
-fit_content = true
-autowrap_mode = 0
-
-[node name="menuButt" type="Control" parent="." unique_id=594380239]
+[node name="Dimmer" type="ColorRect" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_left = -2.0
-offset_top = 123.0
-offset_right = 38.0
-offset_bottom = 163.0
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="menuButt" unique_id=1851234138]
-modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_left = 915.0
-offset_top = 220.0
-offset_right = 1383.0
-offset_bottom = 368.0
-pivot_offset = Vector2(228, 0)
-theme_override_fonts/normal_font = ExtResource("2_8fo1c")
-theme_override_font_sizes/normal_font_size = 58
-text = "Main
-Menu"
-fit_content = true
-autowrap_mode = 0
+[node name="BgSprite" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("2_go")
 
-[node name="Button" type="Button" parent="menuButt" unique_id=670297273]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = 904.0
-offset_top = 231.0
-offset_right = 1092.0
-offset_bottom = 357.0
-text = "main menu"
-
-[node name="menuButt2" type="Control" parent="." unique_id=1948833926]
+[node name="GameOverLabel" type="Label" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_left = -8.0
-offset_top = 323.0
-offset_right = 32.0
-offset_bottom = 363.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -280.0
+offset_right = 200.0
+offset_bottom = -210.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_go")
+theme_override_font_sizes/font_size = 58
+text = "GAME OVER"
+horizontal_alignment = 1
 
-[node name="RichTextLabel" type="RichTextLabel" parent="menuButt2" unique_id=1441415020]
-modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_left = 915.0
-offset_top = 220.0
-offset_right = 1383.0
-offset_bottom = 368.0
-pivot_offset = Vector2(228, 0)
-theme_override_fonts/normal_font = ExtResource("2_8fo1c")
-theme_override_font_sizes/normal_font_size = 58
-text = "Retry"
-fit_content = true
-autowrap_mode = 0
+[node name="ScoreLabel" type="Label" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = -140.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_go")
+theme_override_font_sizes/font_size = 38
+text = "Score: 0"
+horizontal_alignment = 1
 
-[node name="retryButt" type="Button" parent="menuButt2" unique_id=1740047308]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = 904.0
-offset_top = 231.0
-offset_right = 1092.0
-offset_bottom = 357.0
-text = "main menu"
+[node name="ButtonBox" type="VBoxContainer" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -90.0
+offset_right = 80.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
 
-[connection signal="button_down" from="menuButt/Button" to="." method="_on_button_button_down"]
-[connection signal="mouse_entered" from="menuButt/Button" to="." method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="menuButt/Button" to="." method="_on_button_mouse_exited"]
-[connection signal="button_down" from="menuButt2/retryButt" to="." method="_on_retry_butt_button_down"]
-[connection signal="mouse_entered" from="menuButt2/retryButt" to="." method="_on_retry_butt_mouse_entered"]
-[connection signal="mouse_exited" from="menuButt2/retryButt" to="." method="_on_retry_butt_mouse_exited"]
+[node name="RetryButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(160, 160)
+action_mode = 0
+texture_normal = ExtResource("3_go")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ExitButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(160, 160)
+action_mode = 0
+texture_normal = ExtResource("4_go")
+ignore_texture_size = true
+stretch_mode = 5
+
+[connection signal="pressed" from="ButtonBox/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="ButtonBox/ExitButton" to="." method="_on_exit_button_pressed"]

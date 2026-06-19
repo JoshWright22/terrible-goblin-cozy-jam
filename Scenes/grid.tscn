@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bskt41wkq0c31"]
 
 [ext_resource type="PackedScene" uid="uid://bh5ox3rbs72j6" path="res://Scenes/Blender.tscn" id="1_72mdp"]
-[ext_resource type="PackedScene" uid="uid://c8vxgdj80rqho" path="res://Scenes/FruitPiece.tscn" id="2_bb1ui"]
 [ext_resource type="PackedScene" uid="uid://ca5lyqrraqbn7" path="res://Scenes/blender_bar.tscn" id="3_bb1ui"]
 
 [node name="GridScene" type="Node2D" unique_id=1036425377]
@@ -9,24 +8,6 @@
 [node name="Blender" parent="." unique_id=1163045306 instance=ExtResource("1_72mdp")]
 position = Vector2(1086, 475)
 
-[node name="FruitPiece" parent="." unique_id=1615165953 instance=ExtResource("2_bb1ui")]
-position = Vector2(330, 170)
-
 [node name="BlenderBar" parent="." unique_id=1721027322 instance=ExtResource("3_bb1ui")]
 position = Vector2(1319.0001, 492)
 scale = Vector2(0.3, 0.3)
-
-[node name="FruitPiece2" parent="." unique_id=304572313 instance=ExtResource("2_bb1ui")]
-position = Vector2(330, 170)
-
-[node name="FruitPiece2" parent="FruitPiece2" unique_id=499520669 instance=ExtResource("2_bb1ui")]
-position = Vector2(330, 170)
-
-[node name="FruitPiece2" parent="FruitPiece2/FruitPiece2" unique_id=766644181 instance=ExtResource("2_bb1ui")]
-position = Vector2(330, 170)
-
-[node name="FruitPiece2" parent="FruitPiece2/FruitPiece2/FruitPiece2" unique_id=830091791 instance=ExtResource("2_bb1ui")]
-position = Vector2(330, 170)
-
-[node name="FruitPiece2" parent="FruitPiece2/FruitPiece2/FruitPiece2/FruitPiece2" unique_id=2087050640 instance=ExtResource("2_bb1ui")]
-position = Vector2(330, 170)

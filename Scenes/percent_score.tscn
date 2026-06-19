@@ -1,28 +1,17 @@
 [gd_scene format=3 uid="uid://bqbficj3j840g"]
 
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="1_m6lgb"]
+[ext_resource type="Script" path="res://Scripts/percent_score.gd" id="1_ps"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_ps"]
 
-[sub_resource type="GDScript" id="GDScript_j8bbv"]
-script/source = "extends Node2D
+[node name="percentScore" type="Node2D"]
+script = ExtResource("1_ps")
 
-var sets
-
-func _ready() -> void:
-	var tweev = create_tween()
-	$Label.text = str(sets) + \"%\"
-	tweev.tween_property(self, \"position\", self.position + Vector2(0, -180), 1.5)
-	tweev.tween_property(self, \"modulate\", Color(0,0,0,0), 1.5)
-	tweev.finished.connect(queue_free)
-"
-
-[node name="percentScore" type="Node2D" unique_id=1269727698]
-modulate = Color(1.0829396, 0, 0, 1)
-script = SubResource("GDScript_j8bbv")
-
-[node name="Label" type="Label" parent="." unique_id=1222919133]
-offset_left = -15.0
-offset_top = -11.0
-offset_right = 25.0
-offset_bottom = 12.0
-theme_override_fonts/font = ExtResource("1_m6lgb")
-text = "25%"
+[node name="Label" type="Label" parent="."]
+offset_left = -110.0
+offset_top = -24.0
+offset_right = 110.0
+offset_bottom = 24.0
+theme_override_fonts/font = ExtResource("2_ps")
+theme_override_font_sizes/font_size = 36
+text = "+0"
+horizontal_alignment = 1

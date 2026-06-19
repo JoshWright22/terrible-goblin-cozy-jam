@@ -1,82 +1,77 @@
 [gd_scene format=3 uid="uid://b0hmbiwjbr5o"]
 
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_k0w1u"]
+[ext_resource type="Script" path="res://Scripts/pause_menu.gd" id="1_pm"]
+[ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="2_pm"]
+[ext_resource type="Texture2D" uid="uid://droqks88vso3y" path="res://Assets/sprites/ui sprites/playButtonSprite.PNG" id="3_pm"]
+[ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_pm"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="5_pm"]
 
-[sub_resource type="GDScript" id="GDScript_emv3i"]
-script/source = "extends Node2D
+[node name="PauseMenu" type="CanvasLayer"]
+layer = 10
+process_mode = 3
+script = ExtResource("1_pm")
 
-@onready var menuText = $menuButt/RichTextLabel
-
-
-func _on_button_button_down() -> void:
-	get_tree().call_group(\"hostController\", \"changeScene\", GameManager.mainMenu)
-	queue_free()
-
-
-func _on_button_mouse_entered() -> void: #main enter
-	menuText.modulate = Color(0.557, 0.514, 0.0)
-
-
-func _on_button_mouse_exited() -> void: #main exit
-	menuText.modulate = Color(0,0,0,1)
-"
-
-[node name="pauseMenu" type="Node2D" unique_id=190232550]
-script = SubResource("GDScript_emv3i")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1711078888]
-offset_left = 800.0
-offset_top = 208.0
-offset_right = 840.0
-offset_bottom = 248.0
-scale = Vector2(10.1368685, 14.598584)
-color = Color(0.7238882, 0.42543676, 0, 1)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=37795888]
-modulate = Color(0, 0, 0, 1)
-offset_left = 885.0
-offset_top = 227.0
-offset_right = 1353.0
-offset_bottom = 370.0
-pivot_offset = Vector2(228, 0)
-theme_override_fonts/normal_font = ExtResource("2_k0w1u")
-theme_override_font_sizes/normal_font_size = 58
-text = "Paused"
-fit_content = true
-autowrap_mode = 0
-
-[node name="menuButt" type="Control" parent="." unique_id=1767646799]
+[node name="Dimmer" type="ColorRect" parent="."]
 layout_mode = 3
-anchors_preset = 0
-offset_left = -2.0
-offset_top = 123.0
-offset_right = 38.0
-offset_bottom = 163.0
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="menuButt" unique_id=575632226]
-modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_left = 915.0
-offset_top = 220.0
-offset_right = 1383.0
-offset_bottom = 368.0
-pivot_offset = Vector2(228, 0)
-theme_override_fonts/normal_font = ExtResource("2_k0w1u")
-theme_override_font_sizes/normal_font_size = 58
-text = "Main
-Menu"
-fit_content = true
-autowrap_mode = 0
+[node name="BgSprite" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+scale = Vector2(0.45, 0.45)
+texture = ExtResource("2_pm")
 
-[node name="Button" type="Button" parent="menuButt" unique_id=114921934]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = 904.0
-offset_top = 231.0
-offset_right = 1092.0
-offset_bottom = 357.0
-text = "main menu"
+[node name="PausedLabel" type="Label" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -250.0
+offset_right = 200.0
+offset_bottom = -165.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_pm")
+theme_override_font_sizes/font_size = 62
+text = "PAUSED"
+horizontal_alignment = 1
 
-[connection signal="button_down" from="menuButt/Button" to="." method="_on_button_button_down"]
-[connection signal="mouse_entered" from="menuButt/Button" to="." method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="menuButt/Button" to="." method="_on_button_mouse_exited"]
+[node name="ButtonBox" type="VBoxContainer" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -150.0
+offset_right = 80.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="ResumeButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(160, 160)
+action_mode = 0
+texture_normal = ExtResource("3_pm")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="ExitButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(160, 160)
+action_mode = 0
+texture_normal = ExtResource("4_pm")
+ignore_texture_size = true
+stretch_mode = 5
+
+[connection signal="pressed" from="ButtonBox/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="ButtonBox/ExitButton" to="." method="_on_exit_button_pressed"]

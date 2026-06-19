@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c8qs8vd4l0brj"]
 
 [ext_resource type="Script" uid="uid://bt22uq0my282f" path="res://Scripts/help_scene.gd" id="1_kmmeu"]
+[ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="2_4lyhu"]
 [ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_5m6pi"]
 [ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://Assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="3_piy52"]
 [ext_resource type="Texture2D" uid="uid://ba3cyy0fuknb4" path="res://Assets/sprites/fruitSprites/appleSprite.PNG" id="4_a1jem"]
@@ -9,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://8ujntvhtec0w" path="res://Assets/sprites/fruitSprites/blueberrySprite.PNG" id="7_dig3o"]
 [ext_resource type="Texture2D" uid="uid://bob1ovfnxtq2f" path="res://Assets/sprites/characterSprites/char2/char2HappySprite.PNG" id="7_skvbw"]
 [ext_resource type="Texture2D" uid="uid://cvoqh1s5x72n2" path="res://Assets/sprites/orderWindowSprites/bubble1Sprite.PNG" id="8_8fc1r"]
+[ext_resource type="Texture2D" uid="uid://ccyytao3oi3xj" path="res://Assets/sprites/fruitSprites/bananaSprite.PNG" id="8_ebpko"]
 [ext_resource type="Texture2D" uid="uid://cp8bxtej117lj" path="res://Assets/sprites/orderWindowSprites/cursor-mouse-arrow-transparent-png-stickpng-15.png" id="9_ansn0"]
+[ext_resource type="Texture2D" uid="uid://bm3ua7hpxdsuo" path="res://Assets/sprites/fruitSprites/strawberrySprite.PNG" id="9_p0flt"]
 [ext_resource type="Texture2D" uid="uid://c0f025vw3djvl" path="res://Assets/sprites/characterSprites/char2/char2AngrySprite.PNG" id="10_51a3o"]
 [ext_resource type="Texture2D" uid="uid://xjcsdtqfmcon" path="res://Assets/sprites/orderWindowSprites/bubble2Sprite.PNG" id="11_nbsnu"]
 [ext_resource type="Texture2D" uid="uid://b5gg4rru0m45l" path="res://Assets/sprites/orderWindowSprites/face1Sprite.PNG" id="12_pr5ib"]
@@ -20,58 +23,51 @@
 [ext_resource type="Texture2D" uid="uid://c6j08mr8f6udy" path="res://Assets/sprites/blender/blenderButtonSprite.PNG" id="17_ebpko"]
 [ext_resource type="Texture2D" uid="uid://u3b67rqlg8y6" path="res://Assets/sprites/blender/blueberrySmoothieSprite.PNG" id="18_p0flt"]
 [ext_resource type="Texture2D" uid="uid://duaupsi5kpj8l" path="res://Assets/sprites/blender/strawberrySmoothieSprite.PNG" id="19_dig3o"]
-[ext_resource type="Texture2D" uid="uid://hrh1a17uw0u5" path="res://Assets/sprites/fruitSprites/blueberry/blueberry3Sprite.PNG" id="20_sbhml"]
-[ext_resource type="Texture2D" uid="uid://bu4t5nswuixpl" path="res://Assets/sprites/fruitSprites/apple/apple3Sprite.PNG" id="21_2djdv"]
-[ext_resource type="Texture2D" uid="uid://kcixqbgxr807" path="res://Assets/sprites/fruitSprites/mango/mango6Sprite.PNG" id="22_p0flt"]
-[ext_resource type="Texture2D" uid="uid://cok1018xkywgn" path="res://Assets/sprites/fruitSprites/banana/banana2Sprite.PNG" id="23_dig3o"]
-[ext_resource type="Texture2D" uid="uid://dqty18ac3r287" path="res://Assets/sprites/fruitSprites/strawberry/strawberry5Sprite.PNG" id="24_4lyhu"]
 [ext_resource type="Texture2D" uid="uid://be2yhi6kv2aat" path="res://Assets/sprites/fruitSprites/apple/apple7Sprite.PNG" id="25_jmdt4"]
 
 [sub_resource type="GDScript" id="GDScript_lpsud"]
 script/source = "extends Control
 
-@onready var mouse = $TextureRect4
-@onready var grab = $VBoxContainer/TextureRect6
-@onready var grabbed = $TextureRect6
+@onready var mouse: TextureRect = $TextureRect4
+@onready var grabbed: TextureRect = $TextureRect6
+@onready var blender: TextureRect = $TextureRect
 
-var moveTo = Vector2(1262, 702)
-var moveTo2 = Vector2(1038, 588)
-
-var movTween = create_tween()
+var _grabbed_start: Vector2
+var _cursor_offset: Vector2
+var _tween: Tween
 
 func _ready() -> void:
-	movTween.set_loops(0)
-	grabbed.visible = true
-	grab.visible = false
-	movTween.set_parallel(true)
-	movTween.tween_property(mouse, \"position\", moveTo, 2.5)
-	movTween.tween_property(grabbed, \"position\", moveTo2, 2.5)
-	movTween.chain().tween_interval(.5) 
-	movTween.chain().tween_callback(func():
-		grab.visible = true
-		grabbed.visible = false
-		mouse.position = Vector2(247.0, 702)
-		grabbed.position = Vector2(23.0, 588)
-	)
-	movTween.chain().tween_interval(0.2)
-	movTween.chain().tween_callback(func():
-		grabbed.visible = true
-		grab.visible = false
-	)
+	_grabbed_start = grabbed.position
+	_cursor_offset = mouse.position - grabbed.position
+	_play_drag()
+
+func _process(_delta: float) -> void:
+	mouse.position = grabbed.position + _cursor_offset
+
+func _play_drag() -> void:
+	if _tween:
+		_tween.kill()
+	grabbed.position = _grabbed_start
+	var target := blender.position + Vector2(55.0, 55.0)
+	_tween = create_tween()
+	_tween.tween_property(grabbed, \"position\", target, 2.0) \\
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+	await _tween.finished
+	await get_tree().create_timer(0.6).timeout
+	_play_drag()
 "
 
 [node name="helpScene" type="Node2D" unique_id=97516703]
 script = ExtResource("1_kmmeu")
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=418249869]
-offset_left = -5.000001
-offset_top = 153.0
-offset_right = 35.34
-offset_bottom = 193.0
-scale = Vector2(47.84, 18.020794)
-color = Color(0.4719187, 0.30005732, 0.20292535, 1)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1314429602]
+position = Vector2(995, 537)
+rotation = -1.5707964
+scale = Vector2(0.71982634, 0.71982634)
+texture = ExtResource("2_4lyhu")
 
 [node name="pg1" type="Control" parent="." unique_id=329130500]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -79,96 +75,100 @@ offset_bottom = 40.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="pg1" unique_id=379563554]
 layout_mode = 0
-offset_left = 647.0
+offset_left = 370.0
 offset_top = 188.0
-offset_right = 1305.0
+offset_right = 1620.0
 offset_bottom = 276.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 64
+bbcode_enabled = true
 text = "ITS SUMMER TIME!!"
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
+horizontal_alignment = 1
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="pg1" unique_id=990734188]
 layout_mode = 0
-offset_left = 466.0
+offset_left = 370.0
 offset_top = 326.0
-offset_right = 1464.0
+offset_right = 1620.0
 offset_bottom = 554.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
-text = "      	and the smoothie shop is open! 
-Collect fruit from the conveyor belt
-and blend it to meet customer demands 
+bbcode_enabled = true
+text = "Collect fruit from the conveyor belt
+and blend it to meet customer demands
 before satisfaction gets too low!
 
 
 "
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="pg1" unique_id=457930358]
-layout_mode = 0
-offset_left = 449.0
-offset_top = 452.0
-offset_right = 1458.0
-offset_bottom = 794.0
-theme_override_fonts/normal_font = ExtResource("2_5m6pi")
-theme_override_font_sizes/normal_font_size = 194
-text = "←"
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
+horizontal_alignment = 1
 
 [node name="TextureRect3" type="TextureRect" parent="pg1" unique_id=1316743380]
 layout_mode = 0
-offset_left = 332.0
-offset_top = 222.0
-offset_right = 651.0
-offset_bottom = 2382.0
-scale = Vector2(0.3, 0.3)
+offset_left = 1472.0
+offset_top = 101.00001
+offset_right = 1791.0
+offset_bottom = 2261.0
+scale = Vector2(0.40752074, 0.40752074)
 texture = ExtResource("3_piy52")
 
 [node name="TextureRect2" type="TextureRect" parent="pg1" unique_id=225409175]
 layout_mode = 0
-offset_left = 1694.0
-offset_top = 480.00003
-offset_right = 1970.0
-offset_bottom = 768.00006
+offset_left = 558.0
+offset_top = 606.0
+offset_right = 834.0
+offset_bottom = 894.0
 rotation = 0.6324815
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("4_a1jem")
 
 [node name="TextureRect" type="TextureRect" parent="pg1" unique_id=628624780]
 layout_mode = 0
-offset_left = 110.000015
-offset_top = 263.99997
-offset_right = 386.0
-offset_bottom = 552.0
+offset_left = 1254.0
+offset_top = 520.99994
+offset_right = 1530.0
+offset_bottom = 808.99994
 rotation = -0.48099178
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("5_51a3o")
 
-[node name="TextureRect4" type="TextureRect" parent="pg1" unique_id=827223870]
-layout_mode = 0
-offset_left = 1503.0
-offset_top = 231.0
-offset_right = 1827.0
-offset_bottom = 837.0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("6_nbsnu")
-
 [node name="TextureRect5" type="TextureRect" parent="pg1" unique_id=1934035787]
 layout_mode = 0
-offset_left = 103.0
-offset_top = 503.0
-offset_right = 379.0
-offset_bottom = 791.0
+offset_left = 793.00006
+offset_top = 513.0
+offset_right = 1069.0
+offset_bottom = 801.0
 rotation = 0.17171586
 scale = Vector2(0.63, 0.63)
 texture = ExtResource("7_dig3o")
+
+[node name="TextureRect6" type="TextureRect" parent="pg1" unique_id=855989497]
+layout_mode = 0
+offset_left = 1160.0
+offset_top = 621.0
+offset_right = 1489.0
+offset_bottom = 936.0
+rotation = 0.17171586
+scale = Vector2(0.63, 0.63)
+texture = ExtResource("8_ebpko")
+
+[node name="TextureRect7" type="TextureRect" parent="pg1" unique_id=173916076]
+layout_mode = 0
+offset_left = 927.00006
+offset_top = 741.00006
+offset_right = 1079.0
+offset_bottom = 920.00006
+rotation = 0.17171586
+texture = ExtResource("9_p0flt")
 
 [node name="pg2" type="Control" parent="." unique_id=1504191204]
 visible = false
@@ -179,86 +179,75 @@ offset_bottom = 40.0
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="pg2" unique_id=2101631997]
 layout_mode = 0
-offset_left = 357.0
-offset_top = 249.0
-offset_right = 1623.0
-offset_bottom = 591.0
+offset_left = 496.0
+offset_top = 183.0
+offset_right = 1746.0
+offset_bottom = 582.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
-text = "Hover over the customers to see their orders and 
-the proportions they want"
+bbcode_enabled = true
+text = "[center]Match the fruits in each
+ customer's order. Nail the exact 
+percentages for bonus points![/center]"
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="pg2" unique_id=163887759]
 layout_mode = 0
-offset_left = 81.0
-offset_top = 211.0
-offset_right = 920.0
-offset_bottom = 1630.0
+offset_left = 390.0
+offset_top = 123.0
+offset_right = 1229.0
+offset_bottom = 1542.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("7_skvbw")
 
 [node name="TextureRect2" type="TextureRect" parent="pg2" unique_id=1616549550]
 layout_mode = 0
-offset_left = 81.0
-offset_top = 325.0
-offset_right = 920.0
-offset_bottom = 1744.0
+offset_left = 390.0
+offset_top = 237.0
+offset_right = 1229.0
+offset_bottom = 1656.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("8_8fc1r")
 
-[node name="TextureRect3" type="TextureRect" parent="pg2" unique_id=1181367346]
-layout_mode = 0
-offset_left = 205.0
-offset_top = 337.0
-offset_right = 1807.0
-offset_bottom = 2737.0
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("9_ansn0")
-
 [node name="TextureRect4" type="TextureRect" parent="pg2" unique_id=572038204]
 layout_mode = 0
-offset_left = 1619.0
-offset_top = 402.0
-offset_right = 2458.0
-offset_bottom = 1821.0
+offset_left = 1367.0
+offset_top = 475.0
+offset_right = 2206.0
+offset_bottom = 1894.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("10_51a3o")
 
 [node name="TextureRect5" type="TextureRect" parent="pg2" unique_id=1370158277]
 layout_mode = 0
-offset_left = 1619.0
-offset_top = 516.0
-offset_right = 2458.0
-offset_bottom = 1935.0
+offset_left = 1367.0
+offset_top = 589.0
+offset_right = 2206.0
+offset_bottom = 2008.0
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("11_nbsnu")
 
-[node name="TextureRect6" type="TextureRect" parent="pg2" unique_id=1593866744]
-layout_mode = 0
-offset_left = 1747.0
-offset_top = 522.0
-offset_right = 3349.0
-offset_bottom = 2922.0
-scale = Vector2(0.025, 0.025)
-texture = ExtResource("9_ansn0")
-
 [node name="RichTextLabel3" type="RichTextLabel" parent="pg2" unique_id=1942272613]
 layout_mode = 0
-offset_left = 336.0
-offset_top = 587.0
-offset_right = 1613.0
-offset_bottom = 929.0
+offset_left = 265.0
+offset_top = 668.0
+offset_right = 1515.0
+offset_bottom = 1010.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
-text = "Careful though, if you wait too long on a customer 
-they may change their order or even leave out of
-frustration!"
+bbcode_enabled = true
+text = "[center]Keep customers happy or 
+they'll leave and come back 
+even harder to please![/center]"
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
 
 [node name="pg3" type="Control" parent="." unique_id=1658531849]
 visible = false
@@ -269,79 +258,110 @@ offset_bottom = 40.0
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="pg3" unique_id=1977920964]
 layout_mode = 0
-offset_left = 489.0
-offset_top = 244.0
-offset_right = 1498.0
-offset_bottom = 586.0
+offset_left = 371.0
+offset_top = 204.0
+offset_right = 1621.0
+offset_bottom = 546.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
-text = "Complete orders in a timely manner 
-while keeping the orders accurate 
+bbcode_enabled = true
+text = "Complete orders in a timely manner
+while keeping the orders accurate
 for maximum satisfaction!"
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
+horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="pg3" unique_id=740919798]
+[node name="FaceRect1" type="TextureRect" parent="pg3" unique_id=1345066652]
 layout_mode = 0
-offset_left = 117.0
-offset_top = 184.0
-offset_right = 289.0
-offset_bottom = 836.0
-
-[node name="TextureRect" type="TextureRect" parent="pg3/VBoxContainer" unique_id=1345066652]
-layout_mode = 2
+offset_left = 405.0
+offset_top = 281.0
+offset_right = 577.0
+offset_bottom = 444.0
 texture = ExtResource("12_pr5ib")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="TextureRect2" type="TextureRect" parent="pg3/VBoxContainer" unique_id=720189236]
-layout_mode = 2
+[node name="FaceRect2" type="TextureRect" parent="pg3" unique_id=720189236]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 444.0
+offset_right = 577.0
+offset_bottom = 607.0
 texture = ExtResource("13_ickqn")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="pg3/VBoxContainer" unique_id=2140671740]
-layout_mode = 2
+[node name="FaceRect3" type="TextureRect" parent="pg3" unique_id=2140671740]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 607.0
+offset_right = 577.0
+offset_bottom = 770.0
 texture = ExtResource("14_sbhml")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="pg3/VBoxContainer" unique_id=1014128906]
-layout_mode = 2
+[node name="FaceRect4" type="TextureRect" parent="pg3" unique_id=1014128906]
+layout_mode = 0
+offset_left = 405.0
+offset_top = 770.0
+offset_right = 577.0
+offset_bottom = 933.0
 texture = ExtResource("15_2djdv")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="TextureRect" type="TextureRect" parent="pg3" unique_id=1686241265]
 layout_mode = 0
-offset_left = 1450.0
-offset_top = 329.0
-offset_right = 2160.0
-offset_bottom = 1214.0
+offset_left = 1222.0
+offset_top = 433.0
+offset_right = 1932.0
+offset_bottom = 1318.0
 scale = Vector2(0.56, 0.56)
 texture = ExtResource("16_5dshu")
 
 [node name="TextureRect2" type="TextureRect" parent="pg3" unique_id=1199781566]
 layout_mode = 0
-offset_left = 1587.0
-offset_top = 683.0
-offset_right = 2297.0
-offset_bottom = 1568.0
+offset_left = 1336.0
+offset_top = 792.0
+offset_right = 2304.0005
+offset_bottom = 1598.667
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("17_ebpko")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="pg3" unique_id=163631440]
+[node name="SmoothieRect1" type="TextureRect" parent="pg3" unique_id=1096148256]
 layout_mode = 0
-offset_left = 630.0
-offset_top = 479.0
-offset_right = 1610.0
-offset_bottom = 1085.0
-scale = Vector2(0.46, 0.46)
-
-[node name="TextureRect2" type="TextureRect" parent="pg3/HBoxContainer" unique_id=1096148256]
-layout_mode = 2
+offset_left = 721.0
+offset_top = 562.0
+offset_right = 871.0
+offset_bottom = 841.0
 texture = ExtResource("18_p0flt")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="TextureRect3" type="TextureRect" parent="pg3/HBoxContainer" unique_id=1714649252]
-layout_mode = 2
+[node name="SmoothieRect2" type="TextureRect" parent="pg3" unique_id=1714649252]
+layout_mode = 0
+offset_left = 871.0
+offset_top = 562.0
+offset_right = 1021.0
+offset_bottom = 841.0
 texture = ExtResource("6_nbsnu")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="TextureRect4" type="TextureRect" parent="pg3/HBoxContainer" unique_id=176514597]
-layout_mode = 2
+[node name="SmoothieRect3" type="TextureRect" parent="pg3" unique_id=176514597]
+layout_mode = 0
+offset_left = 1021.0
+offset_top = 562.0
+offset_right = 1171.0
+offset_bottom = 841.0
 texture = ExtResource("19_dig3o")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="pg4" type="Control" parent="." unique_id=1424920008]
 visible = false
@@ -353,142 +373,88 @@ script = SubResource("GDScript_lpsud")
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="pg4" unique_id=105561]
 layout_mode = 0
-offset_left = 368.0
-offset_top = 173.0
-offset_right = 1406.0
-offset_bottom = 629.0
+offset_left = 383.0
+offset_top = 106.0
+offset_right = 1633.0
+offset_bottom = 562.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
 theme_override_fonts/normal_font = ExtResource("2_5m6pi")
 theme_override_font_sizes/normal_font_size = 45
-text = "Use the right click to rotate
-the piece you're holding!  
-
-Make the best of the space you have: but 
-be warned, a work day is stressful!
-You may pick up a fruit only to find its
-not what you remember it being!"
+bbcode_enabled = true
+text = "[center]Use the right click to rotate
+the piece you're holding!
+Make the best of the space you have!"
 fit_content = true
 scroll_active = false
-autowrap_mode = 0
+autowrap_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="pg4" unique_id=177831983]
 layout_mode = 0
-offset_left = 1464.0
-offset_top = 322.0
-offset_right = 2174.0
-offset_bottom = 1207.0
+offset_left = 1262.0
+offset_top = 375.0
+offset_right = 1972.0
+offset_bottom = 1260.0
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("16_5dshu")
 
-[node name="TextureRect2" type="TextureRect" parent="pg4" unique_id=1704711078]
-layout_mode = 0
-offset_left = 1606.0
-offset_top = 405.0
-offset_right = 2316.0
-offset_bottom = 1290.0
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("20_sbhml")
-
-[node name="TextureRect3" type="TextureRect" parent="pg4" unique_id=1978247753]
-layout_mode = 0
-offset_left = 1659.9999
-offset_top = 628.0
-offset_right = 2370.0
-offset_bottom = 1513.0
-rotation = -3.1387317
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("21_2djdv")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="pg4" unique_id=890147530]
-layout_mode = 0
-offset_left = 40.999996
-offset_top = 271.0
-offset_right = 401.0
-offset_bottom = 1014.0
-scale = Vector2(0.655, 0.655)
-
-[node name="TextureRect4" type="TextureRect" parent="pg4/VBoxContainer" unique_id=1289912567]
-layout_mode = 2
-texture = ExtResource("22_p0flt")
-
-[node name="TextureRect5" type="TextureRect" parent="pg4/VBoxContainer" unique_id=1301263139]
-layout_mode = 2
-texture = ExtResource("23_dig3o")
-
-[node name="TextureRect6" type="TextureRect" parent="pg4/VBoxContainer" unique_id=1341037910]
-layout_mode = 2
-texture = ExtResource("24_4lyhu")
-
 [node name="TextureRect6" type="TextureRect" parent="pg4" unique_id=597804157]
 layout_mode = 0
-offset_left = 23.0
-offset_top = 588.0
-offset_right = 383.0
-offset_bottom = 833.0
+offset_left = 391.0
+offset_top = 530.0
+offset_right = 751.0
+offset_bottom = 775.0
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("25_jmdt4")
 
 [node name="TextureRect4" type="TextureRect" parent="pg4" unique_id=315546503]
 layout_mode = 0
-offset_left = 247.0
-offset_top = 702.0
-offset_right = 1849.0001
-offset_bottom = 3102.0
+offset_left = 615.0
+offset_top = 644.0
+offset_right = 2217.0
+offset_bottom = 3044.0
 scale = Vector2(0.025, 0.025)
 texture = ExtResource("9_ansn0")
 
 [node name="Label" type="Label" parent="." unique_id=2110796017]
-offset_left = 934.0
-offset_top = 773.0
-offset_right = 1008.0
-offset_bottom = 892.0
+offset_left = 1131.0
+offset_top = 859.0
+offset_right = 1205.0
+offset_bottom = 978.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 17
+theme_override_fonts/font = ExtResource("2_5m6pi")
 theme_override_font_sizes/font_size = 86
 text = "→"
 
 [node name="Button2" type="Button" parent="Label" unique_id=937401448]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = -13.0
-offset_top = 36.0
-offset_right = 81.0
-offset_bottom = 181.0
-scale = Vector2(1, 0.39999878)
-theme_override_constants/outline_size = 66
-theme_override_font_sizes/font_size = 100
-text = "→"
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Label2" type="Label" parent="." unique_id=1565379835]
 offset_left = 822.0
-offset_top = 774.0
+offset_top = 859.0
 offset_right = 896.0
-offset_bottom = 893.0
+offset_bottom = 978.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 17
+theme_override_fonts/font = ExtResource("2_5m6pi")
 theme_override_font_sizes/font_size = 86
 text = "←"
 
 [node name="button" type="Button" parent="Label2" unique_id=1816793113]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = -13.0
-offset_top = 36.0
-offset_right = 81.0
-offset_bottom = 181.0
-scale = Vector2(1, 0.39999878)
-theme_override_constants/outline_size = 66
-theme_override_font_sizes/font_size = 100
-text = "→"
-
-[node name="Label3" type="Label" parent="." unique_id=536810120]
-offset_left = 1733.0
-offset_top = 163.0
-offset_right = 2148.0
-offset_bottom = 282.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_font_sizes/font_size = 37
-text = "ESC : start"
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="button_down" from="Label/Button2" to="." method="_on_button_2_button_down"]
 [connection signal="button_down" from="Label2/button" to="." method="_on_button_button_down"]

@@ -13,10 +13,11 @@ bg_color = Color(3.272891e-06, 0.5973928, 0.78205675, 1)
 
 [node name="orderControl" type="Node2D" unique_id=1560439912 groups=["orderControl"]]
 script = ExtResource("1_735xl")
+customer_spawn_delay = null
 
 [node name="healthbar" type="Node2D" parent="." unique_id=2058069000]
-position = Vector2(-28, 0)
-scale = Vector2(1, 1.0000001)
+position = Vector2(-35, -7.000001)
+scale = Vector2(0.82, 0.82)
 
 [node name="HealthbarSprite" type="Sprite2D" parent="healthbar" unique_id=1845993325]
 position = Vector2(125, 537.99994)
@@ -42,6 +43,7 @@ position = Vector2(-69, -40)
 
 [node name="characterSprites" type="SubViewportContainer" parent="custWindow" unique_id=1610516872]
 clip_contents = true
+mouse_filter = 1
 offset_left = 242.0
 offset_top = 89.0
 offset_right = 936.0
@@ -66,5 +68,11 @@ texture = ExtResource("6_hsnre")
 
 [node name="customerSpawner" type="Timer" parent="." unique_id=627961247]
 wait_time = 3.0
+
+[node name="Label" type="Label" parent="." unique_id=736846766]
+offset_left = 22.0
+offset_top = 853.0
+offset_right = 62.0
+offset_bottom = 876.0
 
 [connection signal="timeout" from="customerSpawner" to="." method="_on_customer_s_pawner_timeout"]

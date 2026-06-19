@@ -1,0 +1,217 @@
+[gd_scene format=3 uid="uid://dx8settings01"]
+
+[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://assets/sprites/backgroundSprite.PNG" id="1_bg"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_font"]
+
+[sub_resource type="GDScript" id="GDScript_settings"]
+script/source = "extends Node2D
+@onready var buttText = $ColorRect/Label
+@onready var music_slider: HSlider = $Control/HSlider
+@onready var music_pct: RichTextLabel = $Control/PctLabel
+@onready var sfx_slider: HSlider = $Control/SFXSlider
+@onready var sfx_pct: RichTextLabel = $Control/SFXPctLabel
+
+var _slider_tick_cooldown: float = 0.0
+
+func _ready() -> void:
+	var music_db := AudioServer.get_bus_volume_db(0)
+	music_slider.value = db_to_linear(music_db) if music_db > -60.0 else 0.0
+	_update_pct(music_pct, music_slider.value)
+	var sfx_idx := AudioServer.get_bus_index(\"SFX\")
+	if sfx_idx != -1:
+		var sfx_db := AudioServer.get_bus_volume_db(sfx_idx)
+		sfx_slider.value = db_to_linear(sfx_db) if sfx_db > -60.0 else 0.0
+	_update_pct(sfx_pct, sfx_slider.value)
+	music_slider.mouse_entered.connect(func(): AudioManager.play_button_hover())
+	sfx_slider.mouse_entered.connect(func(): AudioManager.play_button_hover())
+
+func _process(delta: float) -> void:
+	_slider_tick_cooldown = max(0.0, _slider_tick_cooldown - delta)
+
+func _on_music_slider_changed(value: float) -> void:
+	AudioServer.set_bus_volume_db(0, linear_to_db(value) if value > 0.0 else -80.0)
+	_update_pct(music_pct, value)
+	_play_slider_tick(value)
+
+func _on_sfx_slider_changed(value: float) -> void:
+	var sfx_idx := AudioServer.get_bus_index(\"SFX\")
+	if sfx_idx != -1:
+		AudioServer.set_bus_volume_db(sfx_idx, linear_to_db(value) if value > 0.0 else -80.0)
+	_update_pct(sfx_pct, value)
+	_play_slider_tick(value)
+
+func _play_slider_tick(value: float) -> void:
+	if _slider_tick_cooldown > 0.0:
+		return
+	_slider_tick_cooldown = 0.08
+	AudioManager.play_slider_tick(0.7 + value * 0.6)
+
+func _update_pct(label: RichTextLabel, value: float) -> void:
+	label.text = \"[center]%d%%[/center]\" % int(round(value * 100.0))
+
+func _on_button_mouse_entered() -> void:
+	AudioManager.play_button_hover()
+	buttText.add_theme_color_override(\"font_color\", Color(0.557, 0.514, 0.0))
+
+func _on_button_mouse_exited() -> void:
+	buttText.add_theme_color_override(\"font_color\", Color(1, 1, 1, 1))
+
+func _on_button_button_down() -> void:
+	AudioManager.play_button_click()
+	get_tree().call_group(\"hostController\", \"changeScene\", GameManager.mainMenu)
+"
+
+[node name="settings" type="Node2D" unique_id=200000001]
+script = SubResource("GDScript_settings")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=200000002]
+offset_left = -764.0
+offset_top = -405.0
+offset_right = 3076.0
+offset_bottom = 1755.0
+texture = ExtResource("1_bg")
+
+[node name="Control" type="Control" parent="." unique_id=200000003]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Title" type="RichTextLabel" parent="Control" unique_id=200000004]
+layout_mode = 0
+offset_left = 610.0
+offset_top = 160.0
+offset_right = 1310.0
+offset_bottom = 310.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 104
+bbcode_enabled = true
+text = "[center]SETTINGS[/center]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="VolumeLabel" type="RichTextLabel" parent="Control" unique_id=200000005]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 360.0
+offset_right = 1360.0
+offset_bottom = 430.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 49
+bbcode_enabled = true
+text = "[center]Music Volume[/center]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="HSlider" type="HSlider" parent="Control" unique_id=200000006]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 445.0
+offset_right = 1360.0
+offset_bottom = 495.0
+custom_minimum_size = Vector2(800, 46)
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="PctLabel" type="RichTextLabel" parent="Control" unique_id=200000007]
+layout_mode = 0
+offset_left = 860.0
+offset_top = 500.0
+offset_right = 1060.0
+offset_bottom = 555.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 38
+bbcode_enabled = true
+text = "[center]100%[/center]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SFXLabel" type="RichTextLabel" parent="Control" unique_id=200000011]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 590.0
+offset_right = 1360.0
+offset_bottom = 660.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 49
+bbcode_enabled = true
+text = "[center]SFX Volume[/center]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="SFXSlider" type="HSlider" parent="Control" unique_id=200000012]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 675.0
+offset_right = 1360.0
+offset_bottom = 725.0
+custom_minimum_size = Vector2(800, 46)
+min_value = 0.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFXPctLabel" type="RichTextLabel" parent="Control" unique_id=200000013]
+layout_mode = 0
+offset_left = 860.0
+offset_top = 730.0
+offset_right = 1060.0
+offset_bottom = 785.0
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/normal_font = ExtResource("2_font")
+theme_override_font_sizes/normal_font_size = 38
+bbcode_enabled = true
+text = "[center]100%[/center]"
+fit_content = true
+autowrap_mode = 0
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=200000008]
+offset_left = 91.0
+offset_top = 42.0
+offset_right = 492.0
+offset_bottom = 196.0
+color = Color(1, 1, 0.7254902, 1)
+
+[node name="Button" type="Button" parent="ColorRect" unique_id=200000009]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 398.0
+offset_bottom = 153.0
+text = "Return"
+
+[node name="Label" type="Label" parent="ColorRect" unique_id=200000010]
+layout_mode = 0
+offset_left = 54.0
+offset_top = 53.0
+offset_right = 360.0
+offset_bottom = 99.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 17
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 35
+text = "Return to Menu"
+
+[connection signal="button_down" from="ColorRect/Button" to="." method="_on_button_button_down"]
+[connection signal="mouse_entered" from="ColorRect/Button" to="." method="_on_button_mouse_entered"]
+[connection signal="mouse_exited" from="ColorRect/Button" to="." method="_on_button_mouse_exited"]
+[connection signal="value_changed" from="Control/HSlider" to="." method="_on_music_slider_changed"]
+[connection signal="value_changed" from="Control/SFXSlider" to="." method="_on_sfx_slider_changed"]

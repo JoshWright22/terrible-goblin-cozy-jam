@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dekbhi85jsp8v"
-path="res://.godot/imported/menuFruit6Sprite.PNG-9e71290fea9eac78fd7d5762a168a05f.ctex"
+path="res://.godot/imported/menuFruit6Sprite.PNG-2bcdeedda422b035a11efea15f00b231.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/mainMenuSprites/menu separate/menuFruit6Sprite.PNG"
-dest_files=["res://.godot/imported/menuFruit6Sprite.PNG-9e71290fea9eac78fd7d5762a168a05f.ctex"]
+source_file="res://Assets/sprites/mainMenuSprites/menu separate/menuFruit6Sprite.PNG"
+dest_files=["res://.godot/imported/menuFruit6Sprite.PNG-2bcdeedda422b035a11efea15f00b231.ctex"]
 
 [params]
 

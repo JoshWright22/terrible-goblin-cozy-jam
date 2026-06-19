@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0cxrudqx2agw"
-path="res://.godot/imported/menuEmptyBGSprite.PNG-7a9d1ad55aa860d5344482d17e8c4e09.ctex"
+path="res://.godot/imported/menuEmptyBGSprite.PNG-b64e3d7bad830b5bffaa23e4a0c78059.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/mainMenuSprites/menu separate/menuEmptyBGSprite.PNG"
-dest_files=["res://.godot/imported/menuEmptyBGSprite.PNG-7a9d1ad55aa860d5344482d17e8c4e09.ctex"]
+source_file="res://Assets/sprites/mainMenuSprites/menu separate/menuEmptyBGSprite.PNG"
+dest_files=["res://.godot/imported/menuEmptyBGSprite.PNG-b64e3d7bad830b5bffaa23e4a0c78059.ctex"]
 
 [params]
 

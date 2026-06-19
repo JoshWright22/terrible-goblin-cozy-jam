@@ -161,6 +161,7 @@ func _setup_blend_button_sprites(btn_size: Vector2) -> void:
 		blend_button.button_up.connect(_on_blend_button_up)
 
 func _on_blend_button_down() -> void:
+	AudioManager.play_button_click()
 	blend_button.get_node_or_null("NormalSprite").visible = false if blend_button.get_node_or_null("NormalSprite") else null
 	var p = blend_button.get_node_or_null("PressedSprite")
 	if p: p.visible = true
@@ -173,7 +174,7 @@ func _on_blend_button_up() -> void:
 
 
 func blend_grid_into_smoothie() -> void:
-	if not grid_visuals or is_blending:
+	if not grid_visuals or is_blending or GameManager.paused:
 		return
 		
 	var collected_fruits: Array[Node2D] = []
@@ -194,6 +195,7 @@ func blend_grid_into_smoothie() -> void:
 		return
 
 	is_blending = true
+	AudioManager.play_blend_start()
 	
 	var ingredient_data: Array = []
 	for fruit in collected_fruits:
@@ -236,29 +238,19 @@ func create_smoothie_overlay(ingredients: Array = []) -> void:
 		var tex_size = sprite.texture.get_size()
 		var total_grid_width = grid_columns * tile_size.x
 		var total_grid_height = grid_rows * tile_size.y
-		sprite.scale = Vector2(total_grid_width / tex_size.x, total_grid_height / tex_size.y)
+		var uniform_scale := minf(total_grid_width / tex_size.x, total_grid_height / tex_size.y)
+		sprite.scale = Vector2(uniform_scale, uniform_scale)
 		sprite.centered = true
 		sprite.position = Vector2.ZERO
 		if smoothie_instance.has_method("enforce_strict_centering"):
 			smoothie_instance.enforce_strict_centering()
 
 	# --- SMOOTHIE LIFECYCLE MANAGEMENT ---
-	smoothie_instance.modulate.a = 0.0
-	var tween = create_tween()
-	tween.tween_property(smoothie_instance, "modulate:a", 1.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	smoothie_instance.modulate.a = 1.0
+	AudioManager.play_blend_complete()
 
-	await get_tree().create_timer(reset_delay_seconds).timeout
+	# Wait until the smoothie frees itself (quality hits 0) or is dropped on a target
+	while is_instance_valid(smoothie_instance):
+		await get_tree().create_timer(0.25).timeout
 
-	if not is_instance_valid(smoothie_instance):
-		is_blending = false
-		return
-
-	var fade_out_tween = create_tween()
-	fade_out_tween.tween_property(smoothie_instance, "modulate:a", 0.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	await fade_out_tween.finished
-
-	if is_instance_valid(smoothie_instance):
-		smoothie_instance.queue_free()
-	
-	# Clear guards for layout interactions
 	is_blending = false

@@ -10,8 +10,12 @@ var itemNo
 var cusID
 
 
+func _process(_delta: float) -> void:
+	# Drop below 2D content while something is being dragged so z_index wins
+	layer = 0 if (GameManager.fruit_held or GameManager.hold) else 1
+
 func _ready() -> void:
-	itemNo = parent.currentOrders[cusID].size() 
+	itemNo = parent.currentOrders[cusID].size()
 	for i in range(itemNo):
 		var c = item.instantiate()
 		var key = parent.currentOrders[cusID].keys()[i]

@@ -2,11 +2,37 @@
 
 [ext_resource type="PackedScene" uid="uid://6vib1risoh6x" path="res://Scenes/Fruit_Conveyor.tscn" id="1_m76iy"]
 [ext_resource type="PackedScene" uid="uid://c73boq4msi581" path="res://Scenes/order_control.tscn" id="1_qg871"]
+[ext_resource type="PackedScene" uid="uid://bskt41wkq0c31" path="res://Scenes/grid.tscn" id="3_en5im"]
+[ext_resource type="PackedScene" path="res://Scenes/hud.tscn" id="4_hud"]
+[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://Assets/sprites/backgroundSprite.PNG" id="5_bkdsy"]
 
 [node name="gameLoop" type="Node2D" unique_id=488953765]
 
-[node name="Conveyor" parent="." unique_id=1335769398 instance=ExtResource("1_m76iy")]
-position = Vector2(33, 800)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=170553194]
+z_index = -10
+texture = ExtResource("5_bkdsy")
 
 [node name="orderControl" parent="." unique_id=1560439912 instance=ExtResource("1_qg871")]
 position = Vector2(-12, -9)
+customer_spawn_delay = 22.0
+
+[node name="Conveyor" parent="." unique_id=1335769398 instance=ExtResource("1_m76iy")]
+position = Vector2(788, 995)
+
+[node name="GridScene" parent="." unique_id=1036425377 instance=ExtResource("3_en5im")]
+z_index = -1
+position = Vector2(110, -250)
+
+[node name="GridScene2" parent="." unique_id=1449231692 instance=ExtResource("3_en5im")]
+z_index = -1
+position = Vector2(565, -250)
+
+[node name="GridScene3" parent="." unique_id=362072033 instance=ExtResource("3_en5im")]
+z_index = -1
+position = Vector2(110, 205)
+
+[node name="GridScene4" parent="." unique_id=1082912885 instance=ExtResource("3_en5im")]
+z_index = -1
+position = Vector2(565, 205)
+
+[node name="HUD" parent="." unique_id=1022842531 instance=ExtResource("4_hud")]

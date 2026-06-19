@@ -24,7 +24,7 @@ size = Vector2(146, 96)
 [node name="FruitPiece" type="Node2D" parent="." unique_id=548656284]
 script = ExtResource("1_6tw45")
 fruit_profile = ExtResource("2_3lmlu")
-change_shape_on_pickup = true
+change_shape_on_pickup = false
 
 [node name="BlockDetectors" type="Node2D" parent="FruitPiece" unique_id=1560230985]
 
