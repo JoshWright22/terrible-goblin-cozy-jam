@@ -431,7 +431,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 17
 theme_override_fonts/font = ExtResource("2_5m6pi")
 theme_override_font_sizes/font_size = 86
-text = "→"
+text = ">>"
 
 [node name="Button2" type="Button" parent="Label" unique_id=937401448]
 modulate = Color(1, 1, 1, 0)
@@ -451,7 +451,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 17
 theme_override_fonts/font = ExtResource("2_5m6pi")
 theme_override_font_sizes/font_size = 86
-text = "←"
+text = "<<"
 
 [node name="button" type="Button" parent="Label2" unique_id=1816793113]
 modulate = Color(1, 1, 1, 0)

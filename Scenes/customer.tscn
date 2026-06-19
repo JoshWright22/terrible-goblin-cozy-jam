@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://byfod61h6r6x6"]
 
 [ext_resource type="Script" uid="uid://dg7adqs2toi" path="res://customer.gd" id="1_7c3kf"]
-[ext_resource type="Texture2D" uid="uid://bob1ovfnxtq2f" path="res://assets/sprites/characterSprites/char2/char2HappySprite.PNG" id="2_7c3kf"]
+[ext_resource type="Texture2D" uid="uid://bob1ovfnxtq2f" path="res://Assets/sprites/characterSprites/char2/char2HappySprite.PNG" id="2_7c3kf"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7c3kf"]
 

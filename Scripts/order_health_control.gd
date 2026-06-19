@@ -109,7 +109,7 @@ func _ready() -> void:
 	REMAIN_TIME = MAX_TIME
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
-	var font = load("res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf")
+	var font = load("res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf")
 	score_label.add_theme_font_override("font", font)
 	score_label.add_theme_font_size_override("font_size", 58)
 	score_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
@@ -265,13 +265,13 @@ func compareValues(inputer) -> void:
 	cc.score_gain = scoreGain
 
 	# Face texture based on stars earned
-	var texturez = load("res://assets/sprites/orderWindowSprites/face1Sprite.PNG")
+	var texturez = load("res://Assets/sprites/orderWindowSprites/face1Sprite.PNG")
 	if stars == 3:
-		texturez = load("res://assets/sprites/orderWindowSprites/face2Sprite.PNG")
+		texturez = load("res://Assets/sprites/orderWindowSprites/face2Sprite.PNG")
 	elif stars == 2:
-		texturez = load("res://assets/sprites/orderWindowSprites/face3Sprite.PNG")
+		texturez = load("res://Assets/sprites/orderWindowSprites/face3Sprite.PNG")
 	elif stars == 1:
-		texturez = load("res://assets/sprites/orderWindowSprites/face4Sprite.PNG")
+		texturez = load("res://Assets/sprites/orderWindowSprites/face4Sprite.PNG")
 
 	# Stars arc to health bar — staggered simultaneous launch
 	if stars > 0:

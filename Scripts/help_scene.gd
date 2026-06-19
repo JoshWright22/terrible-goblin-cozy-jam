@@ -123,7 +123,7 @@ func _close() -> void:
 
 func _update_nav(restart_pulse: bool = true) -> void:
 	_left_label.visible = (_page > 1)
-	_right_label.text = "Start!" if _page >= MAX_PAGE else "→"
+	_right_label.text = "Start!" if _page >= MAX_PAGE else ">>"
 	call_deferred("_sync_right_btn")
 	if restart_pulse:
 		_restart_pulses()

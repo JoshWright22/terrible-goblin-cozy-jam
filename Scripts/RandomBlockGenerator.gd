@@ -71,22 +71,50 @@ func _build_pool() -> void:
 		push_warning("RandomBlockGenerator: no FruitData matches the current quality range.")
 	_reset_type_cycle()
 
-func _scan_all_fruit_data(path: String) -> Array[FruitData]:
+func _scan_all_fruit_data(_path: String) -> Array[FruitData]:
+	# DirAccess doesn't work in HTML5 exports, so we use an explicit list.
+	var paths := [
+		"res://Resource/apple_1x1.tres",
+		"res://Resource/apple_2x1.tres",
+		"res://Resource/apple_3x1.tres",
+		"res://Resource/apple_2x2_L.tres",
+		"res://Resource/apple_3x2_L.tres",
+		"res://Resource/apple_3x2_T.tres",
+		"res://Resource/apple_3x2_IL.tres",
+		"res://Resource/banana_1x1.tres",
+		"res://Resource/banana_2x1.tres",
+		"res://Resource/banana_3x1.tres",
+		"res://Resource/banana_2x2_L.tres",
+		"res://Resource/banana_3x2_L.tres",
+		"res://Resource/banana_3x2_T.tres",
+		"res://Resource/banana_3x2_IL.tres",
+		"res://Resource/strawberry_1x1.tres",
+		"res://Resource/strawberry_2x1.tres",
+		"res://Resource/strawberry_3x1.tres",
+		"res://Resource/strawberry_2x2_L.tres",
+		"res://Resource/strawberry_3x2_L.tres",
+		"res://Resource/strawberry_3x2_T.tres",
+		"res://Resource/strawberry_3x2_IL.tres",
+		"res://Resource/blueberry_1x1.tres",
+		"res://Resource/blueberry_2x1.tres",
+		"res://Resource/blueberry_3x1.tres",
+		"res://Resource/blueberry_2x2_L.tres",
+		"res://Resource/blueberry_3x2_L.tres",
+		"res://Resource/blueberry_3x2_T.tres",
+		"res://Resource/blueberry_3x2_IL.tres",
+		"res://Resource/mango_1x1.tres",
+		"res://Resource/mango_2x1.tres",
+		"res://Resource/mango_3x1.tres",
+		"res://Resource/mango_2x2_L.tres",
+		"res://Resource/mango_3x2_L.tres",
+		"res://Resource/mango_3x2_T.tres",
+		"res://Resource/mango_3x2_IL.tres",
+	]
 	var result: Array[FruitData] = []
-	var dir = DirAccess.open(path)
-	if not dir:
-		return result
-	dir.list_dir_begin()
-	var file = dir.get_next()
-	while file != "":
-		if dir.current_is_dir() and not file.begins_with("."):
-			result.append_array(_scan_all_fruit_data(path + file + "/"))
-		elif file.ends_with(".tres"):
-			var res = load(path + file)
-			if res is FruitData:
-				result.append(res)
-		file = dir.get_next()
-	dir.list_dir_end()
+	for p in paths:
+		var res = load(p)
+		if res is FruitData:
+			result.append(res)
 	return result
 
 func _process(delta: float) -> void:

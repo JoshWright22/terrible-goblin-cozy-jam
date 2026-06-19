@@ -22,9 +22,9 @@ const MUSIC_FADE_OUT_TIME := 0.18
 	$Fruit1, $Fruit2, $Fruit3, $Fruit4, $Fruit5, $Fruit6, $Fruit7,
 ]
 @onready var _ui_control: Control          = $uiControl
-@onready var _music:      AudioStreamPlayer = $MusicPlayer
 @onready var _beat_timer: Timer             = $BeatTimer
 
+var _web_music_started: bool = false
 var _float_time: float  = 0.0
 var _float_blend: float = 0.0          # 0→1 ramp after intro, prevents phase-jump snap
 var _float_origins: Dictionary = {}
@@ -120,14 +120,15 @@ func _play_intro() -> void:
 	ui_tw.tween_interval(0.88)
 	ui_tw.tween_property(_ui_control, "modulate:a", 1.0, 0.3)
 
-	# Wait for all tweens then start float + music
+	# Wait for all tweens then start float
 	await get_tree().create_timer(1.15).timeout
 	_intro_done = true
 
 	_beat_timer.wait_time = 60.0 / bpm
 	_beat_timer.start()
 
-	AudioManager.start_menu_music(MUSIC_FADE_IN_TIME)
+	if OS.get_name() != "Web":
+		AudioManager.start_menu_music(MUSIC_FADE_IN_TIME)
 
 func _process(_delta: float) -> void:
 	if not _intro_done:
@@ -179,17 +180,30 @@ func _quick_release_then(btn: TextureButton, callback: Callable, fade_music: boo
 	else:
 		tw.finished.connect(callback)
 
+func _unhandled_input(event: InputEvent) -> void:
+	if _web_music_started or OS.get_name() != "Web":
+		return
+	if event is InputEventMouseButton and event.pressed:
+		_web_music_started = true
+		AudioManager.start_menu_music(MUSIC_FADE_IN_TIME)
+
+func _web_start_music() -> void:
+	AudioManager.start_menu_music(MUSIC_FADE_IN_TIME)
+
 func _on_start_released() -> void:
+	_web_start_music()
 	_quick_release_then($uiControl/TextureButton, func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.gameLoop)
 	)
 
 func _on_settings_released() -> void:
+	_web_start_music()
 	_quick_release_then($uiControl/TextureButton2, func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.settingsScene)
 	, false)
 
 func _on_credits_released() -> void:
+	_web_start_music()
 	_quick_release_then($uiControl/TextureButton3, func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.creditsScene)
 	, false)

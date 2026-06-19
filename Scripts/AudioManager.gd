@@ -1,7 +1,6 @@
 extends Node
 
 const _SFX := "res://Assets/sfx/kenney_interface-sounds/Audio/"
-const _MENU_MUSIC_PATH := "res://Assets/sfx/Smothie vibes.wav"
 
 var snd_button_hover:     AudioStream = preload(_SFX + "tick_001.ogg")
 var snd_button_click:     AudioStream = preload(_SFX + "click_001.ogg")
@@ -40,18 +39,6 @@ var _pool_idx: int = 0
 var _menu_music: AudioStreamPlayer = null
 
 func _ready() -> void:
-	# SFX bus
-	if AudioServer.get_bus_index("SFX") == -1:
-		AudioServer.add_bus()
-		var idx := AudioServer.get_bus_count() - 1
-		AudioServer.set_bus_name(idx, "SFX")
-		AudioServer.set_bus_send(idx, "Master")
-	# Music bus
-	if AudioServer.get_bus_index("Music") == -1:
-		AudioServer.add_bus()
-		var idx := AudioServer.get_bus_count() - 1
-		AudioServer.set_bus_name(idx, "Music")
-		AudioServer.set_bus_send(idx, "Master")
 	# SFX pool
 	for i in POOL_SIZE:
 		var p := AudioStreamPlayer.new()
@@ -60,7 +47,7 @@ func _ready() -> void:
 		_pool.append(p)
 	# Persistent menu music player
 	_menu_music = AudioStreamPlayer.new()
-	_menu_music.stream = load(_MENU_MUSIC_PATH)
+	_menu_music.stream = preload("res://Assets/sfx/Smothie vibes.wav")
 	_menu_music.bus = "Music"
 	_menu_music.volume_db = -60.0
 	add_child(_menu_music)
@@ -76,9 +63,13 @@ func _play(stream: AudioStream, pitch: float = 1.0, volume_db: float = 0.0) -> v
 	p.play()
 
 # --- Menu music ---
+
 func start_menu_music(fade_in: float = 1.5) -> void:
 	if _menu_music.playing:
 		return
+	_do_start_music(fade_in)
+
+func _do_start_music(fade_in: float) -> void:
 	_menu_music.volume_db = -60.0
 	_menu_music.play()
 	if not _menu_music.finished.is_connected(_menu_music.play):

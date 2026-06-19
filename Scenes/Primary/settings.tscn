@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dx8settings01"]
 
-[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://assets/sprites/backgroundSprite.PNG" id="1_bg"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://Assets/sprites/backgroundSprite.PNG" id="1_bg"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_font"]
 
 [sub_resource type="GDScript" id="GDScript_settings"]
 script/source = "extends Node2D

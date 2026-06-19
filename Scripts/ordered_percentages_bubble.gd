@@ -28,15 +28,15 @@ func _ready() -> void:
 func getSPrite(skin):
 	match skin:
 		0:
-			skin = load("res://assets/sprites/fruitSprites/bananaSprite.PNG")
+			skin = load("res://Assets/sprites/fruitSprites/bananaSprite.PNG")
 		1:
-			skin = load("res://assets/sprites/fruitSprites/strawberrySprite.PNG")
+			skin = load("res://Assets/sprites/fruitSprites/strawberrySprite.PNG")
 		2:
-			skin = load("res://assets/sprites/fruitSprites/blueberrySprite.PNG")
+			skin = load("res://Assets/sprites/fruitSprites/blueberrySprite.PNG")
 		3:
-			skin = load("res://assets/sprites/fruitSprites/mangoSprite.PNG")
+			skin = load("res://Assets/sprites/fruitSprites/mangoSprite.PNG")
 		4:
-			skin = load("res://assets/sprites/fruitSprites/appleSprite.PNG")
+			skin = load("res://Assets/sprites/fruitSprites/appleSprite.PNG")
 	return skin
 
 func sizeFlags():

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://md8ts13d1iqt"]
 
-[ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://assets/sprites/fruitSprites/mangoSprite.PNG" id="1_mkdwt"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_515gx"]
+[ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://Assets/sprites/fruitSprites/mangoSprite.PNG" id="1_mkdwt"]
+[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_515gx"]
 
 [sub_resource type="GDScript" id="GDScript_mkdwt"]
 script/source = "extends HBoxContainer
