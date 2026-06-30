@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://duqdglo485bjk"
-path="res://.godot/imported/satisBar.png-ecdb31f69e4936abf939b46031ac0eea.ctex"
+path="res://.godot/imported/satisBar.png-b6d42c827987e85ddc87d5c347c1cf6f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/helpSceneResprite/satisBar.png"
-dest_files=["res://.godot/imported/satisBar.png-ecdb31f69e4936abf939b46031ac0eea.ctex"]
+source_file="res://assets/sprites/helpSceneResprite/satisBar.png"
+dest_files=["res://.godot/imported/satisBar.png-b6d42c827987e85ddc87d5c347c1cf6f.ctex"]
 
 [params]
 
