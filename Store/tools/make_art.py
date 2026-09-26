@@ -72,8 +72,29 @@ def logo_only(w, h):
     return canvas
 
 
+SPRITES = ROOT / "Assets/sprites"
+ACHIEVEMENTS = {
+    # Steam API name: (sprite, tile colour)
+    "FIRST_SMOOTHIE": ("blender/strawberrySmoothieSprite", (246, 184, 200)),
+    "SUMMER_DONE": ("fruitSprites/mangoSprite", (250, 214, 150)),
+    "SUMMER_PERFECT": ("fruitSprites/bananaSprite", (250, 236, 160)),
+    "BOARDWALK_DONE": ("fruitSprites/appleSprite", (240, 190, 190)),
+    "ROGUE_10K": ("fruitSprites/blueberrySprite", (190, 205, 245)),
+    "ROGUE_25K": ("blender/blueberrySmoothieSprite", (170, 190, 240)),
+    "DAILY_WEEK": ("blender/mangoSmoothieSprite", (160, 225, 215)),
+}
+
+
+def achievement(sprite, colour, size=256):
+    tile = Image.new("RGBA", (size, size), colour + (255,))
+    ImageDraw.Draw(tile).rounded_rectangle((6, 6, size - 7, size - 7), 36, outline=(40, 70, 150, 255), width=8)
+    art = fit(trimmed(Image.open(SPRITES / f"{sprite}.PNG").convert("RGBA")), size * 0.7, size * 0.7)
+    tile.alpha_composite(art, ((size - art.width) // 2, (size - art.height) // 2))
+    return tile
+
+
 def save(im, name, rgb=True):
-    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / name).parent.mkdir(parents=True, exist_ok=True)
     (im.convert("RGB") if rgb else im).save(OUT / name)
 
 
@@ -104,6 +125,11 @@ if __name__ == "__main__":
     save(cover(full_scene(title=False), 3840, 1240, (0.5, 0.45)), "steam_library_hero_3840x1240.png")
     save(logo_only(1280, 720), "steam_library_logo_1280x720.png", rgb=False)
     save(cover(full_scene(title=False), 1438, 810).filter(ImageFilter.GaussianBlur(6)), "steam_page_background_1438x810.png")
+
+    for name, (sprite, colour) in ACHIEVEMENTS.items():
+        tile = achievement(sprite, colour)
+        save(tile, f"achievements/{name}.jpg")
+        save(tile.convert("L"), f"achievements/{name}_locked.jpg")
 
     # Google Play feature graphic
     save(capsule(1024, 500, 0.48, logo_x=0.3), "play_feature_1024x500.png")
