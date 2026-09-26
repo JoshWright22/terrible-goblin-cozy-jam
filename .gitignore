@@ -23,3 +23,9 @@ addons/godot_mcp/
 
 # Export output
 builds/
+
+# Android build template (installed by tools/build.ps1)
+/android/
+
+# Copies Godot makes of loaded GDExtension libraries
+~*.dll

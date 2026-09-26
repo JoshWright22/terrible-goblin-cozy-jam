@@ -28,7 +28,9 @@ var _finding: Array = []              # [board name, callback] waiting on a hand
 var _downloads: Dictionary = {}       # leaderboard handle -> callbacks waiting for its entries
 
 func _ready() -> void:
-	if OS.has_feature("mobile") or OS.has_feature("web") or not Engine.has_singleton("Steam"):
+	# Only the Steam export presets carry the "steam" tag, so the itch builds never touch Steam
+	var steam_build := OS.has_feature("steam") or OS.has_feature("editor")
+	if not steam_build or OS.has_feature("mobile") or OS.has_feature("web") or not Engine.has_singleton("Steam"):
 		return
 	var steam := Engine.get_singleton("Steam")
 	var result: Dictionary = steam.call("steamInitEx", APP_ID, true)

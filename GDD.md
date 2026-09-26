@@ -247,16 +247,16 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 
 ## Builds and exports
 
-Plans for the Steam and Android builds. Only the jam Web and Windows presets exist so far.
+Presets: jam Web and Windows (itch), Steam Windows, Steam Linux and Android. `tools/build.ps1` exports the Steam and Android ones.
 
 **Shared setup (do first):**
 
 - [x] Project renamed to "Slush Rush", version 0.1.0. Saves live in a custom user folder named "Slush Rush" (`%APPDATA%\Slush Rush` on Windows), so the path won't change again.
 - [x] Presets export into a gitignored `builds/` folder.
-- [x] Exclude filter on the presets: `addons/godot_mcp/*, *.tmp, builds/*`.
+- [x] Exclude filter on the presets: `addons/godot_mcp/*, *.tmp, builds/*`. The itch and Android presets also drop `addons/godotsteam/*`.
 - [x] Old jam build outputs and unused test assets removed from the repo.
-- A `tools/build.ps1` script that runs `godot --headless --export-release` for each preset, stamps the version, and refuses to build while the MCP autoloads are still in `project.godot`.
-- Custom feature tags per preset (`steam`, `mobile`, `demo`) so code checks `OS.has_feature()` instead of separate branches.
+- [x] `tools/build.ps1` exports from a clean checkout of the last commit, so the local MCP autoloads and uncommitted work never ship.
+- [x] Custom feature tags per preset (`steam` on the Steam presets, Android has `mobile` built in) so code checks `OS.has_feature()` instead of separate branches.
 - Show the version number in the settings or credits screen so bug reports say which build they came from.
 
 **Steam (Windows, plus Linux for Steam Deck):**
@@ -272,9 +272,9 @@ Plans for the Steam and Android builds. Only the jam Web and Windows presets exi
 - Uploads with SteamPipe (`steamcmd` + a depot script in `tools/`). A `beta` branch for testers, and the free Steam Playtest app during the Coming Soon period.
 - **Demo idea:** a separate demo app (built with the `demo` tag) with Summer Fun days 1 to 6 and an Endless run capped at the first two upgrades, for Next Fest and wishlists. Demo saves carry into the full game.
 
-**Steam integration (built, needs the extension):** `SteamService` (autoload) handles achievements, leaderboards, rich presence and pausing when the overlay opens. It finds Steam at runtime, so without GodotSteam, on Android or on the web every call does nothing.
+**Steam integration:** `SteamService` (autoload) handles achievements, leaderboards, rich presence and pausing when the overlay opens. It finds Steam at runtime, so without GodotSteam, on Android or on the web every call does nothing.
 
-- Install: in the editor, AssetLib tab, search "GodotSteam", Download and Install the GDExtension. Nothing else to wire up.
+- GodotSteam 4.22.1 GDExtension is in `addons/godotsteam/`, trimmed to the Windows and Linux 64-bit libraries. The optional updater plugin is left out. Steam only starts in builds with the `steam` tag (or in the editor).
 - Uses app 480 (Spacewar) for testing. Swap `APP_ID` once the real app exists, and create the achievements and leaderboards in Steamworks with these names:
   - Achievements: `FIRST_SMOOTHIE`, `SUMMER_DONE`, `SUMMER_PERFECT`, `BOARDWALK_DONE`, `ROGUE_10K`, `ROGUE_25K`, `DAILY_WEEK`
   - Leaderboards: `roguelike_best`, plus `daily_YYYYMMDD` boards the game creates itself
@@ -356,7 +356,8 @@ Done so far (September 2026):
 - [ ] Colorblind mode
 - [x] Daily Slush: date-seeded run with daily buffs and debuffs, local best and streak
 - [x] Playtest pass 1: settings on the pause screen, star hints, hard text shadows, 3x3 blender scaling, melt and ice shaders, conveyor rails, four pour styles, loss tips
-- [x] Steam layer: achievements, Endless and Daily Slush leaderboards, rich presence, overlay pause (waiting on the GodotSteam extension and a real app ID)
+- [x] Steam layer: achievements, Endless and Daily Slush leaderboards, rich presence, overlay pause (waiting on a real app ID)
+- [x] Store art, icons and export presets for Steam and Google Play (`Store/`)
 - [ ] Android ads
 
 ## Team and decisions
