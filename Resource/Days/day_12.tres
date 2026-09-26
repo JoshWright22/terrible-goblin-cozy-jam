@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 12
+title = "Blender Down"
+intro_text = "Two blenders are out for repairs. Make the other two count."
+blender_count = 2
+star_scores = Array[int]([3000, 7000, 11500])

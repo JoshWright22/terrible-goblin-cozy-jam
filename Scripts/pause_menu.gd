@@ -14,6 +14,7 @@ const BG_SCALE := Vector2(0.45, 0.45)
 var _closing := false
 
 func _ready() -> void:
+	BoardPaint.apply(self, true, 0.2)
 	_setup_btn(_resume_btn)
 	_setup_btn(_exit_btn)
 	_play_in()
@@ -101,5 +102,5 @@ func _on_exit_button_pressed() -> void:
 	_play_out(func():
 		get_tree().paused = false
 		GameManager.paused = false
-		get_tree().call_group("hostController", "transition_to_scene", GameManager.mainMenu)
+		get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene if GameManager.current_day else GameManager.mainMenu)
 	)

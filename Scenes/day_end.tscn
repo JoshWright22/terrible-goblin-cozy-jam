@@ -1,0 +1,113 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_end.gd" id="1_end"]
+[ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://droqks88vso3y" path="res://Assets/sprites/ui sprites/playButtonSprite.PNG" id="3_play"]
+[ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_exit"]
+[ext_resource type="Script" path="res://Scripts/star_icon.gd" id="5_star"]
+
+[node name="DayEnd" type="CanvasLayer"]
+process_mode = 3
+layer = 10
+script = ExtResource("1_end")
+
+[node name="Dimmer" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.55)
+
+[node name="BgSprite" type="Sprite2D" parent="."]
+position = Vector2(960, 540)
+rotation = -1.5707964
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("2_bg")
+
+[node name="TitleLabel" type="Label" parent="."]
+offset_left = 460.0
+offset_top = 200.0
+offset_right = 1460.0
+offset_bottom = 300.0
+theme_override_font_sizes/font_size = 84
+text = "Day 1 done!"
+horizontal_alignment = 1
+
+[node name="Stars" type="HBoxContainer" parent="."]
+offset_left = 735.0
+offset_top = 310.0
+offset_right = 1185.0
+offset_bottom = 450.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Star1" type="Control" parent="Stars"]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+pivot_offset = Vector2(65, 65)
+script = ExtResource("5_star")
+
+[node name="Star2" type="Control" parent="Stars"]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+pivot_offset = Vector2(65, 65)
+script = ExtResource("5_star")
+
+[node name="Star3" type="Control" parent="Stars"]
+custom_minimum_size = Vector2(130, 130)
+layout_mode = 2
+pivot_offset = Vector2(65, 65)
+script = ExtResource("5_star")
+
+[node name="ScoreLabel" type="Label" parent="."]
+offset_left = 460.0
+offset_top = 465.0
+offset_right = 1460.0
+offset_bottom = 545.0
+theme_override_font_sizes/font_size = 60
+text = "Score: 0"
+horizontal_alignment = 1
+
+[node name="NoteLabel" type="Label" parent="."]
+offset_left = 460.0
+offset_top = 550.0
+offset_right = 1460.0
+offset_bottom = 610.0
+theme_override_colors/font_color = Color(1, 0.84, 0.45, 1)
+theme_override_font_sizes/font_size = 40
+text = "note"
+horizontal_alignment = 1
+
+[node name="ButtonBox" type="HBoxContainer" parent="."]
+offset_left = 560.0
+offset_top = 640.0
+offset_right = 1360.0
+offset_bottom = 800.0
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="MenuButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_vertical = 4
+action_mode = 0
+texture_normal = ExtResource("4_exit")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="RetryButton" type="Button" parent="ButtonBox"]
+custom_minimum_size = Vector2(200, 90)
+layout_mode = 2
+size_flags_vertical = 4
+action_mode = 0
+text = "Retry"
+
+[node name="NextButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_vertical = 4
+action_mode = 0
+texture_normal = ExtResource("3_play")
+ignore_texture_size = true
+stretch_mode = 5

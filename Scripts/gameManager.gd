@@ -26,8 +26,33 @@ var smoothie_quality: float = 1.0  # set by smoothie before delivery, applied to
 var seen_fruit_types: Array[int] = []  # FruitType ints that have appeared on the belt
 var game_over: bool = false
 
+# Campaign
+const DAY_COUNT := 18
+@onready var daySelectScene = load("res://Scenes/Primary/day_select.tscn")
+var current_day: DayConfig = null   # null = endless mode
+var day_complete: bool = false
+var power_out: bool = false          # Power Outage twist: blenders can't blend while true
+
 func _ready() -> void:
-	pass 
+	pass
+
+func load_day(day_number: int) -> DayConfig:
+	return load("res://Resource/Days/day_%02d.tres" % day_number) as DayConfig
+
+func start_day(day_number: int) -> void:
+	current_day = load_day(day_number)
+	get_tree().call_group("hostController", "transition_to_scene", gameLoop)
+
+func start_endless() -> void:
+	current_day = null
+	get_tree().call_group("hostController", "transition_to_scene", gameLoop)
+
+func endless_unlocked() -> bool:
+	# Mobile gets endless from the start, Steam unlocks it by finishing the campaign
+	return OS.has_feature("mobile") or SaveManager.unlocked_day > DAY_COUNT
+
+func has_next_day() -> bool:
+	return current_day != null and current_day.day_number < DAY_COUNT
 
 
 func slushiData(output) -> void:

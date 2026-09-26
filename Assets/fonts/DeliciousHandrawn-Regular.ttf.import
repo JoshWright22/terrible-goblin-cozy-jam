@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://kgaqdhib01af"
-path="res://.godot/imported/Fredoka.ttf-91eeca8d28e250690cf4789016a60d24.fontdata"
+uid="uid://dvpan70v60j55"
+path="res://.godot/imported/DeliciousHandrawn-Regular.ttf-7e845e1176301c411d2a470e2677c575.fontdata"
 
 [deps]
 
-source_file="res://Assets/fonts/Fredoka.ttf"
-dest_files=["res://.godot/imported/Fredoka.ttf-91eeca8d28e250690cf4789016a60d24.fontdata"]
+source_file="res://Assets/fonts/DeliciousHandrawn-Regular.ttf"
+dest_files=["res://.godot/imported/DeliciousHandrawn-Regular.ttf-7e845e1176301c411d2a470e2677c575.fontdata"]
 
 [params]
 

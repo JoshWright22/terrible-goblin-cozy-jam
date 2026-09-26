@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 3
+title = "Odd Shapes"
+intro_text = "The supplier sent bendy fruit. Right click to rotate pieces so they fit."
+fruits = Array[int]([0, 1, 2])
+shapes = PackedStringArray("1x1", "2x1", "3x1", "2x2_L", "3x2_L", "3x2_T")
+max_difficulty = "MEDIUM"
+patience_scale = 1.2
+star_scores = Array[int]([2500, 6000, 10000])

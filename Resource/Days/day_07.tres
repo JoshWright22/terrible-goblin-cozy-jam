@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 7
+title = "Broken Blender"
+intro_text = "The blenders shrank in the wash. 3x3 grids today."
+fruits = Array[int]([0, 1, 2, 3])
+grid_size = 3
+max_difficulty = "MEDIUM"
+star_scores = Array[int]([2500, 6000, 10000])

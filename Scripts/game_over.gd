@@ -10,19 +10,15 @@ extends CanvasLayer
 
 func _ready() -> void:
 	_score_lbl.text = "Score: %d" % GameManager.score
-	SaveManager.record_endless_score(GameManager.score)
-	_apply_label_style(_title_lbl, 7)
-	_apply_label_style(_score_lbl, 5)
+	if GameManager.current_day == null:
+		SaveManager.record_endless_score(GameManager.score)
+	else:
+		_title_lbl.text = "SHOP CLOSED"
+	BoardPaint.style(_title_lbl, true)
+	BoardPaint.style(_score_lbl)
 	_setup_btn(_retry_btn)
 	_setup_btn(_exit_btn)
 	_play_entrance()
-
-func _apply_label_style(lbl: Label, outline: int) -> void:
-	lbl.add_theme_constant_override("outline_size", outline)
-	lbl.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 1.0))
-	lbl.add_theme_constant_override("shadow_offset_x", 4)
-	lbl.add_theme_constant_override("shadow_offset_y", 5)
-	lbl.add_theme_color_override("font_shadow_color", Color(0.0, 0.0, 0.0, 0.6))
 
 func _play_entrance() -> void:
 	var orig_bg := _bg_sprite.scale
@@ -130,4 +126,4 @@ func _on_exit_button_pressed() -> void:
 	get_tree().paused = false
 	GameManager.paused = false
 	GameManager.game_over = false
-	get_tree().call_group("hostController", "transition_to_scene", GameManager.mainMenu)
+	get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene if GameManager.current_day else GameManager.mainMenu)

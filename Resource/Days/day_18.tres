@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 18
+title = "Summer Festival"
+intro_text = "The festival finale. A bit of everything. Good luck!"
+rush_orders = true
+allergy_orders = true
+rotten_cells = 1
+frozen_chance = 0.2
+vip_customer = true
+duration = 180
+star_scores = Array[int]([5000, 12000, 20000])

@@ -1,9 +1,8 @@
 [gd_resource type="FontVariation" format=3]
 
-[ext_resource type="FontFile" path="res://Assets/fonts/Fredoka.ttf" id="1_fredoka"]
+[ext_resource type="FontFile" path="res://Assets/fonts/DeliciousHandrawn-Regular.ttf" id="1_font"]
 
 [resource]
-base_font = ExtResource("1_fredoka")
-variation_opentype = {
-2003265652: 650
-}
+base_font = ExtResource("1_font")
+variation_embolden = 0.45
+spacing_glyph = 1

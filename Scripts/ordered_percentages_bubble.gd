@@ -21,9 +21,18 @@ func _ready() -> void:
 		var key = parent.currentOrders[cusID].keys()[i]
 		var peri = parent.currentOrders[cusID][key]
 		c.spriter = getSPrite(key)
-		c.texter = str(peri)
+		c.texter = "?" if parent.mysteryFruit.get(cusID, -1) == key else str(peri)
 		vbox.add_child(c)
-		
+
+	# Allergy orders get an extra red "NO!" row for the banned fruit
+	if parent.bannedFruit.has(cusID):
+		itemNo += 1
+		var banned = item.instantiate()
+		banned.spriter = getSPrite(parent.bannedFruit[cusID])
+		vbox.add_child(banned)
+		banned.get_node("RichTextLabel").text = ": NO!"
+		banned.modulate = Color(1.0, 0.45, 0.45)
+
 
 func getSPrite(skin):
 	match skin:

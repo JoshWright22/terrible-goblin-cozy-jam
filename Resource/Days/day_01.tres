@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 1
+title = "Opening Day"
+intro_text = "Two fruits and simple shapes. Take it easy and learn the ropes!"
+fruits = Array[int]([0, 1])
+shapes = PackedStringArray("1x1", "2x1", "3x1")
+max_difficulty = "EASY"
+patience_scale = 1.4
+duration = 120
+star_scores = Array[int]([1500, 4000, 7000])

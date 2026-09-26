@@ -18,6 +18,7 @@ extends Node2D
 
 var is_dragging: bool = false
 var is_locked: bool = false
+var frozen: bool = false  # Brain Freeze twist: can't be rotated
 var is_falling: bool = false
 var fall_velocity: float = 0.0
 var _pickup_fall_velocity: float = 0.0  # velocity stored when picking up mid-fall
@@ -70,7 +71,9 @@ func _ready() -> void:
 
 	total_block_count = block_layout.size()
 	build_piece_from_layout()
-	
+	if frozen:
+		modulate = Color(0.7, 0.9, 1.25)
+
 	# Set up the internal processing timer engine loop for held shifting
 	setup_shifting_timer()
 
@@ -282,7 +285,19 @@ func _input(event: InputEvent) -> void:
 				attempt_physical_placement()
 
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and not is_locked:
-			rotate_piece_90_degrees()
+			if frozen:
+				_shiver()
+			else:
+				rotate_piece_90_degrees()
+
+# Frozen pieces wiggle instead of turning so the player knows why
+func _shiver() -> void:
+	AudioManager.play_smoothie_return()
+	var tw := create_tween()
+	for i in 3:
+		tw.tween_property(self, "rotation", target_rotation + 0.08, 0.04)
+		tw.tween_property(self, "rotation", target_rotation - 0.08, 0.04)
+	tw.tween_property(self, "rotation", target_rotation, 0.04)
 
 func rotate_piece_90_degrees() -> void:
 	AudioManager.play_fruit_rotate()

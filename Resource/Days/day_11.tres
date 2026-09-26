@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 11
+title = "Brain Freeze"
+intro_text = "Some fruit came in frozen solid. Frosty pieces can't be rotated."
+frozen_chance = 0.35
+star_scores = Array[int]([3500, 8000, 13000])

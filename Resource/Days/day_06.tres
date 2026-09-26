@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 6
+title = "Allergy Season"
+intro_text = "Some customers are allergic. Anything with a crossed out fruit must not go in!"
+fruits = Array[int]([0, 1, 2, 3])
+allergy_orders = true
+max_difficulty = "MEDIUM"
+star_scores = Array[int]([3000, 7000, 12000])

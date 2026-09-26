@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 17
+title = "VIP Visit"
+intro_text = "A VIP is stopping by. Serve them well for a huge bonus!"
+vip_customer = true
+star_scores = Array[int]([4000, 9500, 16000])

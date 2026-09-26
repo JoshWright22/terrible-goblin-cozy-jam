@@ -25,17 +25,80 @@ var grid_start_pos: Vector2 = Vector2.ZERO
 
 # --- STATE GUARD ---
 var is_blending: bool = false # Read this from your piece scripts to block drop logic!
+var out_of_order: bool = false
 
 @onready var grid_anchor: Area2D = $GridAnchor
 @onready var grid_visuals: Node2D = $GridVisuals
 
 func _ready() -> void:
+	var day: DayConfig = GameManager.current_day
+	if day:
+		grid_rows = day.grid_size
+		grid_columns = day.grid_size
+		out_of_order = _blender_number() > day.blender_count
 	tile_size = Vector2(cell_pixel_size, cell_pixel_size)
 	calculate_grid_dimensions()
 	generate_physical_grid()
-	
+	if out_of_order:
+		_show_out_of_order()
+	elif day and day.rotten_cells > 0:
+		_add_rotten_cells(day.rotten_cells)
+
 	# Call deferred to let the UI engine calculate the button's native size boundary box first
 	position_and_wire_blend_button.call_deferred()
+
+# GridScene, GridScene2, GridScene3... in the game loop -> 1, 2, 3...
+func _blender_number() -> int:
+	var node: Node = self
+	while node and not String(node.name).begins_with("GridScene"):
+		node = node.get_parent()
+	if node == null:
+		return 1
+	var suffix := String(node.name).trim_prefix("GridScene")
+	return int(suffix) if suffix.is_valid_int() else 1
+
+# Blender Down day: grey it out and remove the tiles so nothing can be dropped in
+func _show_out_of_order() -> void:
+	for tile in grid_visuals.get_children():
+		if tile.has_meta("is_occupied"):
+			tile.queue_free()
+	grid_visuals.modulate = Color(0.45, 0.45, 0.5, 0.8)
+	if blend_button:
+		blend_button.modulate = Color(0.5, 0.5, 0.55)
+		blend_button.disabled = true
+	var sign_label := Label.new()
+	sign_label.text = "OUT OF\nORDER"
+	sign_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sign_label.add_theme_font_size_override("font_size", 44)
+	sign_label.add_theme_constant_override("outline_size", 10)
+	sign_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	sign_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.35))
+	sign_label.size = Vector2(300, 120)
+	sign_label.position = grid_anchor.position - sign_label.size / 2.0
+	sign_label.rotation_degrees = -8.0
+	sign_label.pivot_offset = sign_label.size / 2.0
+	add_child(sign_label)
+
+# Rotten Batch day: some tiles start blocked
+func _add_rotten_cells(count: int) -> void:
+	var tiles := grid_visuals.get_children().filter(func(t): return t.has_meta("is_occupied"))
+	tiles.shuffle()
+	for i in mini(count, tiles.size()):
+		var tile: Node2D = tiles[i]
+		tile.set_meta("is_occupied", true)
+		tile.set_meta("rotten", true)
+		for child in tile.get_children():
+			if child is Sprite2D:
+				child.modulate = Color(0.45, 0.33, 0.2)
+		var mark := Label.new()
+		mark.text = "X"
+		mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		mark.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		mark.add_theme_font_size_override("font_size", 40)
+		mark.add_theme_color_override("font_color", Color(0.25, 0.4, 0.15))
+		mark.size = tile_size
+		mark.position = -tile_size / 2.0
+		tile.add_child(mark)
 
 func calculate_grid_dimensions() -> void:
 	var total_grid_width: float = grid_columns * tile_size.x
@@ -174,14 +237,17 @@ func _on_blend_button_up() -> void:
 
 
 func blend_grid_into_smoothie() -> void:
-	if not grid_visuals or is_blending or GameManager.paused:
+	if not grid_visuals or is_blending or GameManager.paused or out_of_order:
 		return
-		
+	if GameManager.power_out:
+		AudioManager.play_customer_angry()
+		return
+
 	var collected_fruits: Array[Node2D] = []
 	var has_pieces: bool = false
-	
+
 	for tile in grid_visuals.get_children():
-		if not tile.has_meta("is_occupied"):
+		if not tile.has_meta("is_occupied") or tile.has_meta("rotten"):
 			continue
 		if tile.get_meta("is_occupied") == true:
 			has_pieces = true
@@ -204,7 +270,7 @@ func blend_grid_into_smoothie() -> void:
 		fruit.queue_free()
 
 	for tile in grid_visuals.get_children():
-		if not tile.has_meta("is_occupied"):
+		if not tile.has_meta("is_occupied") or tile.has_meta("rotten"):
 			continue
 		tile.set_meta("is_occupied", false)
 		if tile.has_meta("occupied_by_fruit"):

@@ -193,8 +193,8 @@ func _web_start_music() -> void:
 func _on_start_released() -> void:
 	_web_start_music()
 	_quick_release_then($uiControl/TextureButton, func():
-		get_tree().call_group("hostController", "transition_to_scene", GameManager.gameLoop)
-	)
+		get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene)
+	, false)
 
 func _on_settings_released() -> void:
 	_web_start_music()

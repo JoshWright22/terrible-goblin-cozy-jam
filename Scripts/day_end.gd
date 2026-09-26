@@ -1,0 +1,78 @@
+extends CanvasLayer
+
+# Shown by the HUD when a campaign day's timer runs out
+
+@onready var _dimmer: ColorRect = $Dimmer
+@onready var _bg: Sprite2D = $BgSprite
+@onready var _title_lbl: Label = $TitleLabel
+@onready var _score_lbl: Label = $ScoreLabel
+@onready var _note_lbl: Label = $NoteLabel
+@onready var _stars: Array[StarIcon] = [$Stars/Star1, $Stars/Star2, $Stars/Star3]
+@onready var _next_btn: TextureButton = $ButtonBox/NextButton
+@onready var _retry_btn: Button = $ButtonBox/RetryButton
+@onready var _menu_btn: TextureButton = $ButtonBox/MenuButton
+
+func _ready() -> void:
+	var day: DayConfig = GameManager.current_day
+	var stars := day.stars_for_score(GameManager.score)
+	_title_lbl.text = "Day %d done!" % day.day_number if stars > 0 else "Day %d: no stars" % day.day_number
+	_score_lbl.text = "Score: %d" % GameManager.score
+	_note_lbl.text = _note_for(day, stars)
+	for star in _stars:
+		star.filled = false
+
+	_next_btn.visible = stars > 0 and GameManager.has_next_day()
+	ButtonFx.style_text_button(_retry_btn, Color(0.85, 0.55, 0.3), 38)
+	for btn in [_next_btn, _retry_btn, _menu_btn]:
+		ButtonFx.setup(btn)
+	_next_btn.pressed.connect(_on_next)
+	_retry_btn.pressed.connect(_on_retry)
+	_menu_btn.pressed.connect(_on_menu)
+
+	BoardPaint.apply(self, true, 0.4)
+	_play_in(stars)
+
+func _note_for(day: DayConfig, stars: int) -> String:
+	if stars == 0:
+		return "Reach %d points to open the next day" % day.star_scores[0]
+	if not GameManager.has_next_day():
+		return "Summer's over! Endless mode is open"
+	if stars < 3:
+		return "%d points for the next star" % day.star_scores[stars]
+	return "Perfect day!"
+
+func _play_in(stars: int) -> void:
+	var bg_scale := _bg.scale
+	_bg.scale = Vector2.ZERO
+	_dimmer.modulate.a = 0.0
+	var tw := create_tween()
+	tw.tween_property(_dimmer, "modulate:a", 1.0, 0.25)
+	tw.parallel().tween_property(_bg, "scale", bg_scale, 0.35) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(0.6)
+	# Stars stamp in one at a time
+	for i in stars:
+		var star := _stars[i]
+		tw.tween_callback(func():
+			star.filled = true
+			star.scale = Vector2(1.6, 1.6)
+			AudioManager.play_health_gain()
+		)
+		tw.tween_property(star, "scale", Vector2.ONE, 0.25) \
+			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func _leave(scene) -> void:
+	get_tree().paused = false
+	GameManager.paused = false
+	GameManager.day_complete = false
+	get_tree().call_group("hostController", "transition_to_scene", scene)
+
+func _on_next() -> void:
+	GameManager.current_day = GameManager.load_day(GameManager.current_day.day_number + 1)
+	_leave(GameManager.gameLoop)
+
+func _on_retry() -> void:
+	_leave(GameManager.gameLoop)
+
+func _on_menu() -> void:
+	_leave(GameManager.daySelectScene)

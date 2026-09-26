@@ -84,6 +84,14 @@ var medScore  = 50
 var customerNo: int = 0
 var currentCustomer: Dictionary = {}
 var currentOrders: Dictionary = {}
+var bannedFruit: Dictionary = {}   # custID -> fruit the customer is allergic to
+var mysteryFruit: Dictionary = {}  # custID -> fruit shown as "?" in the bubble
+
+# Campaign day (null in endless)
+var day: DayConfig = null
+var day_time_left: float = 0.0
+var _vip_spawned: bool = false
+var _day_finished: bool = false
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
 	FruitData.FruitType.STRAWBERRY,
@@ -100,10 +108,22 @@ func _ready() -> void:
 	GameManager.hold = false
 	GameManager.smoothie_quality = 1.0
 	GameManager.seen_fruit_types.clear()
+	GameManager.day_complete = false
+	GameManager.power_out = false
+	day = GameManager.current_day
+	if day:
+		day_time_left = day.duration
+		customer_spawn_delay = 5.0
+		ingredients = ingredients.filter(func(t): return day.allows_fruit(t))
 	var _help_layer := CanvasLayer.new()
 	_help_layer.layer = 12
 	add_child(_help_layer)
-	var helper = load("res://Scenes/help_scene.tscn").instantiate()
+	# The full tutorial shows on day 1 and in endless, later days get a short intro card
+	var helper
+	if day == null or day.day_number == 1:
+		helper = load("res://Scenes/help_scene.tscn").instantiate()
+	else:
+		helper = load("res://Scenes/day_intro.tscn").instantiate()
 	_help_layer.add_child(helper)
 	_help_layer.tree_exited.connect(_start_game_music)
 	REMAIN_TIME = MAX_TIME
@@ -132,7 +152,12 @@ func _process(delta: float) -> void:
 		REMAIN_TIME -= delta
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 
-	if REMAIN_TIME <= 0 and not gameOver:
+	if day and not _day_finished and not GameManager.paused and not gameOver:
+		day_time_left -= delta
+		if day_time_left <= 0.0:
+			_finish_day()
+
+	if REMAIN_TIME <= 0 and not gameOver and not _day_finished:
 		gameOver = true
 		GameManager.game_over = true
 		GameManager.paused = true
@@ -147,6 +172,22 @@ func _process(delta: float) -> void:
 	else:
 		if customerSpawnTimer.is_paused():
 			customerSpawnTimer.paused = false
+
+func _finish_day() -> void:
+	_day_finished = true
+	day_time_left = 0.0
+	GameManager.day_complete = true
+	GameManager.paused = true
+	customerSpawnTimer.stop()
+	_stop_game_music()
+	SaveManager.record_day(day.day_number, day.stars_for_score(GameManager.score))
+	get_tree().paused = true
+
+# Usable cells per blender, so a packed small blender scores like a packed big one
+func blender_cells() -> int:
+	if day == null:
+		return 16
+	return maxi(1, day.grid_size * day.grid_size - day.rotten_cells)
 
 func _arc_pos(start: Vector2, end: Vector2, arc_h: float, t: float) -> Vector2:
 	return Vector2(
@@ -210,11 +251,15 @@ func compareValues(inputer) -> void:
 	var trger = GameManager.trgID
 	GameManager.trgID = null
 	var custom = find_child("Customer_" + str(trger), true, false)
-	if custom.area != null:
-		custom.area.queue_free()
-	if custom.c != null and custom.b != null:
-		custom.c.queue_free()
-		custom.b.queue_free()
+	var wants_another: bool = custom.orders_left > 1
+	if wants_another:
+		custom._hide_bubble()
+	else:
+		if custom.area != null:
+			custom.area.queue_free()
+		if custom.c != null and custom.b != null:
+			custom.c.queue_free()
+			custom.b.queue_free()
 
 	# Did the player include all required fruit types?
 	var typeMatch := true
@@ -222,6 +267,9 @@ func compareValues(inputer) -> void:
 		if key not in inputer:
 			typeMatch = false
 			break
+	# Allergy orders: the banned fruit ruins the drink
+	if bannedFruit.get(trger, -1) in inputer:
+		typeMatch = false
 
 	# Convert inputer counts → percentages to compare against the order
 	var total_count: int = 0
@@ -240,13 +288,22 @@ func compareValues(inputer) -> void:
 	# Stars for health: mood determines max stars, typeMatch is the gate
 	var moodStars: int = max(0, int(custom.mood))
 	var stars: int = moodStars if typeMatch else 0
+	# Food critic: close isn't good enough
+	var too_sloppy: bool = day != null and percent < day.min_accuracy
+	if too_sloppy:
+		stars = 0
 
-	# Score — fill multiplier rewards packing the blender (max 16 cells, 7x at full)
-	var fill_ratio: float = clamp(float(total_count) / 16.0, 0.0, 1.0)
+	# Score — fill multiplier rewards packing the blender (7x when full)
+	var cells := blender_cells()
+	var fill_ratio: float = clamp(float(total_count) / float(cells), 0.0, 1.0)
 	var fill_bonus: float = 1.0 + pow(fill_ratio, 2.0) * 6.0
 	var scoreGain: int = 0
 	if typeMatch:
-		scoreGain = int(round(100.0 * (percent / 100.0) * float(total_count) * GameManager.smoothie_quality * fill_bonus))
+		# Normalise to a 16 cell blender so small blenders aren't punished
+		var cell_scale: float = 16.0 / float(cells)
+		scoreGain = int(round(100.0 * (percent / 100.0) * float(total_count) * cell_scale * GameManager.smoothie_quality * fill_bonus * custom.score_mult))
+		if too_sloppy:
+			scoreGain /= 2
 	var old_score := GameManager.score
 	GameManager.score += scoreGain
 	GameManager.smoothie_quality = 1.0
@@ -322,13 +379,22 @@ func compareValues(inputer) -> void:
 		AudioManager.play_customer_happy()
 	else:
 		AudioManager.play_customer_angry()
-	custom.serve()
+	if wants_another and is_instance_valid(custom):
+		custom.orders_left -= 1
+		genOrder(trger)
+		custom.next_order()
+	else:
+		custom.serve()
 
 func scaleDiff() -> void:
 	if customerNo >= MED_CUSTOMER_MIN and customerNo <= MED_CUSTOMER_MAX:
 		difficulty = "MEDIUM"
 	elif customerNo > MED_CUSTOMER_MAX:
 		difficulty = "HARD"
+	if day:
+		var order := ["EASY", "MEDIUM", "HARD"]
+		if order.find(difficulty) > order.find(day.max_difficulty):
+			difficulty = day.max_difficulty
 
 	match difficulty:
 		"EASY":
@@ -355,6 +421,9 @@ func scaleDiff() -> void:
 			minWaitTime = MIN_WAIT_TIME_HARD
 			maxWaitTime = MAX_WAIT_TIME_HARD
 			leave_penalty = LEAVE_PENALTY_HARD
+	if day:
+		minWaitTime = minWaitTime * day.patience_scale
+		maxWaitTime = maxWaitTime * day.patience_scale
 
 func customer_left() -> void:
 	AudioManager.play_health_lose()
@@ -392,6 +461,20 @@ func genOrder(custID) -> void:
 	order[selectedFruit[selectedFruit.size() - 1]] = remainder
 	currentOrders[custID] = order
 
+	bannedFruit.erase(custID)
+	mysteryFruit.erase(custID)
+	if day and day.allergy_orders and randf() < 0.45:
+		var safe_to_ban = available.filter(func(t): return t not in order)
+		if not safe_to_ban.is_empty():
+			bannedFruit[custID] = safe_to_ban.pick_random()
+	if day and day.mystery_orders:
+		mysteryFruit[custID] = order.keys().pick_random()
+
+func forget_customer(custID) -> void:
+	currentOrders.erase(custID)
+	bannedFruit.erase(custID)
+	mysteryFruit.erase(custID)
+
 func _on_customer_s_pawner_timeout() -> void:
 	if currentCustomer.size() != 4:
 		customerNo += 1
@@ -404,6 +487,14 @@ func _on_customer_s_pawner_timeout() -> void:
 			trgPos = positions[randi_range(1, 4)]
 		c.position = trgPos
 		c.ID = customerNo
+		if day:
+			if day.vip_customer and not _vip_spawned and day_time_left < day.duration * 0.6:
+				c.kind = "vip"
+				_vip_spawned = true
+			elif day.rush_orders and randf() < 0.3:
+				c.kind = "rush"
+			if day.double_orders and randf() < 0.4:
+				c.orders_left = 2
 		currentCustomer[customerNo] = trgPos
 		$custWindow/characterSprites/SubViewport.add_child(c)
 		genOrder(customerNo)

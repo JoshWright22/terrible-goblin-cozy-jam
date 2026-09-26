@@ -20,6 +20,8 @@ var _origins_initialized: bool = false
 
 func _ready() -> void:
 	_pages[0].visible = true
+	BoardPaint.apply(self, false)
+	BoardPaint.apply(_pages[0], true, 0.3)
 
 	_right_origin_x = _right_label.position.x
 	_left_origin_x  = _left_label.position.x
@@ -155,6 +157,7 @@ func _transition_to(new_page: int) -> void:
 	_page = new_page
 	_update_nav(false)
 	_pages[_page - 1].visible = true
+	BoardPaint.apply(_pages[_page - 1], true, 0.25)
 	position.x = slide_w * direction
 
 	# Phase 2: bounce the whole scene back in from the other side

@@ -40,7 +40,18 @@ var _current_tc: float = 0.0
 var _type_pools: Dictionary = {}   # int (FruitType) → Array[FruitData]
 var _pending_types: Array[int] = []  # types not yet seen this cycle
 
+const MELT_TIME: float = 7.0   # Heatwave: seconds a piece survives on the belt
+
+var _day: DayConfig = null
+
 func _ready() -> void:
+	_day = GameManager.current_day
+	if _day:
+		initial_belt_speed *= _day.belt_speed_scale
+		max_belt_speed *= _day.belt_speed_scale
+		initial_spawn_interval /= _day.spawn_rate_scale
+		min_spawn_interval /= _day.spawn_rate_scale
+		ramp_duration = _day.duration
 	_build_pool()
 	_current_belt_speed = initial_belt_speed
 	_current_spawn_interval = initial_spawn_interval
@@ -62,7 +73,11 @@ func _build_pool() -> void:
 	_resolved_pool.clear()
 	_type_pools.clear()
 	for fd in base:
-		if fd != null and fd.layout.size() >= min_blocks and fd.layout.size() <= max_blocks:
+		if fd == null:
+			continue
+		if _day and not (_day.allows_fruit(fd.fruit_name) and _day.allows_shape(fd)):
+			continue
+		if fd.layout.size() >= min_blocks and fd.layout.size() <= max_blocks:
 			_resolved_pool.append(fd)
 			if not _type_pools.has(fd.fruit_name):
 				_type_pools[fd.fruit_name] = []
@@ -148,6 +163,14 @@ func _process(delta: float) -> void:
 		if root.position.x < DESPAWN_X and not ctrl.is_dragging:
 			root.queue_free()
 			to_remove.append(p)
+		elif _day and _day.heatwave and not ctrl.is_dragging:
+			p.age += delta
+			# Tint toward a melty orange, then drip away
+			var melt := clampf(p.age / MELT_TIME, 0.0, 1.0)
+			ctrl.modulate = Color(1.0, 1.0 - melt * 0.35, 1.0 - melt * 0.6, 1.0 - maxf(0.0, melt - 0.8) * 5.0)
+			if melt >= 1.0:
+				root.queue_free()
+				to_remove.append(p)
 
 	for p in to_remove:
 		pieces.erase(p)
@@ -183,6 +206,9 @@ func _spawn_at(x: float) -> void:
 	if profile.fruit_name not in GameManager.seen_fruit_types:
 		GameManager.seen_fruit_types.append(profile.fruit_name)
 
+	if _day and randf() < _day.frozen_chance:
+		ctrl.frozen = true
+
 	piece.position = Vector2(x, 8)
 	add_child(piece)
-	pieces.append({ "root": piece, "ctrl": ctrl })
+	pieces.append({ "root": piece, "ctrl": ctrl, "age": 0.0 })

@@ -42,8 +42,19 @@ var FADE_TIME = 1.5
 var patience = 0
 var mood = 3  # 3=happy 2=neutral 1=angry 0=leave
 
+# Day twists, set by orderControl before the customer is added
+var kind: String = ""        # "", "rush" or "vip"
+var orders_left: int = 1     # 2 for double orders
+var score_mult: float = 1.0
+var _badge: Label = null
+
 func _ready() -> void:
-	timer.wait_time = randi_range(control.minWaitTime, control.maxWaitTime)
+	match kind:
+		"rush":
+			score_mult = 2.0
+		"vip":
+			score_mult = 3.0
+	timer.wait_time = _roll_wait()
 	timer.start(timer.wait_time)
 	characterSprites = [charSprite1, charSprite2, charSprite3, charSprite4, charSprite5]
 	neutralSprites   = [charNeuSprite1, charNeuSprite2, charNeuSprite3, charNeuSprite4, charNeuSprite5]
@@ -51,6 +62,42 @@ func _ready() -> void:
 	self.modulate = Color(1, 1, 1, 0)
 	genCustomer()
 	_base_sprite_scale = sprite.scale
+	_update_badge()
+
+func _roll_wait() -> float:
+	var wait := randf_range(control.minWaitTime, control.maxWaitTime)
+	match kind:
+		"rush":
+			wait *= 0.55
+		"vip":
+			wait *= 0.7
+	return wait
+
+func _update_badge() -> void:
+	var text := ""
+	match kind:
+		"rush":
+			text = "RUSH"
+		"vip":
+			text = "VIP"
+	if orders_left > 1:
+		text = (text + " x%d" % orders_left).strip_edges()
+	if text == "":
+		if _badge:
+			_badge.queue_free()
+			_badge = null
+		return
+	if _badge == null:
+		_badge = Label.new()
+		_badge.add_theme_font_size_override("font_size", 40)
+		_badge.add_theme_constant_override("outline_size", 10)
+		_badge.add_theme_color_override("font_outline_color", Color.BLACK)
+		_badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2) if kind == "vip" else Color.WHITE)
+		_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_badge.size = Vector2(200, 50)
+		_badge.position = Vector2(-100, -60)
+		add_child(_badge)
+	_badge.text = text
 
 func _process(_delta: float) -> void:
 	timer.paused = GameManager.paused
@@ -179,13 +226,27 @@ func removeCustomer() -> void:
 	fadeAway.finished.connect(queue_free)
 	control.currentCustomer.erase(ID)
 	control.spritesUsed.erase(ID)
-	control.currentOrders.erase(ID)
+	control.forget_customer(ID)
 	if is_instance_valid(b):
 		b.queue_free()
 	b = null
 	if is_instance_valid(c):
 		c.queue_free()
 	c = null
+
+# Double orders: the first smoothie landed, now show the second order
+func next_order() -> void:
+	mood = 3
+	var idx := neutralSprites.find(sprite.texture)
+	if idx == -1:
+		idx = angrySprites.find(sprite.texture)
+	if idx != -1:
+		sprite.texture = characterSprites[idx]
+	_update_badge()
+	timer.wait_time = _roll_wait()
+	timer.start(timer.wait_time)
+	if GameManager.auto_show_orders or GameManager.trgID == ID:
+		_show_bubble()
 
 func _pop_highlight() -> void:
 	sprite.create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT) \
@@ -211,5 +272,5 @@ func _on_emotion_timer_timeout() -> void:
 			control.currentOrders.erase(ID)
 			control.genOrder(ID)
 			_refresh_bubble()
-		timer.wait_time = randi_range(control.minWaitTime, control.maxWaitTime)
+		timer.wait_time = _roll_wait()
 		timer.start(timer.wait_time)

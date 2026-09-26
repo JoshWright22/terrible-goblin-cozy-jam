@@ -41,4 +41,4 @@ Autoloads: `GameManager` (shared game state), `AudioManager` (sound effects and 
 - Aurora (Roranart): Art
 - Nivadra: Music
 
-Sound effects by [Kenney](https://kenney.nl). Font: [Fredoka](https://fonts.google.com/specimen/Fredoka) (SIL Open Font License).
+Sound effects by [Kenney](https://kenney.nl). Font: [Delicious Handrawn](https://fonts.google.com/specimen/Delicious+Handrawn) (SIL Open Font License).

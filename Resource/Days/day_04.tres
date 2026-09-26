@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 4
+title = "Food Critic"
+intro_text = "A food critic is in town. Orders need to be at least 80% accurate or nobody's happy."
+fruits = Array[int]([0, 1, 2, 3])
+min_accuracy = 80.0
+max_difficulty = "MEDIUM"
+patience_scale = 1.2
+star_scores = Array[int]([2500, 6500, 11000])

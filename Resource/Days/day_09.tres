@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 9
+title = "Rotten Batch"
+intro_text = "Rotten fruit is stuck in the blenders. Pack around it."
+rotten_cells = 2
+max_difficulty = "MEDIUM"
+star_scores = Array[int]([3000, 7000, 12000])

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 16
+title = "Double Trouble"
+intro_text = "Big appetites today. Some customers want two smoothies."
+double_orders = true
+star_scores = Array[int]([4000, 9000, 15000])

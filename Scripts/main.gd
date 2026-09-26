@@ -3,7 +3,17 @@ extends Node2D
 var currentScene
 
 var _transition_rect: ColorRect = null
-var _screen_w: float = 1920.0
+var _transition_mat: ShaderMaterial = null
+var _transitioning: bool = false
+
+# Strawberry, mango, blueberry, banana, apple
+const SMOOTHIE_COLORS: Array[Color] = [
+	Color(0.95, 0.52, 0.58),
+	Color(0.99, 0.7, 0.35),
+	Color(0.55, 0.5, 0.85),
+	Color(0.99, 0.87, 0.45),
+	Color(0.62, 0.82, 0.45),
+]
 
 func _ready() -> void:
 	add_to_group("hostController")
@@ -11,16 +21,18 @@ func _ready() -> void:
 	changeScene(GameManager.mainMenu)
 
 func _setup_transition() -> void:
-	_screen_w = get_viewport().get_visible_rect().size.x
-
 	var layer := CanvasLayer.new()
 	layer.layer = 20
 	add_child(layer)
 
 	_transition_rect = ColorRect.new()
-	_transition_rect.color = Color(0.08, 0.05, 0.12)
-	_transition_rect.size = get_viewport().get_visible_rect().size
-	_transition_rect.position = Vector2(-_screen_w, 0)
+	_transition_rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_transition_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_transition_mat = ShaderMaterial.new()
+	_transition_mat.shader = load("res://Shaders/smoothie_transition.gdshader")
+	_transition_rect.material = _transition_mat
+	_transition_rect.visible = false
+	_transition_rect.process_mode = Node.PROCESS_MODE_ALWAYS
 	layer.add_child(_transition_rect)
 
 func changeScene(scene) -> void:
@@ -36,17 +48,30 @@ func changeScene(scene) -> void:
 	add_child(instance)
 
 func transition_to_scene(scene) -> void:
+	if _transitioning:
+		return
+	_transitioning = true
+	var view := get_viewport().get_visible_rect().size
+	_transition_mat.set_shader_parameter("aspect", view.x / view.y)
+	_transition_mat.set_shader_parameter("juice_color", SMOOTHIE_COLORS.pick_random())
+	_transition_mat.set_shader_parameter("fill", 0.0)
+	_transition_rect.visible = true
 	AudioManager.play_transition()
-	# Swipe in from the right
-	_transition_rect.position.x = _screen_w
-	var tw_in := _transition_rect.create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
-	tw_in.tween_property(_transition_rect, "position:x", 0.0, 0.28)
+
+	# Smoothie pours up and covers the screen
+	var tw_in := _transition_rect.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw_in.tween_method(_set_fill, 0.0, 1.0, 0.45)
 	await tw_in.finished
 
 	changeScene(scene)
 
-	# Swipe out to the left
-	AudioManager.play_transition()
-	var tw_out := _transition_rect.create_tween().set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_IN_OUT)
-	tw_out.tween_property(_transition_rect, "position:x", -_screen_w, 0.28)
+	# ...and carries on off the top to reveal the new scene
+	var tw_out := _transition_rect.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw_out.tween_interval(0.08)
+	tw_out.tween_method(_set_fill, 1.0, 2.0, 0.5)
 	await tw_out.finished
+	_transition_rect.visible = false
+	_transitioning = false
+
+func _set_fill(value: float) -> void:
+	_transition_mat.set_shader_parameter("fill", value)
