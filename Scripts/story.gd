@@ -45,7 +45,7 @@ static func _store(header: String, lines: Array) -> void:
 		push_warning("Story: skipped unknown header %s" % header)
 		return
 	var key := "%s:%d" % [CAMPAIGN_IDS[parts[0]], int(parts[1])]
-	_days[key] = {"title": header.substr(close + 1).strip_edges(), "intro": " ".join(lines)}
+	_days[key] = {"title": header.substr(close + 1).strip_edges(), "intro": "\n".join(lines)}
 
 # Overwrites each day's title and intro with the file's version where it has one
 static func apply(campaign: Campaign) -> void:

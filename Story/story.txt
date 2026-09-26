@@ -2,8 +2,8 @@
 #
 # Each day starts with a header line: [campaign day] Title
 #   campaign is "summer" (Summer Fun) or "carnival" (Boardwalk Carnival)
-# The lines under it are that day's intro card. They're joined into one paragraph, and the text
-# shrinks to fit the card, but keep it to about two sentences of story plus the day's rule.
+# The lines under it are that day's intro card. Each line starts a new line on the board.
+# Long lines wrap and the text shrinks to fit; keep it to about two sentences plus the day's rule.
 # Lines starting with # are notes and are ignored. A day missing here keeps its built-in text.
 #
 # [tutorial] holds the Day 1 tutorial steps, one per line, in order. The turn step has a mouse

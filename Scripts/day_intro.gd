@@ -48,6 +48,8 @@ func _ready() -> void:
 		star.mouse_filter = Control.MOUSE_FILTER_PASS
 	_goal_box.add_child(goals)
 	BoardPaint.apply(self, true, 0.25)
+	# Keep multi-line story text level instead of using the board's random tilt.
+	_intro_lbl.rotation = 0.0
 	BoardPaint.paint_tree(_fruit_reveal, 0.55, false)
 	BoardPaint.paint_tree(_goal_box, 0.7, false)
 	BoardPaint.paint_tree(_start_btn, 0.85, false)
