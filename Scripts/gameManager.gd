@@ -67,7 +67,9 @@ var smoothies_served: int = 0   # smoothies delivered this run
 
 func _ready() -> void:
 	for path in CAMPAIGN_PATHS:
-		campaigns.append(load(path) as Campaign)
+		var campaign := load(path) as Campaign
+		Story.apply(campaign)   # titles and intro cards come from Story/story.txt
+		campaigns.append(campaign)
 	current_campaign = campaigns[0]
 
 func campaign_unlocked(campaign: Campaign) -> bool:

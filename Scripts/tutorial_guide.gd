@@ -31,6 +31,9 @@ func _ready() -> void:
 		{"text": "Happy customers fill the bar on the left. Reach the star goals before the shop closes!", "target": _health_point,
 			"done": func(): return _step_time > SIGN_TIP_TIME},
 	]
+	# Step text can be edited in Story/story.txt
+	for i in _steps.size():
+		_steps[i]["text"] = Story.tutorial_step(i, _steps[i]["text"], touch)
 	visible = false
 	ButtonFx.style_text_button(_skip_btn, Palette.MUTED, 36)
 	ButtonFx.setup(_skip_btn)

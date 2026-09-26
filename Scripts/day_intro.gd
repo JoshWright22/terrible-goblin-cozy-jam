@@ -14,7 +14,9 @@ const REVEAL_SHAPES := ["1x1", "2x1", "3x2_T"]
 const REVEAL_HEIGHT := 72.0
 const REVEAL_SHIFT := 60.0
 const REVEAL_GAP := 30          # between the name, the order icon, "=" and each piece
-const CELL_PIXELS := 120   # fruit piece art is drawn at 120 px per cell
+const MIN_INTRO_SIZE := 34
+const CELL_PIXELS := 120
+const PIECE_CELL := 52.0         # on-screen size of one piece cell, the same for every piece   # fruit piece art is drawn at 120 px per cell
 @onready var _start_btn: TextureButton = $StartButton
 
 var _closing: bool = false
@@ -29,8 +31,7 @@ func _ready() -> void:
 		_intro_lbl.text += "\nA new blender is open!"
 	var new_fruits := _new_fruits(day)
 	if not new_fruits.is_empty():
-		# Make room under the intro for the new fruit: smaller intro text, everything below shifts down
-		_intro_lbl.add_theme_font_size_override("font_size", 46)
+		# Make room under the intro for the new fruit: everything below shifts down
 		for item in [_fruit_reveal, _goal_box]:
 			item.position.y += REVEAL_SHIFT
 		_start_btn.position.y += REVEAL_SHIFT / 3.0
@@ -38,6 +39,7 @@ func _ready() -> void:
 		_intro_lbl.offset_bottom = _fruit_reveal.offset_top
 		for fruit in new_fruits:
 			_show_new_fruit(fruit)
+	_fit_intro()
 	var goals := BoardPaint.star_row([BoardPaint.STAR, "%d   " % day.star_scores[0], BoardPaint.STAR, "%d   " % day.star_scores[1],
 		BoardPaint.STAR, str(day.star_scores[2])], 52, true)
 	var hints := day.star_hints()
@@ -52,6 +54,17 @@ func _ready() -> void:
 	ButtonFx.setup(_start_btn)
 	_start_btn.pressed.connect(_close)
 	_play_in()
+
+# Story text comes from a file anyone can edit, so shrink it until it fits its space
+func _fit_intro() -> void:
+	var font := _intro_lbl.get_theme_font("font")
+	var font_size := _intro_lbl.get_theme_font_size("font_size")
+	var room := _intro_lbl.offset_bottom - _intro_lbl.offset_top
+	var width := _intro_lbl.offset_right - _intro_lbl.offset_left
+	while font_size > MIN_INTRO_SIZE and font.get_multiline_string_size(_intro_lbl.text,
+			HORIZONTAL_ALIGNMENT_CENTER, width, font_size).y > room:
+		font_size -= 2
+	_intro_lbl.add_theme_font_size_override("font_size", font_size)
 
 # Fruits on today's belt that weren't on yesterday's. Day 1 has the tutorial instead
 func _new_fruits(day: DayConfig) -> Array:
@@ -84,7 +97,8 @@ func _show_new_fruit(fruit: int) -> void:
 
 	for shape in REVEAL_SHAPES:
 		var piece: FruitData = load("res://Resource/%s_%s.tres" % [fruit_name, shape])
-		_fruit_reveal.add_child(_picture(_piece_art(piece)))
+		var art := _piece_art(piece)
+		_fruit_reveal.add_child(_picture(art, art.get_size() * PIECE_CELL / CELL_PIXELS))
 
 # Just the cells the piece fills, not the empty canvas around a small piece
 func _piece_art(piece: FruitData) -> Texture2D:
@@ -109,13 +123,14 @@ func _trimmed(texture: Texture2D, area: Rect2 = Rect2()) -> Texture2D:
 	art.region = area
 	return art
 
-func _picture(texture: Texture2D) -> TextureRect:
+func _picture(texture: Texture2D, fixed_size := Vector2.ZERO) -> TextureRect:
 	var picture := TextureRect.new()
 	picture.texture = texture
 	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	var size := texture.get_size()
-	picture.custom_minimum_size = Vector2(REVEAL_HEIGHT * size.x / size.y, REVEAL_HEIGHT)
+	picture.custom_minimum_size = fixed_size if fixed_size != Vector2.ZERO else Vector2(REVEAL_HEIGHT * size.x / size.y, REVEAL_HEIGHT)
+	picture.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return picture
 

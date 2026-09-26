@@ -1,0 +1,162 @@
+# Slush Rush story text. Edit freely; the game reads this file when it starts.
+#
+# Each day starts with a header line: [campaign day] Title
+#   campaign is "summer" (Summer Fun) or "carnival" (Boardwalk Carnival)
+# The lines under it are that day's intro card. They're joined into one paragraph, and the text
+# shrinks to fit the card, but keep it to about two sentences of story plus the day's rule.
+# Lines starting with # are notes and are ignored. A day missing here keeps its built-in text.
+#
+# [tutorial] holds the Day 1 tutorial steps, one per line, in order. The turn step has a mouse
+# version and a touch version split by ||
+
+[summer 1] Opening Day
+Uncle Gus left you his beach smoothie shack and fled the country. He said it was unrelated.
+Two fruits for now.
+
+[summer 2] New Delivery
+Blueberries arrived. Nobody ordered them. A note from Uncle Gus assures you there is nothing wrong with them.
+Three fruits now.
+
+[summer 3] Odd Shapes
+Gus left his "custom" fruit cutter behind. It only cuts shapes he describes as spiritual.
+Right click to spin pieces so they fit.
+
+[summer 4] Mango Season
+Someone has carved "trust the mangoes" into the counter. It is Gus's handwriting. The beach has lost all dignity.
+Customers will start asking for mangoes.
+
+[summer 5] Lunch Rush
+The lifeguards all eat at noon, and all of them say Gus owes them money.
+RUSH customers leave fast but tip double.
+
+[summer 6] Allergy Season
+Gus's recipe book has allergy warnings in the margins, mostly written as threats.
+Never add a crossed out fruit. Lawyers are expensive.
+
+[summer 7] Broken Blender
+Gus's cleaning instructions said hot wash, tumble dry. The blenders shrank.
+3x3 grids today. No one is taking questions.
+
+[summer 8] Belt on Overdrive
+Another note from Gus: do not press the red button. It has been pressed.
+Fruit comes in fast!
+
+[summer 9] Rotten Batch
+Something was living in the blenders. Gus's notes call it Kevin. Kevin has moved on, but his rotten fruit has not.
+Pack around it.
+
+[summer 10] Heatwave
+A postcard from Gus: "Hot here too." No return address. The seagulls have unionized.
+Fruit left on the belt too long melts away.
+
+[summer 11] Brain Freeze
+The freezer works too well. It froze the fruit, the mop and Kevin, who came back.
+Frosty pieces can't rotate.
+
+[summer 12] Food Critics
+A food blogger found the shack and asked about Gus. You said sabbatical.
+CRITIC customers want 90% accuracy or better, but pay triple.
+
+[summer 13] Mystery Menu
+Customers are being vague today, almost spiritually. One of them asked if you've seen a man named Gus.
+One fruit in each order is a mystery.
+
+[summer 14] Bonfire Night
+Someone swears they saw Gus at the bonfire. Then the shack blew a fuse.
+Work by flashlight. The dark is probably empty.
+
+[summer 15] Summer Storm
+Gus's emergency plan is taped to the wall. It says "run." The power keeps going out.
+Blenders only work with the lights on.
+
+[summer 16] Double Trouble
+The volleyball team Gus used to coach won without him. They are starving.
+Some customers want two smoothies.
+
+[summer 17] VIP Visit
+A famous surfer who used to ride waves with Gus is stopping by. Do not ask about the shark.
+Serve the VIP well for a huge bonus.
+
+[summer 18] Summer Festival
+The summer festival. Uncle Gus has returned to watch, and he is not alone.
+A bit of everything. Good luck.
+
+[carnival 1] Carnival Day
+The carnival hired you, no questions asked. Gus recommended you, which should have been a warning.
+PRIZE customers spin the wheel, and good streaks build a combo.
+
+[carnival 2] Hot Blenders
+The carnival's blenders were bought from a man in a van. The van was Gus's.
+Blend too fast and they overheat.
+
+[carnival 3] Belt Hiccups
+The conveyor used to be a ride. It still remembers.
+It stalls now and then, so grab what you can.
+
+[carnival 4] Shifty Fruit
+The magician next door is bored, and he owes Gus a favour he refuses to explain.
+Fruit on the belt keeps changing until you grab it.
+
+[carnival 5] Short Memory
+Everyone just got off the rollercoaster and forgot their own names.
+Orders fade, hover a customer to peek.
+
+[carnival 6] Haunted House
+Your stand has been moved inside the haunted house. One of the ghosts looks a lot like Gus.
+It is pitch black. Work by flashlight. Don't look back.
+
+[carnival 7] Overtime
+The carnival is packed and Gus is selling tickets he did not print.
+Rush customers and hot blenders. Pace yourself.
+
+[carnival 8] Mixed Up
+The magician is back and brought allergies.
+Shifty fruit and banned fruit, check before you drop!
+
+[carnival 9] Blackout
+Gus plugged the ferris wheel into your outlet.
+The power flickers and the belt stalls.
+
+[carnival 10] Judging Day
+The food contest. Gus entered your stand without asking. The judges have tasted fear before.
+They want 85% accuracy and forget their orders fast.
+
+[carnival 11] Double Heat
+The strongman contest just ended. Gus lost, somehow, to a child.
+Double orders and overheating blenders. Plan your blends.
+
+[carnival 12] Fortune Teller
+The fortune teller says your next customer wants a mystery fruit, and that Gus is lying about something.
+One fruit per order is a secret.
+
+[carnival 13] Ice Cream Truck
+The ice cream truck parked next door and froze everything out of spite. Gus says it's personal.
+Frosty pieces can't rotate.
+
+[carnival 14] Hall of Mirrors
+Your stand is in the hall of mirrors now. There are eleven Guses. None of them will help.
+Fruit keeps changing and orders fade. Trust nothing.
+
+[carnival 15] Food Fight
+Someone started a food fight. Everyone is looking at Gus.
+CRITIC customers want 90% or they pay nothing, and some want seconds.
+
+[carnival 16] Rollercoaster
+The conveyor is now technically a rollercoaster. Gus has been riding it all morning.
+It speeds up, it stalls, RUSH customers love it.
+
+[carnival 17] Rain Delay
+Rain over the carnival. Gus is sheltering in your stand and eating the stock.
+The power keeps cutting out, and everyone is suddenly allergic to something.
+
+[carnival 18] Grand Finale
+The last day of the carnival. Everything at once.
+Uncle Gus says he is proud of you. That is new.
+
+[tutorial]
+Grab a fruit off the conveyor belt
+Drop it into a blender
+Right click while holding a piece to turn it || Tap with a second finger while dragging to turn a piece
+Fill it to match the order, then press Blend
+Drag the smoothie onto the customer
+Happy customers fill the bar on the left. Reach the star goals before the shop closes!
