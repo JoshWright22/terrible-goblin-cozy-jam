@@ -93,6 +93,21 @@ def achievement(sprite, colour, size=256):
     return tile
 
 
+def trailer_card(line):
+    # 1920x1080 opening and closing cards for the trailer
+    from PIL import ImageFont
+    card = cover(full_scene(title=False), 1920, 1080).filter(ImageFilter.GaussianBlur(10 if line else 0))
+    logo = fit(trimmed(TITLE), 1920 * (0.5 if line else 0.62), 1080 * 0.62)
+    top = 150 if line else (1080 - logo.height) // 2
+    card.alpha_composite(logo, ((1920 - logo.width) // 2, top))
+    if line:
+        font = ImageFont.truetype(str(ROOT / "Assets/fonts/DeliciousHandrawn-Regular.ttf"), 110)
+        draw = ImageDraw.Draw(card)
+        w = draw.textlength(line, font=font)
+        draw.text(((1920 - w) / 2, 820), line, font=font, fill=(255, 250, 225), stroke_width=9, stroke_fill=(36, 72, 158))
+    return card
+
+
 def save(im, name, rgb=True):
     (OUT / name).parent.mkdir(parents=True, exist_ok=True)
     (im.convert("RGB") if rgb else im).save(OUT / name)
@@ -130,6 +145,9 @@ if __name__ == "__main__":
         tile = achievement(sprite, colour)
         save(tile, f"achievements/{name}.jpg")
         save(tile.convert("L"), f"achievements/{name}_locked.jpg")
+
+    save(trailer_card(""), "trailer_title_1920x1080.png")
+    save(trailer_card("Coming to Steam and Google Play"), "trailer_end_1920x1080.png")
 
     # Google Play feature graphic
     save(capsule(1024, 500, 0.48, logo_x=0.3), "play_feature_1024x500.png")
