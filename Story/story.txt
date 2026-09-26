@@ -22,12 +22,12 @@ Gus left his "custom" fruit cutter behind. His note says it only cuts shapes he 
 The fruit comes out bent, but you can right click a piece to spin it into place.
 
 [summer 4] Mango Season
-Someone carved "trust the mangoes" into the counter. It is Gus's handwriting.
-A crate of mangoes turned up this morning, and the customers have noticed.
+Someone carved "trust the mangoes" into the counter. It seems to be in Gus's handwriting.
+A crate of mangoes turned up this morning, and the customers are craving something new.
 
 [summer 5] Lunch Rush
-The lifeguards all eat at noon, and every one of them says Gus owes them money.
-The ones marked RUSH leave fast but tip double.
+The lifeguards only get ten minutes for lunch. Gus's note says they tip well if you're quick, and that he still owes them money.
+The ones marked RUSH won't wait long, but they pay double.
 
 [summer 6] Allergy Season
 Gus's recipe book has allergy warnings in the margins, mostly written as threats.
