@@ -18,7 +18,6 @@ var trgID = null
 
 # Settings
 var auto_show_orders: bool = true       # show order bubbles without hovering
-var change_order_on_anger: bool = true # customers reroll order when they turn angry
 
 var score: int = 0
 var fruit_held: bool = false  # prevents picking up two pieces at once
@@ -36,6 +35,7 @@ const CAMPAIGN_PATHS := [
 var campaigns: Array[Campaign] = []
 var current_campaign: Campaign = null
 var current_day: DayConfig = null   # null = endless mode
+var endless_twists: DayConfig = null # endless starts plain and picks up twists as it goes
 var day_complete: bool = false
 var power_out: bool = false          # Power Outage twist: blenders can't blend while true
 var stars_before_day: int = 0        # total stars when the day started, for unlock announcements
@@ -68,6 +68,10 @@ func endless_unlocked() -> bool:
 	# Mobile gets endless from the start, Steam unlocks it by finishing the first campaign
 	var first := campaigns[0]
 	return OS.has_feature("mobile") or SaveManager.unlocked_day(first.id) > first.day_count()
+
+# The twist rules for the current run, campaign day or endless
+func twists() -> DayConfig:
+	return current_day if current_day else endless_twists
 
 func has_next_day() -> bool:
 	return current_day != null and current_day.day_number < current_campaign.day_count()

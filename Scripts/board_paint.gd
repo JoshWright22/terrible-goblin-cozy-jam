@@ -44,9 +44,23 @@ static func paint_on(lbl: Control, delay: float = 0.0) -> void:
 		width = minf(width, font.get_multiline_string_size(lbl.text, lbl.horizontal_alignment, lbl.size.x, font_size).x)
 	var start_x := (lbl.size.x - width) / 2.0 if lbl is Label and lbl.horizontal_alignment == HORIZONTAL_ALIGNMENT_CENTER else 0.0
 	var lines: int = maxi(1, lbl.get_line_count())
+	# Match the shader's rows to the real text lines, not the label box, so each line paints on its own
+	var line_height := lbl.size.y / lines
+	var text_top := 0.0
+	if lbl is Label:
+		line_height = lbl.get_line_height() + lbl.get_theme_constant("line_spacing")
+		var text_height := line_height * lines - lbl.get_theme_constant("line_spacing")
+		match lbl.vertical_alignment:
+			VERTICAL_ALIGNMENT_CENTER:
+				text_top = (lbl.size.y - text_height) / 2.0
+			VERTICAL_ALIGNMENT_BOTTOM:
+				text_top = lbl.size.y - text_height
+	elif lbl is RichTextLabel:
+		line_height = lbl.get_content_height() / float(lines)
 	mat.set_shader_parameter("label_width", start_x + width)
 	mat.set_shader_parameter("line_count", float(lines))
-	mat.set_shader_parameter("line_height", lbl.size.y / lines)
+	mat.set_shader_parameter("line_height", line_height)
+	mat.set_shader_parameter("text_top", text_top)
 	mat.set_shader_parameter("reveal", 0.0)
 	var time := clampf(width / 900.0, 0.3, 0.9) * lines
 	var tw := lbl.create_tween()

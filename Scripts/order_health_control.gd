@@ -106,6 +106,10 @@ var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.APPLE,
 ]
 
+func _enter_tree() -> void:
+	# Fresh endless rules before the belt and blenders read them in _ready
+	GameManager.endless_twists = DayConfig.new()
+
 func _ready() -> void:
 	GameManager.paused = true
 	GameManager.game_over = false
@@ -137,6 +141,9 @@ func _ready() -> void:
 		GameManager.tutorial_active = false
 		GameManager.paused = false
 		_help_layer.queue_free()
+		var director: Node = load("res://Scripts/endless_director.gd").new()
+		director.name = "EndlessDirector"
+		add_child(director)
 	_help_layer.tree_exited.connect(_start_game_music)
 	REMAIN_TIME = MAX_TIME
 	healthBar.max_value = MAX_TIME
@@ -330,7 +337,8 @@ func compareValues(inputer) -> void:
 	var moodStars: int = max(0, int(custom.mood))
 	var stars: int = moodStars if typeMatch else 0
 	# Food critic: close isn't good enough
-	var too_sloppy: bool = day != null and percent < day.min_accuracy
+	var twists := GameManager.twists()
+	var too_sloppy: bool = percent < twists.min_accuracy
 	if too_sloppy:
 		stars = 0
 
@@ -345,7 +353,7 @@ func compareValues(inputer) -> void:
 		scoreGain = int(round(100.0 * (percent / 100.0) * float(total_count) * cell_scale * GameManager.smoothie_quality * fill_bonus * custom.score_mult))
 		if too_sloppy:
 			scoreGain /= 2
-	if day and day.combo:
+	if twists.combo:
 		scoreGain = int(round(scoreGain * _update_combo(typeMatch and percent >= COMBO_ACCURACY)))
 	GameManager.smoothies_served += 1
 	var old_score := GameManager.score
@@ -465,9 +473,8 @@ func scaleDiff() -> void:
 			minWaitTime = MIN_WAIT_TIME_HARD
 			maxWaitTime = MAX_WAIT_TIME_HARD
 			leave_penalty = LEAVE_PENALTY_HARD
-	if day:
-		minWaitTime = minWaitTime * day.patience_scale
-		maxWaitTime = maxWaitTime * day.patience_scale
+	minWaitTime = minWaitTime * GameManager.twists().patience_scale
+	maxWaitTime = maxWaitTime * GameManager.twists().patience_scale
 
 func customer_left() -> void:
 	AudioManager.play_health_lose()
@@ -507,11 +514,12 @@ func genOrder(custID) -> void:
 
 	bannedFruit.erase(custID)
 	mysteryFruit.erase(custID)
-	if day and day.allergy_orders and randf() < 0.45:
+	var twists := GameManager.twists()
+	if twists.allergy_orders and randf() < 0.45:
 		var safe_to_ban = available.filter(func(t): return t not in order)
 		if not safe_to_ban.is_empty():
 			bannedFruit[custID] = safe_to_ban.pick_random()
-	if day and day.mystery_orders:
+	if twists.mystery_orders:
 		mysteryFruit[custID] = order.keys().pick_random()
 
 func forget_customer(custID) -> void:
@@ -531,14 +539,14 @@ func _on_customer_s_pawner_timeout() -> void:
 			trgPos = positions[randi_range(1, 4)]
 		c.position = trgPos
 		c.ID = customerNo
-		if day:
-			if day.vip_customer and not _vip_spawned and day_time_left < day.duration * 0.6:
-				c.kind = "vip"
-				_vip_spawned = true
-			elif day.rush_orders and randf() < 0.3:
-				c.kind = "rush"
-			if day.double_orders and randf() < 0.4:
-				c.orders_left = 2
+		var twists := GameManager.twists()
+		if day and day.vip_customer and not _vip_spawned and day_time_left < day.duration * 0.6:
+			c.kind = "vip"
+			_vip_spawned = true
+		elif twists.rush_orders and randf() < 0.3:
+			c.kind = "rush"
+		if twists.double_orders and randf() < 0.4:
+			c.orders_left = 2
 		currentCustomer[customerNo] = trgPos
 		$custWindow/characterSprites/SubViewport.add_child(c)
 		genOrder(customerNo)

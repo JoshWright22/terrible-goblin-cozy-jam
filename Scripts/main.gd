@@ -44,10 +44,7 @@ func transition_to_scene(scene) -> void:
 	_transitioning = true
 	var view := get_viewport().get_visible_rect().size
 	_transition_mat.set_shader_parameter("aspect", view.x / view.y)
-	var layers := Cosmetics.transition_layers()
-	_transition_mat.set_shader_parameter("layer_back", layers[0])
-	_transition_mat.set_shader_parameter("layer_middle", layers[1])
-	_transition_mat.set_shader_parameter("layer_front", layers[2])
+	_transition_mat.set_shader_parameter("juice", Cosmetics.transition_color())
 	_transition_mat.set_shader_parameter("fill", 0.0)
 	_transition_rect.visible = true
 	AudioManager.play_transition()

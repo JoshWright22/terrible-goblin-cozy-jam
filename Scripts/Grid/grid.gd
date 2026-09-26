@@ -316,8 +316,7 @@ func blend_grid_into_smoothie() -> void:
 
 	is_blending = true
 	AudioManager.play_blend_start()
-	var day: DayConfig = GameManager.current_day
-	if day and day.overheat:
+	if GameManager.twists().overheat:
 		_track_heat()
 	
 	var ingredient_data: Array = []

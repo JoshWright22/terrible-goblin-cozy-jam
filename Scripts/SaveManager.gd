@@ -46,7 +46,6 @@ func save_game() -> void:
 	cfg.set_value("settings", "sfx_volume", sfx_volume)
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "auto_show_orders", GameManager.auto_show_orders)
-	cfg.set_value("settings", "change_order_on_anger", GameManager.change_order_on_anger)
 	cfg.set_value("progress", "unlocked_days", unlocked_days)
 	cfg.set_value("progress", "day_stars", day_stars)
 	cfg.set_value("progress", "endless_best", endless_best)
@@ -69,7 +68,6 @@ func _load_file() -> void:
 	sfx_volume = cfg.get_value("settings", "sfx_volume", sfx_volume)
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
 	GameManager.auto_show_orders = cfg.get_value("settings", "auto_show_orders", GameManager.auto_show_orders)
-	GameManager.change_order_on_anger = cfg.get_value("settings", "change_order_on_anger", GameManager.change_order_on_anger)
 	unlocked_days = cfg.get_value("progress", "unlocked_days", unlocked_days)
 	day_stars = cfg.get_value("progress", "day_stars", day_stars)
 	# Saves from before campaigns only had Summer, keyed by day number

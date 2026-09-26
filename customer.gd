@@ -219,7 +219,7 @@ func _on_area_2d_mouse_exited() -> void:
 		_hide_bubble()
 
 func _orders_fade() -> bool:
-	return control.day != null and control.day.fading_orders
+	return GameManager.twists().fading_orders
 
 func _fade_bubble_later() -> void:
 	await get_tree().create_timer(ORDER_FADE_TIME, false).timeout
@@ -282,7 +282,7 @@ func _on_emotion_timer_timeout() -> void:
 	else:
 		mood -= 1
 		changeMood()
-		if mood == 1 and GameManager.change_order_on_anger:
+		if mood == 1 and GameManager.twists().angry_reorder:
 			control.currentOrders.erase(ID)
 			control.genOrder(ID)
 			_refresh_bubble()

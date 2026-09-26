@@ -43,6 +43,7 @@ class_name DayConfig
 @export var shifty_fruit: bool = false      # loose fruit keeps changing type until it's grabbed
 @export var fading_orders: bool = false     # order bubbles fade, hover the customer to peek
 @export var combo: bool = false             # good smoothies in a row build a score multiplier
+@export var angry_reorder: bool = false     # customers change their order when they turn angry
 
 func stars_for_score(score: int) -> int:
 	var stars := 0

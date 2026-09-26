@@ -156,7 +156,8 @@ func _process(delta: float) -> void:
 	_current_tc = tc
 	_current_belt_speed = lerpf(initial_belt_speed, max_belt_speed, tc)
 	_current_spawn_interval = lerpf(initial_spawn_interval, min_spawn_interval, tc)
-	if _day and _day.belt_stops:
+	var twists := GameManager.twists()
+	if twists.belt_stops:
 		_update_stall(delta)
 	if _stalled:
 		_current_belt_speed = 0.0
@@ -180,12 +181,12 @@ func _process(delta: float) -> void:
 		if root.position.x < DESPAWN_X and not ctrl.is_dragging:
 			root.queue_free()
 			to_remove.append(p)
-		if _day and _day.shifty_fruit and not ctrl.is_dragging:
+		if twists.shifty_fruit and not ctrl.is_dragging:
 			p.shift += delta
 			if p.shift >= SHIFT_TIME:
 				p.shift = 0.0
 				_shift_fruit(ctrl)
-		if _day and _day.heatwave and not ctrl.is_dragging:
+		if twists.heatwave and not ctrl.is_dragging:
 			p.age += delta
 			# Tint toward a melty orange, then drip away
 			var melt := clampf(p.age / MELT_TIME, 0.0, 1.0)
@@ -229,7 +230,7 @@ func _spawn_at(x: float) -> void:
 	if profile.fruit_name not in GameManager.seen_fruit_types:
 		GameManager.seen_fruit_types.append(profile.fruit_name)
 
-	if _day and randf() < _day.frozen_chance:
+	if randf() < GameManager.twists().frozen_chance:
 		ctrl.frozen = true
 
 	piece.position = Vector2(x, 8)

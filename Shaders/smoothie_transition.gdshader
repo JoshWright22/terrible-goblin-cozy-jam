@@ -1,13 +1,11 @@
 shader_type canvas_item;
 
-// Scene transition: three layers of smoothie pour up the screen one after another,
-// like a layered drink, then carry on off the top.
+// Scene transition: three pours of the same smoothie come up the screen one after another,
+// split by foam and ink edges, then carry on off the top.
 // fill 0 -> 1 covers the screen, 1 -> 2 uncovers it from the bottom.
 
 uniform float fill : hint_range(0.0, 2.0) = 0.0;
-uniform vec4 layer_back : source_color = vec4(0.55, 0.5, 0.85, 1.0);
-uniform vec4 layer_middle : source_color = vec4(0.99, 0.7, 0.35, 1.0);
-uniform vec4 layer_front : source_color = vec4(0.95, 0.52, 0.58, 1.0);
+uniform vec4 juice : source_color = vec4(0.95, 0.52, 0.58, 1.0);
 uniform vec4 foam_color : source_color = vec4(1.0, 0.94, 0.88, 1.0);
 uniform vec4 outline_color : source_color = vec4(0.13, 0.08, 0.08, 1.0);
 uniform float aspect = 1.7778;
@@ -25,7 +23,7 @@ float wave(float x, float seed, float speed) {
 }
 
 // Returns rgb + coverage for one layer. order 0 pours first, 2 pours last.
-vec4 layer(vec2 uv, float order, vec3 juice) {
+vec4 layer(vec2 uv, float order, vec3 base) {
 	float height = 1.0 - uv.y;
 	float cover = clamp(fill * SPREAD - order * STAGGER, 0.0, 1.0);
 	// Draining happens front layer first so the stack peels away in reverse
@@ -43,7 +41,7 @@ vec4 layer(vec2 uv, float order, vec3 juice) {
 	float bubble = step(length(local + (vec2(hash(cell + 3.0), hash(cell + 7.0)) - 0.5) * 0.4), hash(cell) * 0.28)
 		* step(0.72, hash(cell + 11.0));
 
-	vec3 col = mix(juice, foam_color.rgb, bubble * 0.35);
+	vec3 col = mix(base, foam_color.rgb, bubble * 0.35);
 	col = mix(col, foam_color.rgb, clamp(foam, 0.0, 1.0));
 	float ink = max(step(top_edge - 0.006, height), draining * step(height, bottom_edge + 0.006));
 	col = mix(col, outline_color.rgb, ink);
@@ -51,9 +49,9 @@ vec4 layer(vec2 uv, float order, vec3 juice) {
 }
 
 void fragment() {
-	vec4 back = layer(UV, 0.0, layer_back.rgb);
-	vec4 middle = layer(UV, 1.0, layer_middle.rgb);
-	vec4 front = layer(UV, 2.0, layer_front.rgb);
+	vec4 back = layer(UV, 0.0, juice.rgb);
+	vec4 middle = layer(UV, 1.0, juice.rgb);
+	vec4 front = layer(UV, 2.0, juice.rgb);
 
 	vec3 col = back.rgb;
 	float alpha = back.a;

@@ -47,12 +47,12 @@ const OPTIONS := {
 		{"name": "Grape", "color": Color(0.8, 0.72, 1.0), "stars": 30},
 	],
 	TRANSITION: [
-		{"name": "Fruit Mix", "color": Color(0.95, 0.52, 0.58), "layers": [], "stars": 0},
-		{"name": "Tropical", "color": Color(0.99, 0.7, 0.35), "layers": [Color(0.99, 0.87, 0.45), Color(0.99, 0.7, 0.35), Color(0.95, 0.45, 0.4)], "stars": 9},
-		{"name": "Berry Blast", "color": Color(0.55, 0.5, 0.85), "layers": [Color(0.45, 0.35, 0.7), Color(0.55, 0.5, 0.85), Color(0.95, 0.52, 0.58)], "stars": 16},
+		{"name": "Fruit Mix", "color": Color(0.95, 0.52, 0.58), "random": true, "stars": 0},
+		{"name": "Tropical", "color": Color(0.99, 0.7, 0.35), "stars": 9},
+		{"name": "Berry Blast", "color": Color(0.55, 0.5, 0.85), "stars": 16},
 		# Hidden until the game has a green fruit
-		{"name": "Green Machine", "color": Color(0.62, 0.82, 0.45), "layers": [Color(0.45, 0.7, 0.4), Color(0.62, 0.82, 0.45), Color(0.9, 0.95, 0.6)], "stars": 26, "hidden": true},
-		{"name": "Midnight", "color": Color(0.25, 0.25, 0.45), "layers": [Color(0.15, 0.15, 0.3), Color(0.25, 0.25, 0.45), Color(0.45, 0.4, 0.7)], "stars": 36},
+		{"name": "Green Machine", "color": Color(0.62, 0.82, 0.45), "stars": 26, "hidden": true},
+		{"name": "Midnight", "color": Color(0.25, 0.25, 0.45), "stars": 36},
 	],
 	PAINT: [
 		{"name": "Cream", "color": Color(1.0, 0.97, 0.9), "stars": 0},
@@ -136,11 +136,9 @@ static func apply_shop(game_loop: Node) -> void:
 	if belt:
 		belt.modulate = selected(BELT)["color"]
 
-# The three juice colors for a scene transition, back to front
-static func transition_layers() -> Array:
-	var layers: Array = selected(TRANSITION)["layers"]
-	if not layers.is_empty():
-		return layers
-	var mix := FRUIT_COLORS.duplicate()
-	mix.shuffle()
-	return mix.slice(0, 3)
+# The juice color for a scene transition. Fruit Mix picks a random fruit each time
+static func transition_color() -> Color:
+	var option := selected(TRANSITION)
+	if option.get("random", false):
+		return FRUIT_COLORS.pick_random()
+	return option["color"]

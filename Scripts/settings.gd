@@ -23,9 +23,6 @@ func _ready() -> void:
 		_add_toggle("Always show orders", GameManager.auto_show_orders, func(on: bool):
 			GameManager.auto_show_orders = on
 		)
-	_add_toggle("Angry customers reorder", GameManager.change_order_on_anger, func(on: bool):
-		GameManager.change_order_on_anger = on
-	)
 
 	ButtonFx.setup(_back_btn)
 	_back_btn.pressed.connect(func():

@@ -142,6 +142,8 @@ Endless mode unlocks after the campaign on Steam and is available from the start
 
 **Endless:** all fruits and shapes, difficulty ramps over time, and the run ends when a set number of customers leave angry. Steam has a global leaderboard for it.
 
+Endless starts with no twists. Every 45 seconds it adds one (first up is Fickle Customers, where angry customers change their order, then the rest of the campaign twists in random order) and customers get a little less patient. Once every twist is on, only the patience keeps dropping.
+
 **Shop upgrades (between days, bought with tips):**
 
 - Bigger blender grid
