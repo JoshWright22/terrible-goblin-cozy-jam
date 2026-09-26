@@ -9,4 +9,4 @@ title = "Lantern Light"
 intro_text = "Only the lanterns are lit. Keep that combo going in the dark."
 night_shift = true
 combo = true
-star_scores = Array[int]([4000, 9500, 15500])
+star_scores = Array[int]([2300, 7000, 15500])

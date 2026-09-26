@@ -8,4 +8,4 @@ day_number = 11
 title = "Brain Freeze"
 intro_text = "Some fruit came in frozen solid. Frosty pieces can't be rotated."
 frozen_chance = 0.35
-star_scores = Array[int]([3500, 8000, 13000])
+star_scores = Array[int]([1950, 5850, 13000])

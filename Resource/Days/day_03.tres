@@ -11,5 +11,5 @@ fruits = Array[int]([0, 1, 2])
 shapes = PackedStringArray("1x1", "2x1", "3x1", "2x2_L", "3x2_L", "3x2_T")
 max_difficulty = "MEDIUM"
 patience_scale = 1.2
-star_scores = Array[int]([2300, 5500, 9000])
+star_scores = Array[int]([1350, 4050, 9000])
 blender_count = 3

@@ -137,7 +137,8 @@ func _make_tile(campaign: Campaign, day_number: int) -> Button:
 	row.visible = unlocked
 
 	if unlocked:
-		tile.tooltip_text = campaign.days[day_number - 1].title
+		var day: DayConfig = campaign.days[day_number - 1]
+		tile.tooltip_text = day.title + "\n" + "\n".join(day.star_hints())
 		ButtonFx.setup(tile)
 		tile.pressed.connect(func(): _go(GameManager.start_day.bind(day_number)))
 	return tile

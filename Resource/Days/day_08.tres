@@ -10,4 +10,4 @@ intro_text = "Someone cranked the conveyor. Fruit comes in fast!"
 belt_speed_scale = 1.6
 spawn_rate_scale = 1.4
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([3500, 8000, 13000])
+star_scores = Array[int]([1950, 5850, 13000])

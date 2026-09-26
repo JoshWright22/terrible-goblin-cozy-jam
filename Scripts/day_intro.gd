@@ -20,7 +20,13 @@ func _ready() -> void:
 	_intro_lbl.text = day.intro_text
 	if day.day_number > 1 and day.blender_count > GameManager.load_day(day.day_number - 1).blender_count:
 		_intro_lbl.text += "\nA new blender is open!"
-	_goal_box.add_child(BoardPaint.star_row([BoardPaint.STAR, "%d / %d / %d points" % [day.star_scores[0], day.star_scores[1], day.star_scores[2]]], 52, true))
+	var goals := BoardPaint.star_row([BoardPaint.STAR, "%d   " % day.star_scores[0], BoardPaint.STAR, "%d   " % day.star_scores[1],
+		BoardPaint.STAR, str(day.star_scores[2])], 52, true)
+	var hints := day.star_hints()
+	for star in goals.get_children().filter(func(child): return child is StarIcon):
+		star.tooltip_text = hints.pop_front()
+		star.mouse_filter = Control.MOUSE_FILTER_PASS
+	_goal_box.add_child(goals)
 	BoardPaint.apply(self, true, 0.25)
 	BoardPaint.paint_tree(_goal_box, 0.7, false)
 	BoardPaint.paint_tree(_start_btn, 0.85, false)

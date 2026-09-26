@@ -8,4 +8,4 @@ day_number = 13
 title = "Mystery Menu"
 intro_text = "Customers are being vague today. One fruit in each order is a mystery."
 mystery_orders = true
-star_scores = Array[int]([3500, 8000, 13000])
+star_scores = Array[int]([1950, 5850, 13000])

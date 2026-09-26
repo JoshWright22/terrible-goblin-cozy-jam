@@ -8,4 +8,4 @@ day_number = 15
 title = "Power Outage"
 intro_text = "The power keeps flickering. Blenders only work when the lights are on."
 power_outage = true
-star_scores = Array[int]([3500, 8000, 13000])
+star_scores = Array[int]([1950, 5850, 13000])

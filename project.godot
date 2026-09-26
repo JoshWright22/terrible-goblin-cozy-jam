@@ -45,7 +45,9 @@ hostController=""
 
 [gui]
 
+theme/custom="res://Assets/ui_theme.tres"
 theme/custom_font="res://Assets/fonts/slush_font.tres"
+timers/tooltip_delay_sec=0.25
 
 [physics]
 

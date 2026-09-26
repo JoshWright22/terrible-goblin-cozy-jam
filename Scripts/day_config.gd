@@ -10,6 +10,8 @@ class_name DayConfig
 
 @export_group("Goal")
 @export var duration: float = 150.0             # seconds until the shop closes
+# Star 1 is about what surviving earns, star 2 what serving every order accurately earns,
+# star 3 an ambitious high score
 @export var star_scores: Array[int] = [800, 2000, 3500]
 
 @export_group("Belt")
@@ -51,6 +53,14 @@ func stars_for_score(score: int) -> int:
 		if score >= target:
 			stars += 1
 	return stars
+
+# What each star's score stands for, shown when hovering a star
+func star_hints() -> Array[String]:
+	return [
+		"Survive the day: %d points" % star_scores[0],
+		"Every order accurate: %d points" % star_scores[1],
+		"High score: %d points" % star_scores[2],
+	]
 
 func allows_shape(fruit_data: FruitData) -> bool:
 	if shapes.is_empty():

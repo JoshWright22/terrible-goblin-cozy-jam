@@ -23,8 +23,11 @@ func _ready() -> void:
 		queue_free()
 		return
 	_day_lbl.text = "Day %d" % _day.day_number
-	for star in _stars:
-		star.filled = false
+	var hints := _day.star_hints()
+	for i in _stars.size():
+		_stars[i].filled = false
+		_stars[i].tooltip_text = hints[i]
+		_stars[i].mouse_filter = Control.MOUSE_FILTER_PASS
 	_night.visible = _day.night_shift
 	_outage.visible = false
 	_power_timer = randf_range(POWER_ON_TIME.x, POWER_ON_TIME.y)

@@ -21,8 +21,11 @@ func _ready() -> void:
 	var unlocked := Cosmetics.newly_unlocked(GameManager.stars_before_day, SaveManager.total_stars())
 	if not unlocked.is_empty():
 		_note_lbl.text = "Unlocked: " + ", ".join(unlocked) + "!"
-	for star in _stars:
-		star.filled = false
+	var hints := day.star_hints()
+	for i in _stars.size():
+		_stars[i].filled = false
+		_stars[i].tooltip_text = hints[i]
+		_stars[i].mouse_filter = Control.MOUSE_FILTER_PASS
 
 	_next_btn.visible = stars > 0 and GameManager.has_next_day()
 	ButtonFx.style_text_button(_retry_btn, Color(0.85, 0.55, 0.3), 48)

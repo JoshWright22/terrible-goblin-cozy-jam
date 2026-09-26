@@ -8,4 +8,4 @@ day_number = 12
 title = "Blender Down"
 intro_text = "Two blenders are out for repairs. Make the other two count."
 blender_count = 2
-star_scores = Array[int]([3000, 7000, 11500])
+star_scores = Array[int]([1700, 5200, 11500])

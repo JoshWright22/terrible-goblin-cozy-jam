@@ -10,4 +10,4 @@ intro_text = "Blend too fast and a blender overheats. Spread the work around!"
 overheat = true
 combo = true
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([3500, 8500, 14000])
+star_scores = Array[int]([2100, 6300, 14000])

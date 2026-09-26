@@ -9,4 +9,4 @@ title = "Short Memory"
 intro_text = "Orders fade fast tonight. Hover a customer to peek at their order again."
 fading_orders = true
 combo = true
-star_scores = Array[int]([4000, 9000, 15000])
+star_scores = Array[int]([2250, 6750, 15000])

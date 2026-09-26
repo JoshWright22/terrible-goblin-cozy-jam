@@ -9,4 +9,4 @@ title = "Belt Hiccups"
 intro_text = "The old conveyor keeps stalling. Grab what you can while it runs."
 belt_stops = true
 combo = true
-star_scores = Array[int]([3500, 8500, 14000])
+star_scores = Array[int]([2100, 6300, 14000])

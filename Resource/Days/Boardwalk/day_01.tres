@@ -10,4 +10,4 @@ intro_text = "The boardwalk opens after dark. Serve good smoothies back to back 
 combo = true
 fruits = Array[int]([0, 1, 2, 3])
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([3500, 8000, 13000])
+star_scores = Array[int]([1950, 5850, 13000])

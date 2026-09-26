@@ -8,4 +8,4 @@ day_number = 10
 title = "Heatwave"
 intro_text = "It's a scorcher. Fruit left on the belt too long melts away."
 heatwave = true
-star_scores = Array[int]([3500, 8000, 13000])
+star_scores = Array[int]([1950, 5850, 13000])
