@@ -104,7 +104,7 @@ func _screen_shake(t: float) -> void:
 	if not _shake_started:
 		_shake_origin = _bg_sprite.position
 		_shake_started = true
-	var amp := 14.0 * (1.0 - t)
+	var amp := 14.0 * (1.0 - t) if SaveManager.screen_shake else 0.0
 	_bg_sprite.position = _shake_origin + Vector2(sin(t * PI * 11.0) * amp, cos(t * PI * 7.0) * amp * 0.5)
 
 func _setup_btn(btn: TextureButton) -> void:
@@ -148,4 +148,4 @@ func _on_exit_button_pressed() -> void:
 	get_tree().paused = false
 	GameManager.paused = false
 	GameManager.game_over = false
-	get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene if GameManager.current_day else GameManager.mainMenu)
+	get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene)

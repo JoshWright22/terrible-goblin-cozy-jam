@@ -19,11 +19,25 @@ func _ready() -> void:
 	BoardPaint.apply(self, true, 0.2)
 	_setup_btn(_resume_btn)
 	_setup_btn(_exit_btn)
-	ButtonFx.style_text_button(_settings_btn, Color(0.93, 0.6, 0.35), 50)
-	ButtonFx.setup(_settings_btn)
+	_style_round(_settings_btn)
+	_setup_btn(_settings_btn)
 	_play_in()
 
-func _setup_btn(btn: TextureButton) -> void:
+# Tan disc with an ink outline, same look as the play and exit sprites
+func _style_round(btn: Button) -> void:
+	for state in ["normal", "hover", "pressed", "focus"]:
+		var box := StyleBoxFlat.new()
+		box.bg_color = Color(0.86, 0.72, 0.54)
+		if state == "hover":
+			box.bg_color = box.bg_color.lightened(0.08)
+		elif state == "focus":
+			box.draw_center = false
+		box.set_corner_radius_all(80)
+		box.set_border_width_all(6)
+		box.border_color = Color(0.2, 0.13, 0.08)
+		btn.add_theme_stylebox_override(state, box)
+
+func _setup_btn(btn: BaseButton) -> void:
 	btn.pivot_offset = btn.custom_minimum_size / 2.0
 	btn.mouse_entered.connect(func(): _hover_in(btn))
 	btn.mouse_exited.connect(func(): _hover_out(btn))
@@ -73,21 +87,21 @@ func request_close() -> void:
 
 # ---------- Hover / press ----------
 
-func _hover_in(btn: TextureButton) -> void:
+func _hover_in(btn: BaseButton) -> void:
 	AudioManager.play_button_hover()
 	btn.create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT) \
 		.tween_property(btn, "scale", Vector2(1.18, 1.18), 0.45)
 
-func _hover_out(btn: TextureButton) -> void:
+func _hover_out(btn: BaseButton) -> void:
 	btn.create_tween().set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT) \
 		.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.35)
 
-func _press(btn: TextureButton) -> void:
+func _press(btn: BaseButton) -> void:
 	AudioManager.play_button_click()
 	btn.create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT) \
 		.tween_property(btn, "scale", Vector2(1.07, 0.84), 0.07)
 
-func _release(btn: TextureButton) -> void:
+func _release(btn: BaseButton) -> void:
 	var tw := btn.create_tween()
 	tw.tween_property(btn, "scale", Vector2(0.9, 1.18), 0.07) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -127,5 +141,5 @@ func _on_exit_button_pressed() -> void:
 	_play_out(func():
 		get_tree().paused = false
 		GameManager.paused = false
-		get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene if GameManager.current_day else GameManager.mainMenu)
+		get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene)
 	)

@@ -40,6 +40,9 @@ static func paint_on(lbl: Control, delay: float = 0.0, sound: bool = true) -> vo
 	var mat := lbl.material as ShaderMaterial
 	if mat == null:
 		return
+	if not SaveManager.paint_on:
+		_show_painted(mat)
+		return
 	if not (lbl is Label or lbl is RichTextLabel):
 		_sweep(lbl, mat, delay, sound)
 		return
@@ -90,7 +93,12 @@ static func paint_tree(root: Control, delay: float = 0.0, sound: bool = true, st
 	for item in items:
 		if not item.material is ShaderMaterial:
 			item.material = _paint_material(0.0, 0.12)
-		(item.material as ShaderMaterial).set_shader_parameter("reveal", 0.0)
+		if SaveManager.paint_on:
+			(item.material as ShaderMaterial).set_shader_parameter("reveal", 0.0)
+		else:
+			_show_painted(item.material)
+	if not SaveManager.paint_on:
+		return
 	await root.get_tree().process_frame
 	if not is_instance_valid(root) or root.is_queued_for_deletion():
 		return
@@ -142,6 +150,12 @@ static func _sweep(item: Control, mat: ShaderMaterial, delay: float, sound: bool
 		tw.tween_callback(AudioManager.play_brush_stroke.bind(stroke))
 	tw.tween_method(func(v: float): mat.set_shader_parameter("reveal", v), 0.0, 1.0, stroke) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+
+# Paint-on turned off in settings: skip the stroke and show it finished, however wide it is
+static func _show_painted(mat: ShaderMaterial) -> void:
+	mat.set_shader_parameter("label_width", 100000.0)
+	mat.set_shader_parameter("line_count", 1.0)
+	mat.set_shader_parameter("reveal", 1.0)
 
 static func _paint_material(grain: float = -1.0, streaks: float = -1.0) -> ShaderMaterial:
 	# Each label gets its own copy so they can paint on independently

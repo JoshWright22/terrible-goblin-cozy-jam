@@ -16,9 +16,6 @@ var hold = false
 var smoothie : Dictionary = {}
 var trgID = null
 
-# Settings
-var auto_show_orders: bool = true       # show order bubbles without hovering
-
 var score: int = 0
 var fruit_held: bool = false  # prevents picking up two pieces at once
 var smoothie_quality: float = 1.0  # set by smoothie before delivery, applied to score
@@ -47,6 +44,9 @@ var rogue_score_mult: float = 1.0
 var rogue_patience_mult: float = 1.0
 var rogue_belt_mult: float = 1.0
 var rogue_pressure: float = 1.0
+var rogue_leave_mult: float = 1.0     # Thick Skin halves walkout damage
+var rogue_perfect_mult: float = 1.0   # Perfectionist: extra score on 95%+ smoothies
+var rogue_revives: int = 0            # Second Wind
 
 func reset_run_upgrades() -> void:
 	rogue_level = 1
@@ -54,6 +54,9 @@ func reset_run_upgrades() -> void:
 	rogue_patience_mult = 1.0
 	rogue_belt_mult = 1.0
 	rogue_pressure = 1.0
+	rogue_leave_mult = 1.0
+	rogue_perfect_mult = 1.0
+	rogue_revives = 0
 
 # Tutorial: while true, customers are patient and the timers stop
 var tutorial_active: bool = false

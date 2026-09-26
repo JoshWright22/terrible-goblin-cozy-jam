@@ -24,9 +24,15 @@ func _ready() -> void:
 			SaveManager.fullscreen = on
 			SaveManager.apply_window(not on)
 		)
+	_add_toggle("Screen shake", SaveManager.screen_shake, func(on: bool):
+		SaveManager.screen_shake = on
+	)
+	_add_toggle("Paint-on text", SaveManager.paint_on, func(on: bool):
+		SaveManager.paint_on = on
+	)
 	if not OS.has_feature("mobile"):
-		_add_toggle("Always show orders", GameManager.auto_show_orders, func(on: bool):
-			GameManager.auto_show_orders = on
+		_add_toggle("Mute in background", SaveManager.mute_unfocused, func(on: bool):
+			SaveManager.mute_unfocused = on
 		)
 
 	ButtonFx.setup(_back_btn)

@@ -89,5 +89,5 @@ func _play_fail() -> void:
 	tw.finished.connect(queue_free)
 
 func _shake(base_x: float, t: float) -> void:
-	var amp := 22.0 * (1.0 - t)
+	var amp := 22.0 * (1.0 - t) if SaveManager.screen_shake else 0.0
 	position.x = base_x + sin(t * PI * 10.0) * amp

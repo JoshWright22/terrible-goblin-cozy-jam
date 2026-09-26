@@ -7,16 +7,21 @@ const TWIST_INTERVAL := 45.0
 const PATIENCE_STEP := 0.94
 const MIN_PATIENCE := 0.6
 const SCORE_STEP := 2500
+const MIN_BELT_MULT := 0.4
 const STATUS_CENTER_X := 585.0   # middle of the customer window, same spot as the day board
 const DAILY_BUFFS := Vector2i(1, 3)    # the seed picks how many of each
 const DAILY_DEBUFFS := Vector2i(1, 4)
 const UPGRADES := [
-	{"id": "tips", "name": "Tip Jar", "text": "+20% base score\non every smoothie"},
-	{"id": "patience", "name": "Friendly Service", "text": "+15% base patience\nfor new customers"},
-	{"id": "capacity", "name": "Bigger Reserve", "text": "+15 maximum health\nand restore 15 health"},
-	{"id": "recovery", "name": "Feel Good Blend", "text": "+2 health restored\nper earned star"},
-	{"id": "belt", "name": "Easy Conveyor", "text": "Belt moves 10% slower\nwithout slowing deliveries"},
-	{"id": "refresh", "name": "Fresh Start", "text": "Restore half your\nmaximum health now"},
+	{"id": "tips", "name": "Tip Jar", "text": "+40% score\non every smoothie"},
+	{"id": "patience", "name": "Friendly Service", "text": "Customers wait\n30% longer"},
+	{"id": "capacity", "name": "Bigger Reserve", "text": "+30 maximum health\nand fully healed"},
+	{"id": "recovery", "name": "Feel Good Blend", "text": "+4 health back\nper earned star"},
+	{"id": "belt", "name": "Easy Conveyor", "text": "Belt moves\n20% slower"},
+	{"id": "combo", "name": "Combo Meter", "text": "Good smoothies in a row\nmultiply your score"},
+	{"id": "calm", "name": "Thick Skin", "text": "Walkouts cost\nhalf as much health"},
+	{"id": "perfect", "name": "Perfectionist", "text": "95%+ smoothies\nscore double"},
+	{"id": "revive", "name": "Second Wind", "text": "Once, bounce back\nfrom zero health"},
+	{"id": "quiet", "name": "Quiet Day", "text": "Undo the newest\ntwist"},
 ]
 
 # Angry reorders always come first, the rest are shuffled
@@ -36,6 +41,7 @@ const TWISTS := [
 ]
 
 var _queue: Array = []
+var _active_twists: Array = []   # in the order they arrived, for Quiet Day
 var _timer: float = FIRST_TWIST_TIME
 var _layer: CanvasLayer
 var _next_score: int = SCORE_STEP
@@ -70,8 +76,9 @@ func _start_daily() -> void:
 	for i in randi_range(DAILY_DEBUFFS.x, DAILY_DEBUFFS.y):
 		var twist: Dictionary = _queue.pop_back()
 		twists.set(twist["key"], twist["value"])
+		_active_twists.append(twist)
 		debuffs.append(twist["name"])
-	var buffs: Array = UPGRADES.filter(func(upgrade): return upgrade["id"] != "refresh")
+	var buffs: Array = UPGRADES.filter(func(upgrade): return upgrade["id"] != "quiet" and _can_offer(upgrade))
 	buffs.shuffle()
 	buffs = buffs.slice(0, randi_range(DAILY_BUFFS.x, DAILY_BUFFS.y))
 	for buff in buffs:
@@ -139,6 +146,7 @@ func _step_up() -> void:
 		return
 	var twist: Dictionary = _queue.pop_front()
 	twists.set(twist["key"], twist["value"])
+	_active_twists.append(twist)
 	_announce(twist["name"], twist["text"])
 
 func _update_status() -> void:
@@ -152,7 +160,7 @@ func _offer_upgrades() -> void:
 	_choosing = true
 	GameManager.paused = true
 	get_tree().paused = true
-	_offers = UPGRADES.filter(func(upgrade): return upgrade["id"] != "belt" or GameManager.rogue_belt_mult > 0.51)
+	_offers = UPGRADES.filter(_can_offer)
 	_offers.shuffle()
 	_offers = _offers.slice(0, 3)
 	_choice_screen = Control.new()
@@ -204,21 +212,37 @@ func _choose_upgrade(index: int) -> void:
 	_next_score += SCORE_STEP * GameManager.rogue_level
 	_offers.clear()
 	_choice_screen.queue_free()
+	get_parent().sweep_orphan_orders()
 	get_tree().paused = false
 	GameManager.paused = false
 	_update_status()
 
+# One-off upgrades leave the pool once taken, and Quiet Day needs a twist to undo
+func _can_offer(upgrade: Dictionary) -> bool:
+	match upgrade["id"]:
+		"belt": return GameManager.rogue_belt_mult > MIN_BELT_MULT + 0.01
+		"combo": return not GameManager.twists().combo
+		"revive": return GameManager.rogue_revives == 0
+		"quiet": return not _active_twists.is_empty()
+	return true
+
 func _apply_upgrade(id: String) -> void:
 	var control = get_parent()
 	match id:
-		"tips": GameManager.rogue_score_mult += 0.2
-		"patience": GameManager.rogue_patience_mult += 0.15
+		"tips": GameManager.rogue_score_mult += 0.4
+		"patience": GameManager.rogue_patience_mult += 0.3
 		"capacity":
-			control.MAX_TIME += 15.0
-			control.REMAIN_TIME += 15.0
-		"recovery": control.ADD_TIME += 2.0
-		"belt": GameManager.rogue_belt_mult = maxf(0.5, GameManager.rogue_belt_mult - 0.1)
-		"refresh": control.REMAIN_TIME = minf(control.MAX_TIME, control.REMAIN_TIME + control.MAX_TIME * 0.5)
+			control.MAX_TIME += 30.0
+			control.REMAIN_TIME = control.MAX_TIME
+		"recovery": control.ADD_TIME += 4.0
+		"belt": GameManager.rogue_belt_mult = maxf(MIN_BELT_MULT, GameManager.rogue_belt_mult - 0.2)
+		"combo": GameManager.twists().combo = true
+		"calm": GameManager.rogue_leave_mult *= 0.5
+		"perfect": GameManager.rogue_perfect_mult += 1.0
+		"revive": GameManager.rogue_revives += 1
+		"quiet":
+			var twist: Dictionary = _active_twists.pop_back()
+			GameManager.twists().set(twist["key"], DayConfig.new().get(twist["key"]))
 	control.healthBar.max_value = control.MAX_TIME
 	control.healthBar.value = control.REMAIN_TIME
 

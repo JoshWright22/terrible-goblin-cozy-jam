@@ -6,6 +6,9 @@ const SAVE_PATH := "user://save.cfg"
 var music_volume: float = 1.0
 var sfx_volume: float = 1.0
 var fullscreen: bool = false
+var screen_shake: bool = true
+var paint_on: bool = true          # boards paint their text on instead of showing it at once
+var mute_unfocused: bool = false   # desktop only: go quiet when the window loses focus
 
 # Progress
 var unlocked_days: Dictionary = {}  # campaign id -> highest playable day
@@ -39,6 +42,10 @@ func _notification(what: int) -> void:
 	# Android can kill the app while it's in the background, so save on the way out
 	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_game()
+	elif what == NOTIFICATION_APPLICATION_FOCUS_OUT and mute_unfocused:
+		AudioServer.set_bus_mute(0, true)
+	elif what == NOTIFICATION_APPLICATION_FOCUS_IN:
+		AudioServer.set_bus_mute(0, false)
 
 func save_game() -> void:
 	# The settings sliders write straight to the buses, so read the volumes back from there
@@ -48,7 +55,9 @@ func save_game() -> void:
 	cfg.set_value("settings", "music_volume", music_volume)
 	cfg.set_value("settings", "sfx_volume", sfx_volume)
 	cfg.set_value("settings", "fullscreen", fullscreen)
-	cfg.set_value("settings", "auto_show_orders", GameManager.auto_show_orders)
+	cfg.set_value("settings", "screen_shake", screen_shake)
+	cfg.set_value("settings", "paint_on", paint_on)
+	cfg.set_value("settings", "mute_unfocused", mute_unfocused)
 	cfg.set_value("progress", "unlocked_days", unlocked_days)
 	cfg.set_value("progress", "day_stars", day_stars)
 	cfg.set_value("progress", "endless_best", endless_best)
@@ -62,9 +71,6 @@ func save_game() -> void:
 
 func load_game() -> void:
 	_load_file()
-	# No hover on touch screens, so orders always show
-	if OS.has_feature("mobile"):
-		GameManager.auto_show_orders = true
 
 func _load_file() -> void:
 	var cfg := ConfigFile.new()
@@ -73,7 +79,9 @@ func _load_file() -> void:
 	music_volume = cfg.get_value("settings", "music_volume", music_volume)
 	sfx_volume = cfg.get_value("settings", "sfx_volume", sfx_volume)
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
-	GameManager.auto_show_orders = cfg.get_value("settings", "auto_show_orders", GameManager.auto_show_orders)
+	screen_shake = cfg.get_value("settings", "screen_shake", screen_shake)
+	paint_on = cfg.get_value("settings", "paint_on", paint_on)
+	mute_unfocused = cfg.get_value("settings", "mute_unfocused", mute_unfocused)
 	unlocked_days = cfg.get_value("progress", "unlocked_days", unlocked_days)
 	day_stars = cfg.get_value("progress", "day_stars", day_stars)
 	# Saves from before campaigns only had Summer, keyed by day number

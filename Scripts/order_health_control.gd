@@ -96,9 +96,11 @@ var _day_finished: bool = false
 # Combo twist: good smoothies in a row multiply the score
 const COMBO_ACCURACY := 80.0
 const CRITIC_ACCURACY := 90.0   # critics pay nothing for anything less
+const PERFECT_ACCURACY := 95.0  # Perfectionist upgrade threshold
 const COMBO_STEP := 0.25
 const COMBO_MAX_MULT := 2.0
 var combo: int = 0
+var _sweep_timer: float = 1.0
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
 	FruitData.FruitType.STRAWBERRY,
@@ -178,6 +180,15 @@ func _process(delta: float) -> void:
 		if day_time_left <= 0.0:
 			_finish_day()
 
+	# Second Wind: the first time health runs out, bounce back to half
+	if REMAIN_TIME <= 0 and day == null and GameManager.rogue_revives > 0:
+		GameManager.rogue_revives -= 1
+		REMAIN_TIME = MAX_TIME * 0.5
+		healthBar.ratio = REMAIN_TIME / MAX_TIME
+		AudioManager.play_health_gain()
+		_flash_health_bar()
+		_combo_popup("Second Wind!", Color(0.6, 1.0, 0.6))
+
 	if REMAIN_TIME <= 0 and not gameOver and not _day_finished:
 		gameOver = true
 		GameManager.game_over = true
@@ -187,6 +198,11 @@ func _process(delta: float) -> void:
 		customerSpawnTimer.stop()
 		currentCustomer.clear()
 		get_tree().paused = true
+
+	_sweep_timer -= delta
+	if _sweep_timer <= 0.0:
+		_sweep_timer = 1.0
+		sweep_orphan_orders()
 
 	if GameManager.paused:
 		customerSpawnTimer.paused = true
@@ -368,6 +384,8 @@ func compareValues(inputer) -> void:
 		scoreGain = int(round(scoreGain * _update_combo(typeMatch and percent >= COMBO_ACCURACY)))
 	if day == null:
 		scoreGain = int(round(scoreGain * GameManager.rogue_score_mult))
+		if typeMatch and percent >= PERFECT_ACCURACY:
+			scoreGain = int(round(scoreGain * GameManager.rogue_perfect_mult))
 	GameManager.smoothies_served += 1
 	if typeMatch and GameManager.smoothies_served == 1:
 		SteamService.unlock(SteamService.ACH_FIRST_SMOOTHIE)
@@ -496,7 +514,7 @@ func scaleDiff() -> void:
 
 func customer_left() -> void:
 	AudioManager.play_health_lose()
-	var penalty := leave_penalty * (GameManager.rogue_pressure if day == null else 1.0)
+	var penalty := leave_penalty * (GameManager.rogue_pressure * GameManager.rogue_leave_mult if day == null else 1.0)
 	REMAIN_TIME = max(REMAIN_TIME - penalty, 0.0)
 	healthBar.ratio = REMAIN_TIME / MAX_TIME
 	var tw := healthBar.create_tween()
@@ -540,6 +558,14 @@ func genOrder(custID) -> void:
 			bannedFruit[custID] = safe_to_ban.pick_random()
 	if twists.mystery_orders:
 		mysteryFruit[custID] = order.keys().pick_random()
+
+# Frees order bubbles whose customer has left or moved on to a new bubble. Some paths
+# (pauses mid tween, served while the bubble was opening) could leave one behind
+func sweep_orphan_orders() -> void:
+	for node in get_tree().get_nodes_in_group("order_ui"):
+		var owner_customer = node.get_meta("customer", null)
+		if not is_instance_valid(owner_customer) or not owner_customer.owns_order_ui(node):
+			node.queue_free()
 
 func forget_customer(custID) -> void:
 	currentOrders.erase(custID)

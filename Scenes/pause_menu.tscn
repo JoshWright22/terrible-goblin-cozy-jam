@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://droqks88vso3y" path="res://Assets/sprites/ui sprites/playButtonSprite.PNG" id="3_pm"]
 [ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_pm"]
 [ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="5_pm"]
+[ext_resource type="Script" path="res://Scripts/gear_icon.gd" id="6_pm"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 layer = 10
@@ -51,10 +52,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -130.0
+offset_left = -80.0
 offset_top = -200.0
-offset_right = 130.0
-offset_bottom = 260.0
+offset_right = 80.0
+offset_bottom = 340.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
@@ -67,6 +68,26 @@ texture_normal = ExtResource("3_pm")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="SettingsButton" type="Button" parent="ButtonBox"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+action_mode = 0
+
+[node name="Gear" type="Control" parent="ButtonBox/SettingsButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 34.0
+offset_top = 34.0
+offset_right = -34.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("6_pm")
+
 [node name="ExitButton" type="TextureButton" parent="ButtonBox"]
 custom_minimum_size = Vector2(160, 160)
 size_flags_horizontal = 4
@@ -74,13 +95,6 @@ action_mode = 0
 texture_normal = ExtResource("4_pm")
 ignore_texture_size = true
 stretch_mode = 5
-
-[node name="SettingsButton" type="Button" parent="ButtonBox"]
-custom_minimum_size = Vector2(260, 90)
-layout_mode = 2
-size_flags_horizontal = 4
-action_mode = 0
-text = "Settings"
 
 [connection signal="pressed" from="ButtonBox/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="ButtonBox/ExitButton" to="." method="_on_exit_button_pressed"]

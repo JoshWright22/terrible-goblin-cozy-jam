@@ -128,8 +128,7 @@ func genCustomer() -> void:
 	spriteCorrection()
 	fadeTween.tween_property(self, "modulate", Color(1, 1, 1, 1.0), FADE_TIME)
 	fadeTween.finished.connect(func(): AudioManager.play_customer_arrive())
-	if GameManager.auto_show_orders:
-		fadeTween.finished.connect(_show_bubble)
+	fadeTween.finished.connect(_show_bubble)
 
 func changeMood() -> void:
 	var spriter = characterSprites.find(sprite.texture)
@@ -157,6 +156,7 @@ func _show_bubble() -> void:
 	if b != null or not control.currentCustomer.has(ID):
 		return
 	b = orderBubble.instantiate()
+	_tag_order_ui(b)
 	b.SPRITE = angryBubble if mood == 1 else bubble
 	b.scale = Vector2(0, 0)
 	b.z_as_relative = false
@@ -169,6 +169,7 @@ func _show_bubble() -> void:
 		if not control.currentCustomer.has(ID):
 			return
 		c = orderAmount.instantiate()
+		_tag_order_ui(c)
 		c.offset = control.currentCustomer[ID] + Vector2(25, yFIx)
 		c.cusID = ID
 		if is_instance_valid(c) and not c.is_inside_tree():
@@ -176,6 +177,15 @@ func _show_bubble() -> void:
 		if _orders_fade() and not _hovered:
 			_fade_bubble_later()
 	)
+
+# Order bubbles live on the order control, not the customer, so tag them for the orphan sweep
+func _tag_order_ui(node: Node) -> void:
+	node.add_to_group("order_ui")
+	node.set_meta("customer", self)
+
+# True while this bubble or order list is still the one this customer is showing
+func owns_order_ui(node: Node) -> bool:
+	return control.currentCustomer.has(ID) and (node == b or node == c)
 
 func _hide_bubble() -> void:
 	if b == null:
@@ -205,6 +215,7 @@ func _refresh_bubble() -> void:
 	if not control.currentCustomer.has(ID):
 		return
 	c = orderAmount.instantiate()
+	_tag_order_ui(c)
 	c.offset = control.currentCustomer[ID] + Vector2(25, yFIx)
 	c.cusID = ID
 	if not c.is_inside_tree():
@@ -215,14 +226,14 @@ func _refresh_bubble() -> void:
 func _on_area_2d_mouse_entered() -> void:
 	GameManager.trgID = ID
 	_hovered = true
-	if not GameManager.auto_show_orders or _orders_fade():
+	if _orders_fade():
 		_show_bubble()
 
 func _on_area_2d_mouse_exited() -> void:
 	if GameManager.trgID == ID:
 		GameManager.trgID = null
 	_hovered = false
-	if not GameManager.auto_show_orders or _orders_fade():
+	if _orders_fade():
 		_hide_bubble()
 
 func _orders_fade() -> bool:
@@ -266,8 +277,7 @@ func next_order() -> void:
 	_update_badge()
 	timer.wait_time = _roll_wait()
 	timer.start(timer.wait_time)
-	if GameManager.auto_show_orders or GameManager.trgID == ID:
-		_show_bubble()
+	_show_bubble()
 
 func _pop_highlight() -> void:
 	sprite.create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT) \
