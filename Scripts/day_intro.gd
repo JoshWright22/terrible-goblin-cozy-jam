@@ -15,6 +15,7 @@ const REVEAL_HEIGHT := 72.0
 const REVEAL_SHIFT := 60.0
 const REVEAL_GAP := 30          # between the name, the order icon, "=" and each piece
 const MIN_INTRO_SIZE := 34
+const TITLE_GAP := 20.0          # spare room between the title and the story text
 const CELL_PIXELS := 120
 const PIECE_CELL := 52.0         # on-screen size of one piece cell, the same for every piece   # fruit piece art is drawn at 120 px per cell
 @onready var _start_btn: TextureButton = $StartButton
@@ -67,6 +68,17 @@ func _fit_intro() -> void:
 			HORIZONTAL_ALIGNMENT_CENTER, width, font_size).y > room:
 		font_size -= 2
 	_intro_lbl.add_theme_font_size_override("font_size", font_size)
+	# Still too tall at the smallest size (a new fruit and a new blender on one day):
+	# borrow the gap under the title, then push the rows below down so nothing overlaps
+	var overflow := font.get_multiline_string_size(_intro_lbl.text, HORIZONTAL_ALIGNMENT_CENTER, width, font_size).y - room
+	if overflow > 0.0:
+		var borrow := minf(overflow, TITLE_GAP)
+		_intro_lbl.offset_top -= borrow
+		var push := overflow - borrow
+		if push > 0.0:
+			_intro_lbl.offset_bottom += push
+			for item in [_fruit_reveal, _goal_box, _start_btn]:
+				item.position.y += push
 
 # Fruits on today's belt that weren't on yesterday's. Day 1 has the tutorial instead
 func _new_fruits(day: DayConfig) -> Array:
