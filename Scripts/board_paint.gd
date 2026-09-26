@@ -7,7 +7,6 @@ class_name BoardPaint
 const PAINT := Color(1.0, 0.97, 0.9)
 const ACCENT_PAINT := Color(1.0, 0.84, 0.45)
 const EDGE := Color(0.24, 0.13, 0.05, 0.75)
-const SHADOW := Color(0.18, 0.1, 0.04, 0.35)
 const STAR := "*"   # marks where star_row draws a star icon
 
 static func apply(root: Node, reveal: bool = true, delay: float = 0.15) -> void:
@@ -25,9 +24,8 @@ static func style(lbl: Control, accent: bool = false, tilt: bool = true) -> void
 		lbl.add_theme_color_override(color_key, ACCENT_PAINT if accent else Cosmetics.selected(Cosmetics.PAINT)["color"])
 	lbl.add_theme_color_override("font_outline_color", EDGE)
 	lbl.add_theme_constant_override("outline_size", 5)
-	lbl.add_theme_color_override("font_shadow_color", SHADOW)
-	lbl.add_theme_constant_override("shadow_offset_x", 2)
-	lbl.add_theme_constant_override("shadow_offset_y", 3)
+	var font_size := lbl.get_theme_font_size("normal_font_size" if lbl is RichTextLabel else "font_size")
+	ButtonFx.hard_shadow(lbl, font_size, 5)
 	lbl.material = _paint_material()
 	# Hand-placed, not perfectly level
 	if tilt and lbl.rotation == 0.0:

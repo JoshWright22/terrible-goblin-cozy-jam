@@ -58,3 +58,12 @@ static func outline_label(lbl: Label, font_size: int, outline: int = 8) -> void:
 	lbl.add_theme_constant_override("outline_size", outline)
 	lbl.add_theme_color_override("font_outline_color", Color.BLACK)
 	lbl.add_theme_color_override("font_color", Color.WHITE)
+	hard_shadow(lbl, font_size, outline)
+
+# Solid black drop shadow down and to the right, the same chunky offset the boards and buttons have
+static func hard_shadow(lbl: Control, font_size: int, outline: int = 0) -> void:
+	var offset := maxi(3, roundi(font_size * 0.06))
+	lbl.add_theme_color_override("font_shadow_color", Color.BLACK)
+	lbl.add_theme_constant_override("shadow_offset_x", offset)
+	lbl.add_theme_constant_override("shadow_offset_y", offset)
+	lbl.add_theme_constant_override("shadow_outline_size", outline)

@@ -151,10 +151,7 @@ func _ready() -> void:
 	healthBar.value = MAX_TIME
 	var font = load("res://Assets/fonts/slush_font.tres")
 	score_label.add_theme_font_override("font", font)
-	score_label.add_theme_font_size_override("font_size", 72)
-	score_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
-	score_label.add_theme_constant_override("outline_size", 8)
-	score_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	ButtonFx.outline_label(score_label, 72)
 	score_label.text = "Score: 0"
 
 func _update_score_display() -> void:

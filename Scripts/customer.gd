@@ -47,6 +47,8 @@ var kind: String = ""        # "", "rush" or "vip"
 var orders_left: int = 1     # 2 for double orders
 var score_mult: float = 1.0
 var _badge: Label = null
+const BADGE_CENTER := Vector2(-25, 0)   # middle of the customer sprite
+const BADGE_COLORS := {"rush": Color(0.95, 0.2, 0.2), "vip": Color(1.0, 0.85, 0.2)}
 const ORDER_FADE_TIME := 3.5  # Short Memory twist: seconds an order stays up on its own
 var _hovered: bool = false
 
@@ -91,13 +93,16 @@ func _update_badge() -> void:
 		return
 	if _badge == null:
 		_badge = Label.new()
-		_badge.add_theme_font_size_override("font_size", 50)
-		_badge.add_theme_constant_override("outline_size", 10)
-		_badge.add_theme_color_override("font_outline_color", Color.BLACK)
-		_badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2) if kind == "vip" else Color.WHITE)
+		ButtonFx.outline_label(_badge, 64, 12)
+		_badge.add_theme_color_override("font_color", BADGE_COLORS.get(kind, Color.WHITE))
 		_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		_badge.size = Vector2(200, 50)
-		_badge.position = Vector2(-100, -60)
+		_badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+		# Stamped across the middle of the customer at a slant
+		_badge.size = Vector2(260, 80)
+		_badge.position = BADGE_CENTER - _badge.size / 2.0
+		_badge.pivot_offset = _badge.size / 2.0
+		_badge.rotation_degrees = -12.0
+		_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(_badge)
 	_badge.text = text
 
