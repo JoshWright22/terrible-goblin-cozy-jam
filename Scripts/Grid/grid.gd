@@ -83,7 +83,7 @@ func _overheat() -> void:
 	pulse.tween_property(hot, "scale", Vector2(1.12, 1.12), 0.25)
 	pulse.tween_property(hot, "scale", Vector2.ONE, 0.25)
 	var glow := grid_visuals.create_tween()
-	glow.tween_property(grid_visuals, "modulate", Color(1.0, 0.55, 0.5), 0.3)
+	glow.tween_property(grid_visuals, "modulate", Palette.BAD, 0.3)
 	await get_tree().create_timer(COOLDOWN_TIME, false).timeout
 	_overheated = false
 	hot.queue_free()
@@ -123,7 +123,7 @@ func _show_out_of_order() -> void:
 	sign_label.text = "OPENS\nDAY %d" % opens if not_yet else "OUT OF\nORDER"
 	sign_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ButtonFx.outline_label(sign_label, 55, 10)
-	sign_label.add_theme_color_override("font_color", Color(1.0, 0.84, 0.45) if not_yet else Color(1.0, 0.45, 0.35))
+	sign_label.add_theme_color_override("font_color", Palette.GOLD if not_yet else Color(1.0, 0.45, 0.35))
 	sign_label.size = Vector2(300, 120)
 	sign_label.position = grid_anchor.position - sign_label.size / 2.0
 	sign_label.rotation_degrees = -8.0
@@ -276,6 +276,7 @@ func _setup_blend_button_sprites(btn_size: Vector2) -> void:
 		normal_spr.centered = true
 		normal_spr.position = center
 		normal_spr.scale = Vector2.ONE * _button_scale()
+		Cosmetics.apply_blender(normal_spr)   # the button is the same blue as the blender
 		blend_button.add_child(normal_spr)
 
 	if blend_button_pressed_texture:
@@ -285,6 +286,7 @@ func _setup_blend_button_sprites(btn_size: Vector2) -> void:
 		pressed_spr.centered = true
 		pressed_spr.position = center
 		pressed_spr.scale = Vector2.ONE * _button_scale()
+		Cosmetics.apply_blender(pressed_spr)   # the button is the same blue as the blender
 		pressed_spr.visible = false
 		blend_button.add_child(pressed_spr)
 

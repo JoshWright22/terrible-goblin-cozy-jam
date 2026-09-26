@@ -32,7 +32,7 @@ func _ready() -> void:
 			"done": func(): return _step_time > SIGN_TIP_TIME},
 	]
 	visible = false
-	ButtonFx.style_text_button(_skip_btn, Color(0.6, 0.5, 0.45), 36)
+	ButtonFx.style_text_button(_skip_btn, Palette.MUTED, 36)
 	ButtonFx.setup(_skip_btn)
 	_skip_btn.pressed.connect(_finish)
 

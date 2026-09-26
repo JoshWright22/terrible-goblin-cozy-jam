@@ -2,7 +2,7 @@ extends Node2D
 
 # Chunky inked arrow pointing down, tip at this node's origin
 
-@export var fill_color: Color = Color(1.0, 0.84, 0.45)
+@export var fill_color: Color = Palette.GOLD
 @export var ink_color: Color = Color(0.13, 0.08, 0.08)
 
 func _draw() -> void:

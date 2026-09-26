@@ -113,8 +113,8 @@ func _build_status_board() -> void:
 	# Centered over the customer window; the text changes width, so re-center on resize
 	panel.resized.connect(func(): panel.position = Vector2(STATUS_CENTER_X - panel.size.x / 2.0, 8))
 	var box := StyleBoxFlat.new()
-	box.bg_color = Color(0.99, 0.95, 0.82, 0.92)
-	box.border_color = Color(0.24, 0.13, 0.05)
+	box.bg_color = Palette.CREAM
+	box.border_color = Palette.WOOD_INK
 	box.set_border_width_all(5)
 	box.set_corner_radius_all(26)
 	box.content_margin_left = 22.0
@@ -277,7 +277,7 @@ func _announce(title: String, text: String) -> void:
 	head.text = title
 	head.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ButtonFx.outline_label(head, 90, 14)
-	head.add_theme_color_override("font_color", Color(1.0, 0.84, 0.35))
+	head.add_theme_color_override("font_color", Palette.GOLD)
 	box.add_child(head)
 
 	var sub := Label.new()

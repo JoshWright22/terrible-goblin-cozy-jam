@@ -49,7 +49,10 @@ func pour(at_cover: Callable) -> void:
 	_transitioning = true
 	var view := get_viewport().get_visible_rect().size
 	_transition_mat.set_shader_parameter("aspect", view.x / view.y)
-	_transition_mat.set_shader_parameter("juice", Cosmetics.transition_color())
+	var juices := Cosmetics.transition_colors()
+	_transition_mat.set_shader_parameter("juice", juices[0])
+	_transition_mat.set_shader_parameter("juice2", juices[1])
+	_transition_mat.set_shader_parameter("juice3", juices[2])
 	_transition_mat.set_shader_parameter("style", Cosmetics.selected(Cosmetics.POUR)["style"])
 	_transition_mat.set_shader_parameter("fill", 0.0)
 	_transition_rect.visible = true

@@ -4,8 +4,8 @@ class_name PrizeWheel
 # Boardwalk Carnival prize wheel, drawn so it needs no art. It spins, lands the chosen
 # slice under the pointer at the top, then hands control back and fades away
 
-const SLICE_COLORS := [Color(0.95, 0.45, 0.55), Color(1.0, 0.82, 0.3), Color(0.45, 0.72, 0.9), Color(0.6, 0.82, 0.45)]
-const INK := Color(0.24, 0.13, 0.05)
+const SLICE_COLORS := [Palette.STRAWBERRY, Palette.BANANA, Palette.BLUEBERRY, Palette.GO_GREEN]
+const INK := Palette.WOOD_INK
 const SPIN_TIME := 1.6
 const TURNS := 4
 
@@ -35,11 +35,11 @@ func _draw() -> void:
 		draw_string(font, spot, text, HORIZONTAL_ALIGNMENT_LEFT, -1, 26, Color.WHITE)
 	draw_arc(center, radius, 0.0, TAU, 64, INK, 7.0, true)
 	draw_circle(center, radius * 0.12, INK)
-	draw_circle(center, radius * 0.07, Color(1.0, 0.95, 0.8))
+	draw_circle(center, radius * 0.07, Palette.CREAM)
 	# Pointer over the top edge, pointing down into the winning slice
 	var top := center + Vector2(0.0, -radius)
 	var pointer := PackedVector2Array([top + Vector2(-18, -26), top + Vector2(18, -26), top + Vector2(0, 14)])
-	draw_colored_polygon(pointer, Color(1.0, 0.95, 0.8))
+	draw_colored_polygon(pointer, Palette.CREAM)
 	pointer.append(pointer[0])
 	draw_polyline(pointer, INK, 4.0, true)
 

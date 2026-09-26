@@ -25,7 +25,7 @@ func _ready() -> void:
 		var names: String = " and ".join(unlocked)
 		if unlocked.size() > 2:
 			names = "%s and %d more" % [unlocked[0], unlocked.size() - 1]
-		_note_lbl.text = "Unlocked: %s!" % names
+		_note_lbl.text = "New style ready: %s!" % names
 	var hints := day.star_hints()
 	for i in _stars.size():
 		_stars[i].filled = false

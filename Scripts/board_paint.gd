@@ -4,8 +4,8 @@ class_name BoardPaint
 # a little tilt, dry brush grain, and a left-to-right "painting on" reveal.
 # Buttons, stars and tiles on a board can paint on the same way with paint_tree.
 
-const PAINT := Color(1.0, 0.97, 0.9)
-const ACCENT_PAINT := Color(1.0, 0.84, 0.45)
+const PAINT := Palette.CREAM
+const ACCENT_PAINT := Palette.GOLD
 const EDGE := Color(0.24, 0.13, 0.05, 0.75)
 const STAR := "*"   # marks where star_row draws a star icon
 const STAR_DROP := 0.15   # the font's digits sit low in their line, so stars move down this much of the font size

@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 2
 title = "New Delivery"
-intro_text = "Blueberries arrived. Nobody ordered them. Uncle Gus's old supplier insists this is fine. Three fruits now."
+intro_text = "Blueberries arrived. Nobody ordered them. Uncle Gus's old supplier assures you there is nothing wrong with them. Three fruits now."
 fruits = Array[int]([0, 1, 2])
 shapes = PackedStringArray("1x1", "2x1", "3x1")
 max_difficulty = "EASY"

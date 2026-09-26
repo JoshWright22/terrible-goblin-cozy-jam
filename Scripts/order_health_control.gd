@@ -195,7 +195,7 @@ func _process(delta: float) -> void:
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 		AudioManager.play_health_gain()
 		_flash_health_bar()
-		_combo_popup("Second Wind!", Color(0.6, 1.0, 0.6))
+		_combo_popup("Second Wind!", Palette.GOOD)
 
 	if REMAIN_TIME <= 0 and not gameOver and not _day_finished:
 		gameOver = true
@@ -241,13 +241,13 @@ func _check_campaign_achievements() -> void:
 func _update_combo(good: bool) -> float:
 	if not good:
 		if combo >= 2:
-			_combo_popup("Combo lost", Color(1.0, 0.55, 0.5))
+			_combo_popup("Combo lost", Palette.BAD)
 		combo = 0
 		return 1.0
 	combo += 1
 	var mult := minf(1.0 + COMBO_STEP * (combo - 1), COMBO_MAX_MULT)
 	if combo >= 2:
-		_combo_popup("Combo x%.2f" % mult, Color(1.0, 0.84, 0.35))
+		_combo_popup("Combo x%.2f" % mult, Palette.GOLD)
 	return mult
 
 func _combo_popup(text: String, color: Color) -> void:
@@ -293,7 +293,7 @@ func _give_prize(index: int) -> void:
 			REMAIN_TIME = minf(MAX_TIME, REMAIN_TIME + MAX_TIME * PRIZE_HEAL)
 			healthBar.ratio = REMAIN_TIME / MAX_TIME
 			_flash_health_bar()
-			_combo_popup("Health!", Color(0.6, 1.0, 0.6))
+			_combo_popup("Health!", Palette.GOOD)
 		2:
 			GameManager.slow_belt_time = PRIZE_SLOW_TIME
 			_combo_popup("Slow belt!", Color(0.55, 0.8, 1.0))

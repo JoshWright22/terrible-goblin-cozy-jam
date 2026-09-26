@@ -2,8 +2,8 @@ extends Node2D
 
 # Settings board: volume sliders and on/off toggles, all saved through SaveManager
 
-const ON_COLOR := Color(0.55, 0.75, 0.4)
-const OFF_COLOR := Color(0.6, 0.5, 0.45)
+const ON_COLOR := Palette.GREEN
+const OFF_COLOR := Palette.MUTED
 
 signal closed
 
@@ -126,7 +126,7 @@ func _style_slider(slider: HSlider) -> void:
 	fill.bg_color = Color(1.0, 0.86, 0.5)
 	fill.set_corner_radius_all(14)
 	fill.set_border_width_all(3)
-	fill.border_color = Color(0.24, 0.13, 0.05)
+	fill.border_color = Palette.WOOD_INK
 	slider.add_theme_stylebox_override("slider", groove)
 	slider.add_theme_stylebox_override("grabber_area", fill)
 	slider.add_theme_stylebox_override("grabber_area_highlight", fill)
@@ -137,7 +137,7 @@ func _style_slider(slider: HSlider) -> void:
 func _knob_texture(color: Color) -> Texture2D:
 	var gradient := Gradient.new()
 	gradient.offsets = PackedFloat32Array([0.0, 0.72, 0.78, 0.9, 0.95])
-	gradient.colors = PackedColorArray([color, color, Color(0.24, 0.13, 0.05), Color(0.24, 0.13, 0.05), Color(0.24, 0.13, 0.05, 0.0)])
+	gradient.colors = PackedColorArray([color, color, Palette.WOOD_INK, Palette.WOOD_INK, Color(0.24, 0.13, 0.05, 0.0)])
 	var tex := GradientTexture2D.new()
 	tex.gradient = gradient
 	tex.fill = GradientTexture2D.FILL_RADIAL

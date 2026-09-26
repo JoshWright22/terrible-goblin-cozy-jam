@@ -3,8 +3,9 @@ extends Node2D
 # Style unlocks: pick blender, wall, conveyor, transition, pour style and paint options earned with stars
 
 const SWATCH_SIZE := Vector2(84, 84)
-const SELECTED_BORDER := Color(1.0, 0.84, 0.3)
-const NORMAL_BORDER := Color(0.24, 0.13, 0.05)
+const SELECTED_BORDER := Palette.GOLD
+const NORMAL_BORDER := Palette.WOOD_INK
+const CLAIM_COLOR := Palette.GOLD
 
 @onready var _rows: VBoxContainer = $Board/Rows
 @onready var _stars_box: HBoxContainer = $Board/StarsBox
@@ -39,11 +40,15 @@ func _set_hint(parts: Array) -> void:
 	_hint_box.add_child(BoardPaint.star_row(parts, 36))
 	BoardPaint.paint_tree(_hint_box, 0.0, false)
 
-func _show_option(option: Dictionary) -> void:
-	if Cosmetics.is_unlocked(option):
+func _show_option(category: String, option: Dictionary) -> void:
+	if Cosmetics.can_claim(category, option):
+		_set_hint(["%s: click to unlock!" % option["name"]])
+	elif Cosmetics.is_unlocked(option):
 		_set_hint([option["name"]])
 	elif option.has("endless"):
 		_set_hint(["%s: %dk in endless" % [option["name"], int(option["endless"] / 1000)]])
+	elif option.has("daily"):
+		_set_hint(["%s: %d day Daily Slush streak" % [option["name"], option["daily"]]])
 	else:
 		_set_hint(["%s: %d" % [option["name"], Cosmetics.stars_needed(option)], BoardPaint.STAR, "to unlock"])
 
@@ -66,13 +71,13 @@ func _make_row(category: String) -> HBoxContainer:
 		var swatch := Button.new()
 		swatch.custom_minimum_size = SWATCH_SIZE
 		swatch.tooltip_text = option["name"]
-		var unlocked := Cosmetics.is_unlocked(option)
-		if unlocked:
-			swatch.pressed.connect(_select.bind(category, i))
-		else:
+		swatch.pressed.connect(_on_swatch.bind(category, i))
+		if not Cosmetics.is_unlocked(option):
 			swatch.disabled = true
 			swatch.add_child(_lock_badge(option))
-		swatch.mouse_entered.connect(_show_option.bind(option))
+		elif Cosmetics.can_claim(category, option):
+			swatch.add_child(_claim_badge())
+		swatch.mouse_entered.connect(_show_option.bind(category, option))
 		ButtonFx.setup(swatch)
 		row.add_child(swatch)
 		buttons.append(swatch)
@@ -95,6 +100,9 @@ func _lock_badge(option: Dictionary) -> Control:
 	if option.has("endless"):
 		lbl.text = "%dk\nendless" % int(option["endless"] / 1000)
 		lbl.add_theme_font_size_override("font_size", 24)
+	elif option.has("daily"):
+		lbl.text = "%d day\ndaily" % option["daily"]
+		lbl.add_theme_font_size_override("font_size", 24)
 	else:
 		lbl.text = str(Cosmetics.stars_needed(option))
 		var star := StarIcon.new()
@@ -104,10 +112,42 @@ func _lock_badge(option: Dictionary) -> Control:
 		box.add_child(star)
 	return box
 
+# Earned but not yet clicked: a pulsing "Unlock!" over the style's own color
+func _claim_badge() -> Label:
+	var lbl := Label.new()
+	lbl.name = "ClaimBadge"
+	lbl.text = "Unlock!"
+	lbl.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ButtonFx.outline_label(lbl, 20, 5)
+	lbl.add_theme_color_override("font_color", CLAIM_COLOR)
+	lbl.pivot_offset = SWATCH_SIZE / 2.0
+	var tw := lbl.create_tween().set_loops()
+	tw.tween_property(lbl, "scale", Vector2(1.12, 1.12), 0.45).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(lbl, "scale", Vector2.ONE, 0.45).set_trans(Tween.TRANS_SINE)
+	return lbl
+
+func _on_swatch(category: String, index: int) -> void:
+	var option: Dictionary = Cosmetics.options(category)[index]
+	var swatch: Button = _swatches[category][index]
+	if Cosmetics.can_claim(category, option):
+		Cosmetics.claim(category, option)
+		AudioManager.play_health_gain()
+		var badge := swatch.get_node_or_null("ClaimBadge")
+		if badge:
+			badge.queue_free()
+		swatch.pivot_offset = SWATCH_SIZE / 2.0
+		swatch.scale = Vector2(1.35, 1.35)
+		swatch.create_tween().tween_property(swatch, "scale", Vector2.ONE, 0.35) 			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	if Cosmetics.is_owned(category, option):
+		_select(category, index)
+
 func _select(category: String, index: int) -> void:
 	SaveManager.cosmetics[category] = index
 	SaveManager.save_game()
-	_show_option(Cosmetics.options(category)[index])
+	_show_option(category, Cosmetics.options(category)[index])
 	_refresh()
 
 func _refresh() -> void:
@@ -115,23 +155,26 @@ func _refresh() -> void:
 		var chosen: Dictionary = Cosmetics.selected(category)
 		var options: Array = Cosmetics.options(category)
 		for i in options.size():
-			_style_swatch(_swatches[category][i], options[i], options[i] == chosen)
+			_style_swatch(_swatches[category][i], category, options[i], options[i] == chosen)
 
-func _style_swatch(swatch: Button, option: Dictionary, is_selected: bool) -> void:
+func _style_swatch(swatch: Button, category: String, option: Dictionary, is_selected: bool) -> void:
 	var unlocked := Cosmetics.is_unlocked(option)
+	var claimable := Cosmetics.can_claim(category, option)
 	for state in ["normal", "hover", "pressed", "disabled", "focus"]:
 		var box := StyleBoxFlat.new()
 		box.bg_color = option["color"] if unlocked else Color(0.45, 0.4, 0.36)
+		if claimable:
+			box.bg_color = box.bg_color.darkened(0.35)
 		if state == "hover":
 			box.bg_color = box.bg_color.lightened(0.1)
 		elif state == "focus":
 			box.draw_center = false
 		box.set_corner_radius_all(20)
 		box.set_border_width_all(9 if is_selected else 4)
-		box.border_color = SELECTED_BORDER if is_selected else NORMAL_BORDER
+		box.border_color = SELECTED_BORDER if is_selected else (CLAIM_COLOR if claimable else NORMAL_BORDER)
 		swatch.add_theme_stylebox_override(state, box)
-	swatch.add_theme_color_override("font_disabled_color", Color(1.0, 0.95, 0.85))
-	if option.has("label") and unlocked:
+	swatch.add_theme_color_override("font_disabled_color", Palette.CREAM)
+	if option.has("label") and unlocked and not claimable:
 		swatch.text = option["label"]
 		swatch.add_theme_font_size_override("font_size", 32)
 		swatch.add_theme_constant_override("outline_size", 6)

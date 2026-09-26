@@ -5,7 +5,7 @@ shader_type canvas_item;
 // and a wet, slightly darker band trails behind it before it dries. Streaks follow the stroke.
 
 uniform float reveal : hint_range(0.0, 1.0) = 1.0;
-uniform float label_width = 600.0;       // local pixels, set per label
+uniform float label_width = 100000.0;    // local pixels, set per label while painting on; huge = never clipped
 uniform float line_height = 60.0;
 uniform float text_top = 0.0;           // where the first line starts inside the label
 uniform float line_count = 1.0;          // lines paint one after another

@@ -8,9 +8,9 @@ class_name StarIcon
 	set(value):
 		filled = value
 		queue_redraw()
-@export var fill_color: Color = Color(1.0, 0.82, 0.3)
+@export var fill_color: Color = Palette.GOLD
 @export var empty_color: Color = Color(0.2, 0.12, 0.05, 0.35)
-@export var outline_color: Color = Color(0.24, 0.13, 0.05)
+@export var outline_color: Color = Palette.WOOD_INK
 @export var draw_offset: Vector2 = Vector2.ZERO   # nudges the star, e.g. down to line up with text
 
 func _draw() -> void:

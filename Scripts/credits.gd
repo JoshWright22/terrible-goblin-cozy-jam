@@ -48,7 +48,7 @@ func _make_row(member: Dictionary) -> HBoxContainer:
 	name_lbl.text = member["name"]
 	name_lbl.custom_minimum_size = Vector2(470, 0)
 	name_lbl.add_theme_font_size_override("font_size", 60)
-	name_lbl.add_theme_color_override("font_color", Color(1.0, 0.84, 0.45))
+	name_lbl.add_theme_color_override("font_color", Palette.GOLD)
 	row.add_child(name_lbl)
 
 	var role_lbl := Label.new()
@@ -61,7 +61,7 @@ func _make_row(member: Dictionary) -> HBoxContainer:
 		var link := Button.new()
 		link.text = member["link_text"]
 		link.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-		ButtonFx.style_text_button(link, Color(0.45, 0.62, 0.85), 38)
+		ButtonFx.style_text_button(link, Palette.BLUE, 38)
 		ButtonFx.setup(link)
 		link.pressed.connect(func(): OS.shell_open(member["link"]))
 		row.add_child(link)

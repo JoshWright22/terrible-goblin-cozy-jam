@@ -16,9 +16,11 @@ var endless_best: int = 0
 var daily_best: int = 0      # best score on daily_date
 var daily_date: int = 0      # YYYYMMDD of the last daily played
 var daily_streak: int = 0    # days in a row with a daily played
+var daily_streak_best: int = 0   # longest streak ever, for the daily prestige styles
 
 # Style unlocks: category -> chosen option index (see Cosmetics)
 var cosmetics: Dictionary = {}
+var claimed_styles: Array = []   # "category:name" for every style clicked in the shop
 
 func _ready() -> void:
 	load_game()
@@ -62,7 +64,9 @@ func save_game() -> void:
 	cfg.set_value("daily", "best", daily_best)
 	cfg.set_value("daily", "date", daily_date)
 	cfg.set_value("daily", "streak", daily_streak)
+	cfg.set_value("daily", "streak_best", daily_streak_best)
 	cfg.set_value("style", "cosmetics", cosmetics)
+	cfg.set_value("style", "claimed", claimed_styles)
 	var err := cfg.save(SAVE_PATH)
 	if err != OK:
 		push_warning("SaveManager: couldn't save (error %d)" % err)
@@ -92,7 +96,17 @@ func _load_file() -> void:
 	daily_best = cfg.get_value("daily", "best", daily_best)
 	daily_date = cfg.get_value("daily", "date", daily_date)
 	daily_streak = cfg.get_value("daily", "streak", daily_streak)
+	daily_streak_best = cfg.get_value("daily", "streak_best", maxi(daily_streak_best, daily_streak))
 	cosmetics = cfg.get_value("style", "cosmetics", cosmetics)
+	if cfg.has_section_key("style", "claimed"):
+		claimed_styles = cfg.get_value("style", "claimed", claimed_styles)
+	else:
+		# Saves from before claiming keep whatever they had chosen
+		for category in cosmetics:
+			var chosen: Array = Cosmetics.options(category)
+			var index: int = cosmetics[category]
+			if index >= 0 and index < chosen.size():
+				claimed_styles.append(Cosmetics.claim_key(category, chosen[index]))
 
 func apply_audio() -> void:
 	_set_bus_volume("Music", music_volume)
@@ -146,6 +160,7 @@ func record_daily_score(score: int) -> bool:
 		daily_streak = daily_streak + 1 if daily_date == GameManager.daily_seed(1) else 1
 		daily_date = today
 		daily_best = 0
+		daily_streak_best = maxi(daily_streak_best, daily_streak)
 	var best := score > daily_best
 	daily_best = maxi(daily_best, score)
 	save_game()

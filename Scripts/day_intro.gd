@@ -12,7 +12,8 @@ extends Control
 
 const REVEAL_SHAPES := ["1x1", "2x1", "3x2_T"]
 const REVEAL_HEIGHT := 72.0
-const REVEAL_SHIFT := 40.0
+const REVEAL_SHIFT := 60.0
+const REVEAL_GAP := 30          # between the name, the order icon, "=" and each piece
 const CELL_PIXELS := 120   # fruit piece art is drawn at 120 px per cell
 @onready var _start_btn: TextureButton = $StartButton
 
@@ -32,7 +33,8 @@ func _ready() -> void:
 		_intro_lbl.add_theme_font_size_override("font_size", 46)
 		for item in [_fruit_reveal, _goal_box]:
 			item.position.y += REVEAL_SHIFT
-		_start_btn.position.y += REVEAL_SHIFT / 2.0
+		_start_btn.position.y += REVEAL_SHIFT / 3.0
+		_fruit_reveal.add_theme_constant_override("separation", REVEAL_GAP)
 		_intro_lbl.offset_bottom = _fruit_reveal.offset_top
 		for fruit in new_fruits:
 			_show_new_fruit(fruit)
@@ -72,7 +74,7 @@ func _show_new_fruit(fruit: int) -> void:
 	_fruit_reveal.add_child(title)
 	BoardPaint.style(title, true, false)
 
-	_fruit_reveal.add_child(_picture(load("res://Assets/sprites/fruitSprites/%sSprite.PNG" % fruit_name)))
+	_fruit_reveal.add_child(_picture(_trimmed(load("res://Assets/sprites/fruitSprites/%sSprite.PNG" % fruit_name))))
 	var equals := Label.new()
 	equals.text = "="
 	equals.add_theme_font_size_override("font_size", 52)
@@ -89,9 +91,22 @@ func _piece_art(piece: FruitData) -> Texture2D:
 	var cells := Vector2.ZERO
 	for cell in piece.layout:
 		cells = cells.max(cell + Vector2.ONE)
+	return _trimmed(piece.texture, Rect2(Vector2.ZERO, (cells * CELL_PIXELS).min(piece.texture.get_size())))
+
+# Crops to the pixels actually drawn, so every picture in the row is spaced by its art, not its padding
+func _trimmed(texture: Texture2D, area: Rect2 = Rect2()) -> Texture2D:
+	if area.size == Vector2.ZERO:
+		area = Rect2(Vector2.ZERO, texture.get_size())
+	var image := texture.get_image()
+	if image:
+		if image.is_compressed():
+			image.decompress()
+		var used := image.get_region(Rect2i(area)).get_used_rect()
+		if used.size.x > 0 and used.size.y > 0:
+			area = Rect2(area.position + Vector2(used.position), Vector2(used.size))
 	var art := AtlasTexture.new()
-	art.atlas = piece.texture
-	art.region = Rect2(Vector2.ZERO, (cells * CELL_PIXELS).min(piece.texture.get_size()))
+	art.atlas = texture
+	art.region = area
 	return art
 
 func _picture(texture: Texture2D) -> TextureRect:

@@ -3,8 +3,8 @@ extends Node2D
 # Campaign calendar: flip between campaigns, pick an unlocked day, or endless once it's open
 
 const TILE_SIZE := Vector2(180, 160)
-const OPEN_COLOR := Color(0.93, 0.6, 0.35)
-const DONE_COLOR := Color(0.55, 0.75, 0.4)
+const OPEN_COLOR := Palette.ORANGE
+const DONE_COLOR := Palette.GREEN
 
 @onready var _title: Label = $Board/Title
 @onready var _grid: GridContainer = $Board/DayGrid
@@ -21,8 +21,8 @@ const DONE_COLOR := Color(0.55, 0.75, 0.4)
 func _ready() -> void:
 	AudioManager.start_menu_music()
 
-	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 50)
-	ButtonFx.style_text_button(_daily_btn, Color(0.55, 0.72, 0.45), 50)
+	ButtonFx.style_text_button(_endless_btn, Palette.BLUE, 50)
+	ButtonFx.style_text_button(_daily_btn, Palette.GREEN, 50)
 	var unlocked := GameManager.endless_unlocked()
 	_endless_btn.tooltip_text = "Best %d" % SaveManager.endless_best if unlocked else "Beat Summer Fun to unlock"
 	_daily_btn.tooltip_text = "Today's best %d" % SaveManager.todays_daily_best() if unlocked else "Beat Summer Fun to unlock"
@@ -34,13 +34,13 @@ func _ready() -> void:
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.dailyScene)
 	)
 
-	ButtonFx.style_text_button(_style_btn, Color(0.85, 0.5, 0.65), 50)
+	ButtonFx.style_text_button(_style_btn, Palette.PINK, 50)
 	ButtonFx.setup(_style_btn)
 	_style_btn.pressed.connect(func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.styleScene)
 	)
 	for arrow in [_prev_btn, _next_btn]:
-		ButtonFx.style_text_button(arrow, Color(0.93, 0.6, 0.35), 60)
+		ButtonFx.style_text_button(arrow, Palette.ORANGE, 60)
 		ButtonFx.setup(arrow)
 	_prev_btn.pressed.connect(_flip.bind(-1))
 	_next_btn.pressed.connect(_flip.bind(1))

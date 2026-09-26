@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 1
 title = "Opening Day"
-intro_text = "Uncle Gus left you his smoothie shack and fled the country. He said it was unrelated. Two fruits, easy stuff."
+intro_text = "Uncle Gus left you his beach smoothie shack and fled the country. He said it was unrelated. Two fruits for now."
 fruits = Array[int]([0, 1])
 shapes = PackedStringArray("1x1", "2x1", "3x1")
 max_difficulty = "EASY"

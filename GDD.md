@@ -187,6 +187,8 @@ Upgrades and difficulty reset on death or a new run; best score and cosmetics pe
 
 ## Visuals and audio
 
+**Palette:** shared colors live in `Scripts/palette.gd`, sampled from the art: board woods and ink from the board sprite, cream and gold for painted text, the green and red from the play and exit buttons, and one color per fruit from the fruit sprites. Code-drawn UI uses these names instead of new color values.
+
 Shaders are driven by the day timer, so each day both looks and plays differently. A single "time remaining" parameter feeds every effect.
 
 | Effect | Trigger |
