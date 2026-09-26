@@ -32,6 +32,11 @@ var snd_game_over_slam:   AudioStream = preload(_SFX + "error_008.ogg")
 var snd_pause_open:       AudioStream = preload(_SFX + "maximize_002.ogg")
 var snd_pause_close:      AudioStream = preload(_SFX + "minimize_002.ogg")
 
+const BRUSH_RATE := 22050
+const BRUSH_LENGTH := 0.32
+const BRUSH_VARIANTS := 3
+var _brush_strokes: Array[AudioStreamWAV] = []
+
 const POOL_SIZE := 10
 var _pool: Array[AudioStreamPlayer] = []
 var _pool_idx: int = 0
@@ -51,6 +56,8 @@ func _ready() -> void:
 	_menu_music.bus = "Music"
 	_menu_music.volume_db = -60.0
 	add_child(_menu_music)
+	for i in BRUSH_VARIANTS:
+		_brush_strokes.append(_make_brush_stroke(i + 1))
 
 func _play(stream: AudioStream, pitch: float = 1.0, volume_db: float = 0.0) -> void:
 	if stream == null:
@@ -102,6 +109,42 @@ func play_transition() -> void:
 
 func play_slider_tick(pitch: float = 1.0) -> void:
 	_play(snd_slider, pitch, -10.0)
+
+# One brush swipe for painted board text. Shorter strokes play a little faster
+func play_brush_stroke(duration: float = BRUSH_LENGTH) -> void:
+	var pitch := clampf(BRUSH_LENGTH / duration, 0.85, 1.5) * randf_range(0.95, 1.05)
+	_play(_brush_strokes.pick_random(), pitch, -4.0)
+
+# Bristly swish made from filtered noise, so it needs no sound file.
+# Band limited noise, brighter in the middle of the stroke, with a flutter from the bristles
+func _make_brush_stroke(seed_value: int) -> AudioStreamWAV:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = seed_value
+	var count := int(BRUSH_RATE * BRUSH_LENGTH)
+	var samples := PackedFloat32Array()
+	samples.resize(count)
+	var low := 0.0
+	var rumble := 0.0
+	var peak := 0.0
+	var flutter_hz := rng.randf_range(32.0, 46.0)
+	for i in count:
+		var t := float(i) / count
+		var noise := rng.randf_range(-1.0, 1.0)
+		low += (noise - low) * lerpf(0.12, 0.45, sin(t * PI))
+		rumble += (low - rumble) * 0.04
+		var envelope := smoothstep(0.0, 0.06, t) * pow(1.0 - t, 1.6)
+		var flutter := 0.7 + 0.3 * sin(TAU * flutter_hz * i / BRUSH_RATE + rng.randf() * 0.6)
+		samples[i] = (low - rumble) * envelope * flutter
+		peak = maxf(peak, absf(samples[i]))
+	var data := PackedByteArray()
+	data.resize(count * 2)
+	for i in count:
+		data.encode_s16(i * 2, int(samples[i] / peak * 0.7 * 32767.0))
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = BRUSH_RATE
+	wav.data = data
+	return wav
 
 # --- Fruit ---
 func play_fruit_pickup() -> void:

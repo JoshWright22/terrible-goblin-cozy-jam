@@ -62,11 +62,16 @@ static func paint_on(lbl: Control, delay: float = 0.0) -> void:
 	mat.set_shader_parameter("line_height", line_height)
 	mat.set_shader_parameter("text_top", text_top)
 	mat.set_shader_parameter("reveal", 0.0)
-	var time := clampf(width / 900.0, 0.3, 0.9) * lines
+	# One quick brush swipe per line, each with its own swish
+	var stroke := clampf(width / 2200.0, 0.14, 0.32)
 	var tw := lbl.create_tween()
 	tw.tween_interval(delay)
-	tw.tween_callback(AudioManager.play_slider_tick.bind(0.8))
-	tw.tween_method(func(v: float): mat.set_shader_parameter("reveal", v), 0.0, 1.0, time) 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	for line in lines:
+		tw.tween_callback(AudioManager.play_brush_stroke.bind(stroke))
+		tw.tween_method(func(v: float): mat.set_shader_parameter("reveal", v),
+			float(line) / lines, float(line + 1) / lines, stroke) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		tw.tween_interval(0.04)
 
 static func _paint_material() -> ShaderMaterial:
 	# Each label gets its own copy so they can paint on independently

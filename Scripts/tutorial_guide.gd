@@ -2,8 +2,11 @@ extends CanvasLayer
 
 # Day 1 hands-on tutorial: one painted step at a time on a little wooden sign,
 # with an inked arrow pointing where to look. Each step waits for the player to do it.
+# The sign sits over the bottom right blender, clear of the order bubbles, and fades
+# while a piece is dragged over it.
 
 const SIGN_TIP_TIME := 6.0
+const SIGN_FADED_ALPHA := 0.25
 
 @onready var _step_lbl: Label = $Sign/StepLabel
 @onready var _count_lbl: Label = $Sign/CountLabel
@@ -45,6 +48,8 @@ func _process(delta: float) -> void:
 		return
 
 	_step_time += delta
+	var over_sign: bool = GameManager.fruit_held and $Sign.get_global_rect().grow(40.0).has_point(get_viewport().get_mouse_position())
+	$Sign.modulate.a = move_toward($Sign.modulate.a, SIGN_FADED_ALPHA if over_sign else 1.0, delta * 5.0)
 	var step := _steps[_index]
 	_arrow_target = step["target"].call()
 	_arrow.position = _arrow_target + Vector2(0, -20.0 - absf(sin(_time * 4.0)) * 22.0)

@@ -31,37 +31,37 @@ texture = ExtResource("2_bg")
 [node name="DayLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 460.0
-offset_top = 230.0
+offset_top = 190.0
 offset_right = 1460.0
-offset_bottom = 300.0
+offset_bottom = 265.0
 theme_override_colors/font_color = Color(1, 0.86, 0.45, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 55
+theme_override_font_sizes/font_size = 70
 text = "DAY 2"
 horizontal_alignment = 1
 
 [node name="TitleLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 360.0
-offset_top = 290.0
-offset_right = 1560.0
-offset_bottom = 390.0
+offset_left = 420.0
+offset_top = 255.0
+offset_right = 1500.0
+offset_bottom = 395.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 12
-theme_override_font_sizes/font_size = 98
+theme_override_font_sizes/font_size = 118
 text = "New Delivery"
 horizontal_alignment = 1
 
 [node name="IntroLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 540.0
-offset_top = 420.0
-offset_right = 1380.0
-offset_bottom = 600.0
+offset_left = 470.0
+offset_top = 425.0
+offset_right = 1450.0
+offset_bottom = 630.0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 50
+theme_override_font_sizes/font_size = 62
 text = "Intro text"
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -69,22 +69,22 @@ autowrap_mode = 3
 [node name="GoalLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 460.0
-offset_top = 620.0
+offset_top = 640.0
 offset_right = 1460.0
-offset_bottom = 670.0
+offset_bottom = 710.0
 theme_override_colors/font_color = Color(1, 0.86, 0.45, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 6
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 52
 text = "Stars at"
 horizontal_alignment = 1
 
 [node name="StartButton" type="TextureButton" parent="."]
 layout_mode = 0
 offset_left = 885.0
-offset_top = 690.0
+offset_top = 735.0
 offset_right = 1035.0
-offset_bottom = 840.0
+offset_bottom = 885.0
 action_mode = 0
 texture_normal = ExtResource("3_play")
 ignore_texture_size = true
