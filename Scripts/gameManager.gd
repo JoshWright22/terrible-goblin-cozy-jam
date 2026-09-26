@@ -92,9 +92,9 @@ func daily_seed(days_ago: int = 0) -> int:
 	return date.year * 10000 + date.month * 100 + date.day
 
 func endless_unlocked() -> bool:
-	# Mobile gets endless from the start, Steam unlocks it by finishing the first campaign
+	# Steam has every mode open from the start, mobile unlocks them by finishing the first campaign
 	var first := campaigns[0]
-	return OS.has_feature("mobile") or SaveManager.unlocked_day(first.id) > first.day_count()
+	return not OS.has_feature("mobile") or SaveManager.unlocked_day(first.id) > first.day_count()
 
 # The twist rules for the current run, campaign day or endless
 func twists() -> DayConfig:

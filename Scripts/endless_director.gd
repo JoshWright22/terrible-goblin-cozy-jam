@@ -7,8 +7,8 @@ const TWIST_INTERVAL := 45.0
 const PATIENCE_STEP := 0.94
 const MIN_PATIENCE := 0.6
 const SCORE_STEP := 2500
-const DAILY_BUFFS := 2
-const DAILY_DEBUFFS := 2
+const DAILY_BUFFS := Vector2i(1, 3)    # the seed picks how many of each
+const DAILY_DEBUFFS := Vector2i(1, 4)
 const UPGRADES := [
 	{"id": "tips", "name": "Tip Jar", "text": "+20% base score\non every smoothie"},
 	{"id": "patience", "name": "Friendly Service", "text": "+15% base patience\nfor new customers"},
@@ -66,13 +66,13 @@ func _ready() -> void:
 func _start_daily() -> void:
 	var twists := GameManager.twists()
 	var debuffs: Array = []
-	for i in DAILY_DEBUFFS:
+	for i in randi_range(DAILY_DEBUFFS.x, DAILY_DEBUFFS.y):
 		var twist: Dictionary = _queue.pop_back()
 		twists.set(twist["key"], twist["value"])
 		debuffs.append(twist["name"])
 	var buffs: Array = UPGRADES.filter(func(upgrade): return upgrade["id"] != "refresh")
 	buffs.shuffle()
-	buffs = buffs.slice(0, DAILY_BUFFS)
+	buffs = buffs.slice(0, randi_range(DAILY_BUFFS.x, DAILY_BUFFS.y))
 	for buff in buffs:
 		_apply_upgrade(buff["id"])
 	_announce("Daily Slush", "Buffs: %s\nDebuffs: %s" % [

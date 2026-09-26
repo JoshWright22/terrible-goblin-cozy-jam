@@ -140,7 +140,7 @@ Campaigns are data (`Resource/Campaigns/*.tres`), so a third campaign is a new l
 
 ## Roguelike mode, progression and unlocks
 
-Roguelike mode unlocks after the campaign on Steam and is available from the start on Android. Stars and achievements unlock cosmetics.
+Roguelike and Daily Slush are open from the start on Steam; on Android they unlock after beating Summer. Stars and achievements unlock cosmetics.
 
 **Roguelike:** an unlimited survival run inspired by Vampire Survivors' upgrade rhythm, using the smoothie-making loop. All fruits and shapes are available. The run ends when shop health reaches zero; health drains while customers are present, missed customers take extra health, and good smoothies restore it. There are no timed rounds or final wave.
 
@@ -192,7 +192,7 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 | Ads | None | Heavy: interstitials after every day and every run, rewarded ads for unlocks and revives |
 | Purchases | None | Optional "Remove ads" (~$2.99) |
 | Content | Full campaign and roguelike | Same content as Steam |
-| Roguelike | Unlocked after the campaign | Unlocked from the start |
+| Roguelike and Daily Slush | Open from the start | Unlocked by beating Summer |
 | Unlocks | Earned at a normal pace | Take much longer; rewarded ads speed them up |
 | Daily Slush | Online leaderboard | Offline, personal best and streak only |
 | Online | Achievements, leaderboards, multiplayer, cloud saves (GodotSteam) | None |
@@ -263,7 +263,7 @@ Plans for the Steam and Android builds. Only the jam Web and Windows presets exi
 
 Async, using Steam's servers through GodotSteam, so there is nothing to host or pay for.
 
-**Daily Slush** is the only online mode at launch: one seeded roguelike run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the UTC date, so no server is needed to hand it out. Each daily opens with 2 random campaign twists as debuffs and 2 random roguelike upgrades as buffs, then plays like a normal roguelike run. Unlimited retries; the best score of the day counts, and playing on consecutive days builds a streak. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
+**Daily Slush** is the only online mode at launch: one seeded roguelike run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the UTC date, so no server is needed to hand it out. Each daily opens with 1 to 4 random campaign twists as debuffs and 1 to 3 random roguelike upgrades as buffs, with the counts also set by the seed, so some days are harder than others, then plays like a normal roguelike run. Unlimited retries; the best score of the day counts, and playing on consecutive days builds a streak. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
 
 Ideas for after launch, only if the game does well: Friend Challenge (race a friend's seed as a ghost), Weekly Shift, Next Rival target line, a community Tip Jar goal, Custom Days with share codes, and real-time Rush Duel through Steam lobbies.
 
