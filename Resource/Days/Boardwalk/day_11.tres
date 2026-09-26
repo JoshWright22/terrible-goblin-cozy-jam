@@ -10,4 +10,4 @@ intro_text = "Double orders and overheating blenders. Plan your blends!"
 double_orders = true
 overheat = true
 combo = true
-star_scores = Array[int]([2700, 8100, 18000])
+star_scores = Array[int]([2700, 4850, 7300])

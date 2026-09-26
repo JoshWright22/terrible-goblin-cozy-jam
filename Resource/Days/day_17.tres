@@ -8,4 +8,4 @@ day_number = 17
 title = "VIP Visit"
 intro_text = "A VIP is stopping by. Serve them well for a huge bonus!"
 vip_customer = true
-star_scores = Array[int]([2400, 7200, 16000])
+star_scores = Array[int]([2400, 4300, 6500])

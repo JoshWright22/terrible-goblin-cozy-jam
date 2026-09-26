@@ -9,4 +9,4 @@ title = "Rotten Batch"
 intro_text = "Rotten fruit is stuck in the blenders. Pack around it."
 rotten_cells = 2
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([1800, 5400, 12000])
+star_scores = Array[int]([1800, 3250, 4850])

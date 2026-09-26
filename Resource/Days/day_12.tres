@@ -8,4 +8,4 @@ day_number = 12
 title = "Food Critics"
 intro_text = "Food critics are in town. Customers marked CRITIC want 90% accuracy or better, but they pay triple."
 critic_orders = true
-star_scores = Array[int]([1700, 5200, 11500])
+star_scores = Array[int]([1700, 3050, 4600])

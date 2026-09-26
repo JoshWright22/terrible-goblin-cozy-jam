@@ -10,4 +10,4 @@ intro_text = "The first mangoes of the summer are in! Customers will start askin
 fruits = Array[int]([0, 1, 2, 3])
 max_difficulty = "MEDIUM"
 patience_scale = 1.2
-star_scores = Array[int]([1650, 4950, 11000])
+star_scores = Array[int]([1650, 2950, 4450])

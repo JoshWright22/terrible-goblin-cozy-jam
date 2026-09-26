@@ -14,4 +14,4 @@ fading_orders = true
 vip_customer = true
 rush_orders = true
 duration = 180
-star_scores = Array[int]([3300, 9900, 22000])
+star_scores = Array[int]([3300, 5950, 8900])

@@ -10,4 +10,4 @@ intro_text = "Critics with short memories. 85% accurate or bust!"
 min_accuracy = 85.0
 fading_orders = true
 combo = true
-star_scores = Array[int]([2550, 7650, 17000])
+star_scores = Array[int]([2550, 4600, 6900])

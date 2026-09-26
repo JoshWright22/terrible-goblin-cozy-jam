@@ -111,7 +111,7 @@ The wide 6×3 blender was swapped out because the blender art can't stretch to a
 
 Playtest changes: mango got its own day instead of sharing Day 4 with a flat 80% rule. Day 12 was the point where the campaign dragged, so the plain "two blenders" day became Food Critics, where a few marked customers demand accuracy for a big payout. Any day that adds a fruit shows it on the intro card: the order icon next to a few of its pieces.
 
-**Stars:** each star is still a score target, tuned to mean something. Star 1 is roughly what surviving the day earns, star 2 what serving every order accurately earns, star 3 an ambitious high score. Hovering a star shows its target. Losing, or ending a day short of three stars, shows a tip for scoring higher.
+**Stars:** each star is still a score target. Star 1 is roughly what surviving the day earns, star 2 is 1.8 times that and star 3 is 2.7 times that. Playtesters found stars 2 and 3 too far apart (they were 3x and 6.7x), so getting better at the game rarely showed up as a new star. The closer steps reward each improvement. Hovering a star shows its target. Losing, or ending a day short of three stars, shows a tip for scoring higher.
 
 ## Campaign 2: Summer Nights
 

@@ -8,4 +8,4 @@ day_number = 15
 title = "Summer Storm"
 intro_text = "A summer thunderstorm keeps knocking the power out. Blenders only work when the lights are on."
 power_outage = true
-star_scores = Array[int]([1950, 5850, 13000])
+star_scores = Array[int]([1950, 3500, 5250])

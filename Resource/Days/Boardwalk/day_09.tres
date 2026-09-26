@@ -10,4 +10,4 @@ intro_text = "The power flickers and the belt stalls. Stay calm and keep blendin
 power_outage = true
 belt_stops = true
 combo = true
-star_scores = Array[int]([2500, 7400, 16500])
+star_scores = Array[int]([2500, 4500, 6750])

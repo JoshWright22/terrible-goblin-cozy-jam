@@ -59,8 +59,8 @@ func stars_for_score(score: int) -> int:
 func star_hints() -> Array[String]:
 	return [
 		"Survive the day: %d points" % star_scores[0],
-		"Every order accurate: %d points" % star_scores[1],
-		"High score: %d points" % star_scores[2],
+		"Good shift: %d points" % star_scores[1],
+		"Great shift: %d points" % star_scores[2],
 	]
 
 func allows_shape(fruit_data: FruitData) -> bool:

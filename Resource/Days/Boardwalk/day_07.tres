@@ -10,4 +10,4 @@ intro_text = "Rush customers and hot blenders. Pace yourself!"
 overheat = true
 rush_orders = true
 combo = true
-star_scores = Array[int]([2500, 7400, 16500])
+star_scores = Array[int]([2500, 4500, 6750])

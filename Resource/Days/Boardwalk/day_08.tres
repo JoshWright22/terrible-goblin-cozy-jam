@@ -10,4 +10,4 @@ intro_text = "Shifty fruit and allergies. Check before you drop!"
 shifty_fruit = true
 allergy_orders = true
 combo = true
-star_scores = Array[int]([2500, 7400, 16500])
+star_scores = Array[int]([2500, 4500, 6750])

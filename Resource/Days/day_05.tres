@@ -10,4 +10,4 @@ intro_text = "Rush orders! Customers marked RUSH leave fast but tip double."
 fruits = Array[int]([0, 1, 2, 3])
 rush_orders = true
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([1800, 5400, 12000])
+star_scores = Array[int]([1800, 3250, 4850])

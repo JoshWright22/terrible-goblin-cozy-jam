@@ -8,4 +8,4 @@ day_number = 16
 title = "Double Trouble"
 intro_text = "Big appetites today. Some customers want two smoothies."
 double_orders = true
-star_scores = Array[int]([2250, 6750, 15000])
+star_scores = Array[int]([2250, 4050, 6100])
