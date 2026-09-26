@@ -263,7 +263,7 @@ Plans for the Steam and Android builds. Only the jam Web and Windows presets exi
 
 Async, using Steam's servers through GodotSteam, so there is nothing to host or pay for.
 
-**Daily Slush** is the only online mode at launch: one seeded roguelike run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the date, so no server is needed to hand it out. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
+**Daily Slush** is the only online mode at launch: one seeded roguelike run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the UTC date, so no server is needed to hand it out. Each daily opens with 2 random campaign twists as debuffs and 2 random roguelike upgrades as buffs, then plays like a normal roguelike run. Unlimited retries; the best score of the day counts, and playing on consecutive days builds a streak. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
 
 Ideas for after launch, only if the game does well: Friend Challenge (race a friend's seed as a ghost), Weekly Shift, Next Rival target line, a community Tip Jar goal, Custom Days with share codes, and real-time Rush Duel through Steam lobbies.
 
@@ -313,7 +313,8 @@ Done so far (September 2026):
 - [ ] Shop upgrades (gameplay unlocks)
 - [x] Settings: fullscreen toggle
 - [ ] Colorblind mode
-- [ ] Steam achievements and leaderboard, Android ads
+- [x] Daily Slush: date-seeded run with daily buffs and debuffs, local best and streak
+- [ ] Steam achievements and leaderboards (roguelike, Daily Slush), Android ads
 
 ## Team and decisions
 

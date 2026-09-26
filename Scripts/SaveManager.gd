@@ -11,6 +11,9 @@ var fullscreen: bool = false
 var unlocked_days: Dictionary = {}  # campaign id -> highest playable day
 var day_stars: Dictionary = {}      # "campaign:day" -> best stars (0-3)
 var endless_best: int = 0
+var daily_best: int = 0      # best score on daily_date
+var daily_date: int = 0      # YYYYMMDD of the last daily played
+var daily_streak: int = 0    # days in a row with a daily played
 
 # Style unlocks: category -> chosen option index (see Cosmetics)
 var cosmetics: Dictionary = {}
@@ -49,6 +52,9 @@ func save_game() -> void:
 	cfg.set_value("progress", "unlocked_days", unlocked_days)
 	cfg.set_value("progress", "day_stars", day_stars)
 	cfg.set_value("progress", "endless_best", endless_best)
+	cfg.set_value("daily", "best", daily_best)
+	cfg.set_value("daily", "date", daily_date)
+	cfg.set_value("daily", "streak", daily_streak)
 	cfg.set_value("style", "cosmetics", cosmetics)
 	var err := cfg.save(SAVE_PATH)
 	if err != OK:
@@ -78,6 +84,9 @@ func _load_file() -> void:
 			day_stars["summer:%d" % key] = day_stars[key]
 			day_stars.erase(key)
 	endless_best = cfg.get_value("progress", "endless_best", endless_best)
+	daily_best = cfg.get_value("daily", "best", daily_best)
+	daily_date = cfg.get_value("daily", "date", daily_date)
+	daily_streak = cfg.get_value("daily", "streak", daily_streak)
 	cosmetics = cfg.get_value("style", "cosmetics", cosmetics)
 
 func apply_audio() -> void:
@@ -124,6 +133,21 @@ func record_endless_score(score: int) -> bool:
 	endless_best = score
 	save_game()
 	return true
+
+# Returns true if this is a new best for today. The streak grows once per day played.
+func record_daily_score(score: int) -> bool:
+	var today := GameManager.daily_seed()
+	if daily_date != today:
+		daily_streak = daily_streak + 1 if daily_date == GameManager.daily_seed(1) else 1
+		daily_date = today
+		daily_best = 0
+	var best := score > daily_best
+	daily_best = maxi(daily_best, score)
+	save_game()
+	return best
+
+func todays_daily_best() -> int:
+	return daily_best if daily_date == GameManager.daily_seed() else 0
 
 func total_stars() -> int:
 	var total := 0

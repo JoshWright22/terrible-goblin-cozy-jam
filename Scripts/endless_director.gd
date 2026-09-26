@@ -7,6 +7,8 @@ const TWIST_INTERVAL := 45.0
 const PATIENCE_STEP := 0.94
 const MIN_PATIENCE := 0.6
 const SCORE_STEP := 2500
+const DAILY_BUFFS := 2
+const DAILY_DEBUFFS := 2
 const UPGRADES := [
 	{"id": "tips", "name": "Tip Jar", "text": "+20% base score\non every smoothie"},
 	{"id": "patience", "name": "Friendly Service", "text": "+15% base patience\nfor new customers"},
@@ -46,6 +48,9 @@ var _run_time: float = 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	# The daily seed fixes the twist order, upgrade offers and belt fruit for everyone that day
+	if GameManager.daily_run:
+		seed(GameManager.daily_seed())
 	_queue = TWISTS.duplicate()
 	_queue.shuffle()
 	_queue.push_front(FIRST_TWIST)
@@ -53,7 +58,25 @@ func _ready() -> void:
 	_layer.layer = 11
 	add_child(_layer)
 	_build_status_board()
+	if GameManager.daily_run:
+		_start_daily()
 	_update_status()
+
+# Daily Slush opens with two campaign twists as debuffs and two free upgrades as buffs
+func _start_daily() -> void:
+	var twists := GameManager.twists()
+	var debuffs: Array = []
+	for i in DAILY_DEBUFFS:
+		var twist: Dictionary = _queue.pop_back()
+		twists.set(twist["key"], twist["value"])
+		debuffs.append(twist["name"])
+	var buffs: Array = UPGRADES.filter(func(upgrade): return upgrade["id"] != "refresh")
+	buffs.shuffle()
+	buffs = buffs.slice(0, DAILY_BUFFS)
+	for buff in buffs:
+		_apply_upgrade(buff["id"])
+	_announce("Daily Slush", "Buffs: %s\nDebuffs: %s" % [
+		", ".join(buffs.map(func(buff): return buff["name"])), ", ".join(debuffs)])
 
 # Same cream board as the campaign's day HUD
 func _build_status_board() -> void:
@@ -174,8 +197,18 @@ func _choose_upgrade(index: int) -> void:
 	if not _choosing or index < 0 or index >= _offers.size() or GameManager.game_over:
 		return
 	_choosing = false
+	_apply_upgrade(_offers[index]["id"])
+	GameManager.rogue_level += 1
+	_next_score += SCORE_STEP * GameManager.rogue_level
+	_offers.clear()
+	_choice_screen.queue_free()
+	get_tree().paused = false
+	GameManager.paused = false
+	_update_status()
+
+func _apply_upgrade(id: String) -> void:
 	var control = get_parent()
-	match _offers[index]["id"]:
+	match id:
 		"tips": GameManager.rogue_score_mult += 0.2
 		"patience": GameManager.rogue_patience_mult += 0.15
 		"capacity":
@@ -186,13 +219,6 @@ func _choose_upgrade(index: int) -> void:
 		"refresh": control.REMAIN_TIME = minf(control.MAX_TIME, control.REMAIN_TIME + control.MAX_TIME * 0.5)
 	control.healthBar.max_value = control.MAX_TIME
 	control.healthBar.value = control.REMAIN_TIME
-	GameManager.rogue_level += 1
-	_next_score += SCORE_STEP * GameManager.rogue_level
-	_offers.clear()
-	_choice_screen.queue_free()
-	get_tree().paused = false
-	GameManager.paused = false
-	_update_status()
 
 func _announce(title: String, text: String) -> void:
 	AudioManager.play_pause_open()

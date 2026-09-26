@@ -36,6 +36,7 @@ var campaigns: Array[Campaign] = []
 var current_campaign: Campaign = null
 var current_day: DayConfig = null   # null = endless mode
 var endless_twists: DayConfig = null # endless starts plain and picks up twists as it goes
+var daily_run: bool = false          # roguelike run seeded by the date, with set buffs and debuffs
 var day_complete: bool = false
 var power_out: bool = false          # Power Outage twist: blenders can't blend while true
 var stars_before_day: int = 0        # total stars when the day started, for unlock announcements
@@ -72,11 +73,23 @@ func load_day(day_number: int) -> DayConfig:
 
 func start_day(day_number: int) -> void:
 	current_day = load_day(day_number)
+	daily_run = false
 	get_tree().call_group("hostController", "transition_to_scene", gameLoop)
 
 func start_endless() -> void:
 	current_day = null
+	daily_run = false
 	get_tree().call_group("hostController", "transition_to_scene", gameLoop)
+
+func start_daily() -> void:
+	current_day = null
+	daily_run = true
+	get_tree().call_group("hostController", "transition_to_scene", gameLoop)
+
+# Today's UTC date as YYYYMMDD, so everyone gets the same Daily Slush
+func daily_seed(days_ago: int = 0) -> int:
+	var date := Time.get_date_dict_from_unix_time(int(Time.get_unix_time_from_system()) - days_ago * 86400)
+	return date.year * 10000 + date.month * 100 + date.day
 
 func endless_unlocked() -> bool:
 	# Mobile gets endless from the start, Steam unlocks it by finishing the first campaign

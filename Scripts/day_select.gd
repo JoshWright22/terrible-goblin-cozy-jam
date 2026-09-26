@@ -12,6 +12,7 @@ const DONE_COLOR := Color(0.55, 0.75, 0.4)
 @onready var _locked_stars: VBoxContainer = $Board/LockedStars
 @onready var _stars_box: HBoxContainer = $Board/StarsBox
 @onready var _endless_btn: Button = $Board/EndlessButton
+@onready var _daily_btn: Button = $Board/DailyButton
 @onready var _back_btn: TextureButton = $BackButton
 @onready var _style_btn: Button = $Board/StyleButton
 @onready var _prev_btn: Button = $Board/PrevButton
@@ -21,13 +22,15 @@ func _ready() -> void:
 	AudioManager.start_menu_music()
 
 	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 50)
-	if GameManager.endless_unlocked():
-		_endless_btn.text = "Roguelike  (best %d)" % SaveManager.endless_best
-	else:
-		_endless_btn.text = "Roguelike: beat summer"
-		_endless_btn.disabled = true
-	ButtonFx.setup(_endless_btn)
+	ButtonFx.style_text_button(_daily_btn, Color(0.55, 0.72, 0.45), 50)
+	var unlocked := GameManager.endless_unlocked()
+	_endless_btn.tooltip_text = "Best %d" % SaveManager.endless_best if unlocked else "Beat Summer to unlock"
+	_daily_btn.tooltip_text = "Today's best %d" % SaveManager.todays_daily_best() if unlocked else "Beat Summer to unlock"
+	for btn in [_endless_btn, _daily_btn]:
+		btn.disabled = not unlocked
+		ButtonFx.setup(btn)
 	_endless_btn.pressed.connect(func(): _go(GameManager.start_endless))
+	_daily_btn.pressed.connect(func(): _go(GameManager.start_daily))
 
 	ButtonFx.style_text_button(_style_btn, Color(0.85, 0.5, 0.65), 50)
 	ButtonFx.setup(_style_btn)
@@ -46,7 +49,7 @@ func _ready() -> void:
 	)
 	BoardPaint.style(_locked_lbl)
 	_show_campaign()
-	for item in [_prev_btn, _next_btn, _style_btn, _endless_btn]:
+	for item in [_prev_btn, _next_btn, _style_btn, _endless_btn, _daily_btn]:
 		BoardPaint.paint_tree(item, 0.5, false)
 
 func _flip(direction: int) -> void:

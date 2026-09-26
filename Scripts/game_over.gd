@@ -10,7 +10,13 @@ extends CanvasLayer
 
 func _ready() -> void:
 	_score_lbl.text = "Score: %d" % GameManager.score
-	if GameManager.current_day == null:
+	if GameManager.daily_run:
+		var best := SaveManager.record_daily_score(GameManager.score)
+		_title_lbl.text = "DAILY SLUSH"
+		_score_lbl.text = "Score: %d%s\nToday's best: %d   Streak: %d" % [GameManager.score,
+			"  New best!" if best else "", SaveManager.daily_best, SaveManager.daily_streak]
+		_score_lbl.add_theme_font_size_override("font_size", 40)
+	elif GameManager.current_day == null:
 		SaveManager.record_endless_score(GameManager.score)
 		_title_lbl.text = "RUN OVER"
 		_score_lbl.text = "Level %d\nScore: %d" % [GameManager.rogue_level, GameManager.score]
