@@ -40,7 +40,7 @@ var _current_tc: float = 0.0
 var _type_pools: Dictionary = {}   # int (FruitType) → Array[FruitData]
 var _pending_types: Array[int] = []  # types not yet seen this cycle
 
-const MELT_TIME: float = 7.0   # Heatwave: seconds a piece survives on the belt
+const MELT_TIME := Vector2(3.5, 16.0)   # Heatwave: seconds a piece survives on the belt, rolled per piece
 const SHIFT_TIME: float = 2.2  # Shifty Fruit: seconds between fruit changes
 const STALL_TIME: float = 2.5  # Belt Hiccups: how long the belt stops
 const RUN_TIME := Vector2(8.0, 13.0)  # Belt Hiccups: running time between stalls
@@ -190,9 +190,9 @@ func _process(delta: float) -> void:
 				_shift_fruit(ctrl)
 		if twists.heatwave and not ctrl.is_dragging:
 			p.age += delta
-			# Tint toward a melty orange, then drip away
-			var melt := clampf(p.age / MELT_TIME, 0.0, 1.0)
-			ctrl.modulate = Color(1.0, 1.0 - melt * 0.35, 1.0 - melt * 0.6, 1.0 - maxf(0.0, melt - 0.8) * 5.0)
+			# Each piece has its own melt time, so some drip away early and others ride the whole belt
+			var melt := clampf(p.age / p.melt_time, 0.0, 1.0)
+			ctrl.set_melt(melt)
 			if melt >= 1.0:
 				root.queue_free()
 				to_remove.append(p)
@@ -237,7 +237,8 @@ func _spawn_at(x: float) -> void:
 
 	piece.position = Vector2(x, 8)
 	add_child(piece)
-	pieces.append({ "root": piece, "ctrl": ctrl, "age": 0.0, "shift": randf() * SHIFT_TIME })
+	pieces.append({ "root": piece, "ctrl": ctrl, "age": 0.0, "shift": randf() * SHIFT_TIME,
+		"melt_time": randf_range(MELT_TIME.x, MELT_TIME.y) })
 
 func _shape_of(fd: FruitData) -> String:
 	var file := fd.resource_path.get_file().get_basename()  # "apple_3x2_T"

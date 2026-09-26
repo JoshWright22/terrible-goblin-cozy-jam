@@ -18,6 +18,7 @@ extends Node2D
 
 # Grab leniency: pieces riding the belt get a circle around the whole fruit
 const BELT_GRAB_PADDING: float = 30.0   # extra pixels beyond the fruit's outer edge
+const FRUIT_SHADER := preload("res://Shaders/fruit_state.gdshader")
 
 var _bounds_size: Vector2 = Vector2.ZERO    # full piece size in pixels
 var _bounds_center: Vector2 = Vector2.ZERO  # piece center relative to this node
@@ -25,6 +26,7 @@ var _bounds_center: Vector2 = Vector2.ZERO  # piece center relative to this node
 var is_dragging: bool = false
 var is_locked: bool = false
 var frozen: bool = false  # Brain Freeze twist: can't be rotated
+var _shader_rotation: float = INF
 var is_falling: bool = false
 var fall_velocity: float = 0.0
 var _pickup_fall_velocity: float = 0.0  # velocity stored when picking up mid-fall
@@ -78,11 +80,22 @@ func _ready() -> void:
 
 	total_block_count = block_layout.size()
 	build_piece_from_layout()
-	if frozen:
-		modulate = Color(0.7, 0.9, 1.25)
+	_setup_look()
 
 	# Set up the internal processing timer engine loop for held shifting
 	setup_shifting_timer()
+
+# Melt and ice both live in one shader on the fruit sprite
+func _setup_look() -> void:
+	var mat := ShaderMaterial.new()
+	mat.shader = FRUIT_SHADER
+	mat.set_shader_parameter("seed", randf() * 100.0)
+	mat.set_shader_parameter("frozen", frozen)
+	$Sprite2D.material = mat
+
+# Heatwave: 0 is fresh, 1 has dripped away
+func set_melt(amount: float) -> void:
+	($Sprite2D.material as ShaderMaterial).set_shader_parameter("melt", amount)
 
 func change_fruit_profile(new_profile: FruitData) -> void:
 	if new_profile == null:
@@ -189,6 +202,10 @@ func _notification(what: int) -> void:
 		GameManager.fruit_held = false
 
 func _process(delta: float) -> void:
+	# The shader drips and hangs icicles in texture space, so tell it where the screen's down is
+	if global_rotation != _shader_rotation:
+		_shader_rotation = global_rotation
+		($Sprite2D.material as ShaderMaterial).set_shader_parameter("down", Vector2.DOWN.rotated(-global_rotation))
 	if is_dragging:
 		global_position = get_global_mouse_position()
 	elif is_falling:
@@ -466,6 +483,7 @@ func attempt_physical_placement() -> void:
 
 		is_locked = true
 		_update_click_shape()
+		set_melt(0.0)   # safe in the blender, so the heatwave drip clears
 		detached_from_conveyor = true
 		spawn_position = global_position
 		z_as_relative = true
