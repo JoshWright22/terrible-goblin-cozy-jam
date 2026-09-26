@@ -24,6 +24,7 @@ func _setup_transition() -> void:
 	layer.add_child(_transition_rect)
 
 func changeScene(scene) -> void:
+	SaveManager.save_game()
 	var instance = scene.instantiate()
 	if get_child_count() >= 1 and scene != GameManager.pauseScene:
 		# skip index 0 which is the CanvasLayer (transition overlay)

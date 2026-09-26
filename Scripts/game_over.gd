@@ -10,6 +10,7 @@ extends CanvasLayer
 
 func _ready() -> void:
 	_score_lbl.text = "Score: %d" % GameManager.score
+	SaveManager.record_endless_score(GameManager.score)
 	_apply_label_style(_title_lbl, 7)
 	_apply_label_style(_score_lbl, 5)
 	_setup_btn(_retry_btn)
