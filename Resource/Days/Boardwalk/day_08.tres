@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 8
+title = "Mixed Up"
+intro_text = "Shifty fruit and allergies. Check before you drop!"
+shifty_fruit = true
+allergy_orders = true
+combo = true
+star_scores = Array[int]([4500, 10000, 16500])

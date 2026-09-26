@@ -41,6 +41,14 @@ var _type_pools: Dictionary = {}   # int (FruitType) → Array[FruitData]
 var _pending_types: Array[int] = []  # types not yet seen this cycle
 
 const MELT_TIME: float = 7.0   # Heatwave: seconds a piece survives on the belt
+const SHIFT_TIME: float = 2.2  # Shifty Fruit: seconds between fruit changes
+const STALL_TIME: float = 2.5  # Belt Hiccups: how long the belt stops
+const RUN_TIME := Vector2(8.0, 13.0)  # Belt Hiccups: running time between stalls
+
+var _stall_timer: float = 0.0
+var _stalled: bool = false
+var _belt_tint: Color = Color.WHITE  # belt color while running, restored after a stall
+var _shape_pools: Dictionary = {}  # shape name ("3x2_T") -> Array[FruitData], for shifty fruit
 
 var _day: DayConfig = null
 
@@ -53,6 +61,7 @@ func _ready() -> void:
 		min_spawn_interval /= _day.spawn_rate_scale
 		ramp_duration = _day.duration
 	_build_pool()
+	_stall_timer = randf_range(RUN_TIME.x, RUN_TIME.y)
 	_current_belt_speed = initial_belt_speed
 	_current_spawn_interval = initial_spawn_interval
 	spawn_timer = 0.0
@@ -82,6 +91,10 @@ func _build_pool() -> void:
 			if not _type_pools.has(fd.fruit_name):
 				_type_pools[fd.fruit_name] = []
 			(_type_pools[fd.fruit_name] as Array).append(fd)
+			var shape := _shape_of(fd)
+			if not _shape_pools.has(shape):
+				_shape_pools[shape] = []
+			(_shape_pools[shape] as Array).append(fd)
 	if _resolved_pool.is_empty():
 		push_warning("RandomBlockGenerator: no FruitData matches the current quality range.")
 	_reset_type_cycle()
@@ -143,6 +156,10 @@ func _process(delta: float) -> void:
 	_current_tc = tc
 	_current_belt_speed = lerpf(initial_belt_speed, max_belt_speed, tc)
 	_current_spawn_interval = lerpf(initial_spawn_interval, min_spawn_interval, tc)
+	if _day and _day.belt_stops:
+		_update_stall(delta)
+	if _stalled:
+		_current_belt_speed = 0.0
 
 	if _shader_mat:
 		_scroll_offset += (_current_belt_speed / _tex_width) * delta
@@ -163,7 +180,12 @@ func _process(delta: float) -> void:
 		if root.position.x < DESPAWN_X and not ctrl.is_dragging:
 			root.queue_free()
 			to_remove.append(p)
-		elif _day and _day.heatwave and not ctrl.is_dragging:
+		if _day and _day.shifty_fruit and not ctrl.is_dragging:
+			p.shift += delta
+			if p.shift >= SHIFT_TIME:
+				p.shift = 0.0
+				_shift_fruit(ctrl)
+		if _day and _day.heatwave and not ctrl.is_dragging:
 			p.age += delta
 			# Tint toward a melty orange, then drip away
 			var melt := clampf(p.age / MELT_TIME, 0.0, 1.0)
@@ -175,7 +197,8 @@ func _process(delta: float) -> void:
 	for p in to_remove:
 		pieces.erase(p)
 
-	spawn_timer -= delta
+	if not _stalled:
+		spawn_timer -= delta
 	if spawn_timer <= 0.0:
 		_spawn_at(SPAWN_X)
 		spawn_timer = _current_spawn_interval
@@ -211,4 +234,38 @@ func _spawn_at(x: float) -> void:
 
 	piece.position = Vector2(x, 8)
 	add_child(piece)
-	pieces.append({ "root": piece, "ctrl": ctrl, "age": 0.0 })
+	pieces.append({ "root": piece, "ctrl": ctrl, "age": 0.0, "shift": randf() * SHIFT_TIME })
+
+func _shape_of(fd: FruitData) -> String:
+	var file := fd.resource_path.get_file().get_basename()  # "apple_3x2_T"
+	return file.substr(file.find("_") + 1)
+
+# Belt Hiccups: run for a while, stall for a moment
+func _update_stall(delta: float) -> void:
+	_stall_timer -= delta
+	if _stall_timer > 0.0:
+		return
+	_stalled = not _stalled
+	if _stalled:
+		_stall_timer = STALL_TIME
+		AudioManager.play_pause_close()
+		_belt_tint = belt.modulate
+		belt.modulate = _belt_tint.darkened(0.25)
+	else:
+		_stall_timer = randf_range(RUN_TIME.x, RUN_TIME.y)
+		AudioManager.play_pause_open()
+		belt.modulate = _belt_tint
+
+# Shifty Fruit: same shape, different fruit, with a little squash so the change reads
+func _shift_fruit(ctrl) -> void:
+	var options: Array = _shape_pools.get(_shape_of(ctrl.fruit_profile), [])
+	options = options.filter(func(fd): return fd.fruit_name != ctrl.fruit_profile.fruit_name)
+	if options.is_empty():
+		return
+	var next: FruitData = options.pick_random()
+	ctrl.change_fruit_profile(next)
+	if next.fruit_name not in GameManager.seen_fruit_types:
+		GameManager.seen_fruit_types.append(next.fruit_name)
+	var tw = ctrl.create_tween()
+	tw.tween_property(ctrl, "scale", Vector2(1.25, 0.8), 0.06)
+	tw.tween_property(ctrl, "scale", Vector2.ONE, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

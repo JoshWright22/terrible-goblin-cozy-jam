@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 10
+title = "Midnight Critics"
+intro_text = "Critics with short memories. 85% accurate or bust!"
+min_accuracy = 85.0
+fading_orders = true
+combo = true
+star_scores = Array[int]([4500, 10500, 17000])

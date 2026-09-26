@@ -27,6 +27,14 @@ var grid_start_pos: Vector2 = Vector2.ZERO
 var is_blending: bool = false # Read this from your piece scripts to block drop logic!
 var out_of_order: bool = false
 
+# Hot Blenders twist: too many blends in a short window overheats this blender
+const OVERHEAT_BLENDS := 3
+const OVERHEAT_WINDOW := 18.0
+const COOLDOWN_TIME := 6.0
+var _recent_blends: Array[float] = []
+var _overheated: bool = false
+var _run_time: float = 0.0
+
 @onready var grid_anchor: Area2D = $GridAnchor
 @onready var grid_visuals: Node2D = $GridVisuals
 
@@ -46,6 +54,42 @@ func _ready() -> void:
 
 	# Call deferred to let the UI engine calculate the button's native size boundary box first
 	position_and_wire_blend_button.call_deferred()
+
+func _process(delta: float) -> void:
+	if not GameManager.paused:
+		_run_time += delta
+
+func _track_heat() -> void:
+	_recent_blends.append(_run_time)
+	_recent_blends = _recent_blends.filter(func(t): return _run_time - t <= OVERHEAT_WINDOW)
+	if _recent_blends.size() >= OVERHEAT_BLENDS:
+		_recent_blends.clear()
+		_overheat()
+
+func _overheat() -> void:
+	_overheated = true
+	AudioManager.play_customer_angry()
+	var hot := Label.new()
+	hot.text = "HOT!"
+	hot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hot.add_theme_font_size_override("font_size", 70)
+	hot.add_theme_constant_override("outline_size", 12)
+	hot.add_theme_color_override("font_outline_color", Color.BLACK)
+	hot.add_theme_color_override("font_color", Color(1.0, 0.45, 0.25))
+	hot.size = Vector2(260, 100)
+	hot.position = grid_anchor.position - hot.size / 2.0
+	hot.pivot_offset = hot.size / 2.0
+	hot.z_index = 5
+	add_child(hot)
+	var pulse := hot.create_tween().set_loops()
+	pulse.tween_property(hot, "scale", Vector2(1.12, 1.12), 0.25)
+	pulse.tween_property(hot, "scale", Vector2.ONE, 0.25)
+	var glow := grid_visuals.create_tween()
+	glow.tween_property(grid_visuals, "modulate", Color(1.0, 0.55, 0.5), 0.3)
+	await get_tree().create_timer(COOLDOWN_TIME, false).timeout
+	_overheated = false
+	hot.queue_free()
+	grid_visuals.create_tween().tween_property(grid_visuals, "modulate", Color.WHITE, 0.4)
 
 # GridScene, GridScene2, GridScene3... in the game loop -> 1, 2, 3...
 func _blender_number() -> int:
@@ -249,7 +293,7 @@ func _on_blend_button_up() -> void:
 func blend_grid_into_smoothie() -> void:
 	if not grid_visuals or is_blending or GameManager.paused or out_of_order:
 		return
-	if GameManager.power_out:
+	if GameManager.power_out or _overheated:
 		AudioManager.play_customer_angry()
 		return
 
@@ -272,6 +316,9 @@ func blend_grid_into_smoothie() -> void:
 
 	is_blending = true
 	AudioManager.play_blend_start()
+	var day: DayConfig = GameManager.current_day
+	if day and day.overheat:
+		_track_heat()
 	
 	var ingredient_data: Array = []
 	for fruit in collected_fruits:

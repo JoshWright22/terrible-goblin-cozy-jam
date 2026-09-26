@@ -39,7 +39,7 @@ func _note_for(day: DayConfig, stars: int) -> String:
 	if stars == 0:
 		return "Reach %d points to open the next day" % day.star_scores[0]
 	if not GameManager.has_next_day():
-		return "Summer's over! Endless mode is open"
+		return "%s complete!" % GameManager.current_campaign.title
 	if stars < 3:
 		return "%d points for the next star" % day.star_scores[stars]
 	return "Perfect day!"

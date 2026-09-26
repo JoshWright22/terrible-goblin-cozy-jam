@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Campaign" load_steps=15 format=3]
+
+[ext_resource type="Script" path="res://Scripts/campaign.gd" id="1_campaign"]
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="2_day"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_01.tres" id="d1"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_02.tres" id="d2"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_03.tres" id="d3"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_04.tres" id="d4"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_05.tres" id="d5"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_06.tres" id="d6"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_07.tres" id="d7"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_08.tres" id="d8"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_09.tres" id="d9"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_10.tres" id="d10"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_11.tres" id="d11"]
+[ext_resource type="Resource" path="res://Resource/Days/Boardwalk/day_12.tres" id="d12"]
+
+[resource]
+script = ExtResource("1_campaign")
+id = "boardwalk"
+title = "Boardwalk Nights"
+days = Array[ExtResource("2_day")]([ExtResource("d1"), ExtResource("d2"), ExtResource("d3"), ExtResource("d4"), ExtResource("d5"), ExtResource("d6"), ExtResource("d7"), ExtResource("d8"), ExtResource("d9"), ExtResource("d10"), ExtResource("d11"), ExtResource("d12")])
+stars_to_unlock = 24
+unlock_hint = "The boardwalk opens after dark."
+end_tint = Color(0.78, 0.74, 0.95, 1)

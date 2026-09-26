@@ -8,8 +8,8 @@ var sfx_volume: float = 1.0
 var fullscreen: bool = false
 
 # Progress
-var unlocked_day: int = 1
-var day_stars: Dictionary = {}  # day number -> best stars (0-3)
+var unlocked_days: Dictionary = {}  # campaign id -> highest playable day
+var day_stars: Dictionary = {}      # "campaign:day" -> best stars (0-3)
 var endless_best: int = 0
 
 # Style unlocks: category -> chosen option index (see Cosmetics)
@@ -47,7 +47,7 @@ func save_game() -> void:
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "auto_show_orders", GameManager.auto_show_orders)
 	cfg.set_value("settings", "change_order_on_anger", GameManager.change_order_on_anger)
-	cfg.set_value("progress", "unlocked_day", unlocked_day)
+	cfg.set_value("progress", "unlocked_days", unlocked_days)
 	cfg.set_value("progress", "day_stars", day_stars)
 	cfg.set_value("progress", "endless_best", endless_best)
 	cfg.set_value("style", "cosmetics", cosmetics)
@@ -70,8 +70,15 @@ func _load_file() -> void:
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
 	GameManager.auto_show_orders = cfg.get_value("settings", "auto_show_orders", GameManager.auto_show_orders)
 	GameManager.change_order_on_anger = cfg.get_value("settings", "change_order_on_anger", GameManager.change_order_on_anger)
-	unlocked_day = cfg.get_value("progress", "unlocked_day", unlocked_day)
+	unlocked_days = cfg.get_value("progress", "unlocked_days", unlocked_days)
 	day_stars = cfg.get_value("progress", "day_stars", day_stars)
+	# Saves from before campaigns only had Summer, keyed by day number
+	if cfg.has_section_key("progress", "unlocked_day"):
+		unlocked_days["summer"] = maxi(unlocked_days.get("summer", 1), cfg.get_value("progress", "unlocked_day"))
+	for key in day_stars.keys():
+		if key is int:
+			day_stars["summer:%d" % key] = day_stars[key]
+			day_stars.erase(key)
 	endless_best = cfg.get_value("progress", "endless_best", endless_best)
 	cosmetics = cfg.get_value("style", "cosmetics", cosmetics)
 
@@ -92,11 +99,25 @@ func _set_bus_volume(bus_name: String, value: float) -> void:
 		AudioServer.set_bus_volume_db(idx, linear_to_db(value) if value > 0.0 else -80.0)
 
 # Called when a campaign day ends. Keeps the best stars and unlocks the next day.
-func record_day(day: int, stars: int) -> void:
-	day_stars[day] = maxi(day_stars.get(day, 0), stars)
+func record_day(campaign_id: String, day: int, stars: int) -> void:
+	var key := "%s:%d" % [campaign_id, day]
+	day_stars[key] = maxi(day_stars.get(key, 0), stars)
 	if stars > 0:
-		unlocked_day = maxi(unlocked_day, day + 1)
+		unlocked_days[campaign_id] = maxi(unlocked_day(campaign_id), day + 1)
 	save_game()
+
+func unlocked_day(campaign_id: String) -> int:
+	return unlocked_days.get(campaign_id, 1)
+
+func stars_for(campaign_id: String, day: int) -> int:
+	return day_stars.get("%s:%d" % [campaign_id, day], 0)
+
+func campaign_stars(campaign_id: String) -> int:
+	var total := 0
+	for key in day_stars:
+		if String(key).begins_with(campaign_id + ":"):
+			total += day_stars[key]
+	return total
 
 # Returns true if this is a new best.
 func record_endless_score(score: int) -> bool:

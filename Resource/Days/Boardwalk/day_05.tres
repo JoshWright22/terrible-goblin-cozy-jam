@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 5
+title = "Short Memory"
+intro_text = "Orders fade fast tonight. Hover a customer to peek at their order again."
+fading_orders = true
+combo = true
+star_scores = Array[int]([4000, 9000, 15000])

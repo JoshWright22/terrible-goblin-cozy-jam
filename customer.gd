@@ -47,6 +47,8 @@ var kind: String = ""        # "", "rush" or "vip"
 var orders_left: int = 1     # 2 for double orders
 var score_mult: float = 1.0
 var _badge: Label = null
+const ORDER_FADE_TIME := 3.5  # Short Memory twist: seconds an order stays up on its own
+var _hovered: bool = false
 
 func _ready() -> void:
 	match kind:
@@ -164,6 +166,8 @@ func _show_bubble() -> void:
 		c.cusID = ID
 		if is_instance_valid(c) and not c.is_inside_tree():
 			control.add_child(c)
+		if _orders_fade() and not _hovered:
+			_fade_bubble_later()
 	)
 
 func _hide_bubble() -> void:
@@ -203,13 +207,23 @@ func _refresh_bubble() -> void:
 
 func _on_area_2d_mouse_entered() -> void:
 	GameManager.trgID = ID
-	if not GameManager.auto_show_orders:
+	_hovered = true
+	if not GameManager.auto_show_orders or _orders_fade():
 		_show_bubble()
 
 func _on_area_2d_mouse_exited() -> void:
 	if GameManager.trgID == ID:
 		GameManager.trgID = null
-	if not GameManager.auto_show_orders:
+	_hovered = false
+	if not GameManager.auto_show_orders or _orders_fade():
+		_hide_bubble()
+
+func _orders_fade() -> bool:
+	return control.day != null and control.day.fading_orders
+
+func _fade_bubble_later() -> void:
+	await get_tree().create_timer(ORDER_FADE_TIME, false).timeout
+	if is_instance_valid(self) and not _hovered:
 		_hide_bubble()
 
 # --- Delivery / removal ---

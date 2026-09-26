@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 1
+title = "Lights On"
+intro_text = "The boardwalk opens after dark. Serve good smoothies back to back to build a combo!"
+combo = true
+fruits = Array[int]([0, 1, 2, 3])
+max_difficulty = "MEDIUM"
+star_scores = Array[int]([3500, 8000, 13000])

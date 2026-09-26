@@ -1,23 +1,24 @@
 extends Node2D
 
-# Summer calendar: pick an unlocked day, or endless once it's open
+# Campaign calendar: flip between campaigns, pick an unlocked day, or endless once it's open
 
 const TILE_SIZE := Vector2(180, 160)
 const OPEN_COLOR := Color(0.93, 0.6, 0.35)
 const DONE_COLOR := Color(0.55, 0.75, 0.4)
 
+@onready var _title: Label = $Board/Title
 @onready var _grid: GridContainer = $Board/DayGrid
+@onready var _locked_lbl: Label = $Board/LockedLabel
 @onready var _stars_lbl: Label = $Board/StarsLabel
 @onready var _endless_btn: Button = $Board/EndlessButton
 @onready var _back_btn: TextureButton = $BackButton
 @onready var _style_btn: Button = $Board/StyleButton
+@onready var _prev_btn: Button = $Board/PrevButton
+@onready var _next_btn: Button = $Board/NextButton
 
 func _ready() -> void:
 	AudioManager.start_menu_music()
-	for day_number in range(1, GameManager.DAY_COUNT + 1):
-		_grid.add_child(_make_tile(day_number))
 
-	_stars_lbl.text = "%d / %d stars" % [SaveManager.total_stars(), GameManager.DAY_COUNT * 3]
 	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 50)
 	if GameManager.endless_unlocked():
 		_endless_btn.text = "Endless  (best %d)" % SaveManager.endless_best
@@ -32,17 +33,54 @@ func _ready() -> void:
 	_style_btn.pressed.connect(func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.styleScene)
 	)
+	for arrow in [_prev_btn, _next_btn]:
+		ButtonFx.style_text_button(arrow, Color(0.93, 0.6, 0.35), 60)
+		ButtonFx.setup(arrow)
+	_prev_btn.pressed.connect(_flip.bind(-1))
+	_next_btn.pressed.connect(_flip.bind(1))
+
 	ButtonFx.setup(_back_btn)
 	_back_btn.pressed.connect(func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.mainMenu)
 	)
-	for lbl in [$Board/Title, $Board/StarsLabel]:
-		BoardPaint.style(lbl)
-		BoardPaint.paint_on(lbl, 0.2)
+	BoardPaint.style(_locked_lbl)
+	_show_campaign()
 
-func _make_tile(day_number: int) -> Button:
-	var unlocked := day_number <= SaveManager.unlocked_day
-	var stars: int = SaveManager.day_stars.get(day_number, 0)
+func _flip(direction: int) -> void:
+	var index := GameManager.campaigns.find(GameManager.current_campaign)
+	index = wrapi(index + direction, 0, GameManager.campaigns.size())
+	GameManager.current_campaign = GameManager.campaigns[index]
+	AudioManager.play_transition()
+	_show_campaign()
+
+func _show_campaign() -> void:
+	var campaign := GameManager.current_campaign
+	_title.text = campaign.title
+	for child in _grid.get_children():
+		child.queue_free()
+
+	var unlocked := GameManager.campaign_unlocked(campaign)
+	_grid.visible = unlocked
+	_locked_lbl.visible = not unlocked
+	if unlocked:
+		for day_number in range(1, campaign.day_count() + 1):
+			_grid.add_child(_make_tile(campaign, day_number))
+		_stars_lbl.text = "%d / %d stars" % [SaveManager.campaign_stars(campaign.id), campaign.day_count() * 3]
+	else:
+		_locked_lbl.text = "%s\nEarn %d stars to open\n(you have %d)" % [campaign.unlock_hint, campaign.stars_to_unlock, SaveManager.total_stars()]
+		_stars_lbl.text = ""
+		BoardPaint.paint_on(_locked_lbl, 0.1)
+
+	var many := GameManager.campaigns.size() > 1
+	_prev_btn.visible = many
+	_next_btn.visible = many
+	for lbl in [_title, _stars_lbl]:
+		BoardPaint.style(lbl)
+		BoardPaint.paint_on(lbl, 0.1)
+
+func _make_tile(campaign: Campaign, day_number: int) -> Button:
+	var unlocked := day_number <= SaveManager.unlocked_day(campaign.id)
+	var stars: int = SaveManager.stars_for(campaign.id, day_number)
 
 	var tile := Button.new()
 	tile.custom_minimum_size = TILE_SIZE
@@ -74,7 +112,7 @@ func _make_tile(day_number: int) -> Button:
 	row.visible = unlocked
 
 	if unlocked:
-		tile.tooltip_text = GameManager.load_day(day_number).title
+		tile.tooltip_text = campaign.days[day_number - 1].title
 		ButtonFx.setup(tile)
 		tile.pressed.connect(func(): _go(GameManager.start_day.bind(day_number)))
 	return tile

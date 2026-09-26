@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 3
+title = "Belt Hiccups"
+intro_text = "The old conveyor keeps stalling. Grab what you can while it runs."
+belt_stops = true
+combo = true
+star_scores = Array[int]([3500, 8500, 14000])

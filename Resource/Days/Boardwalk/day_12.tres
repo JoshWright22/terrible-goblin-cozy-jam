@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 12
+title = "Grand Finale"
+intro_text = "The last night of summer. Everything at once. Make it count!"
+combo = true
+shifty_fruit = true
+overheat = true
+fading_orders = true
+vip_customer = true
+rush_orders = true
+duration = 180
+star_scores = Array[int]([6000, 14000, 22000])

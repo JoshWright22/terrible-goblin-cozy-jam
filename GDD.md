@@ -107,6 +107,35 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 
 The wide 6×3 blender was swapped for Blender Down because the blender art can't stretch to a wide grid without new sprites.
 
+## Campaign 2: Boardwalk Nights
+
+Opens at 24 total stars. Twelve evening days, lit with a purple dusk tint, built around five mechanics that need no new art:
+
+| Mechanic | What happens |
+| --- | --- |
+| Combo | Smoothies at 80%+ accuracy in a row multiply the score (x1.25 per step, up to x2) |
+| Hot Blenders | Three blends within 18 seconds overheat a blender for 6 seconds |
+| Belt Hiccups | The conveyor stalls for 2.5 seconds every 8 to 13 seconds |
+| Shifty Fruit | Loose fruit changes type every 2.2 seconds until it's grabbed |
+| Short Memory | Order bubbles fade after 3.5 seconds; hover the customer to peek |
+
+| Day | Name | Twists |
+| --- | --- | --- |
+| 1 | Lights On | Combo |
+| 2 | Hot Blenders | Overheat, combo |
+| 3 | Belt Hiccups | Belt stalls, combo |
+| 4 | Shifty Fruit | Shifty fruit, combo |
+| 5 | Short Memory | Fading orders, combo |
+| 6 | Lantern Light | Night shift, combo |
+| 7 | Overtime | Overheat, rush, combo |
+| 8 | Mixed Up | Shifty fruit, allergies, combo |
+| 9 | Blackout | Power outage, belt stalls, combo |
+| 10 | Midnight Critics | 85% accuracy, fading orders, combo |
+| 11 | Double Heat | Double orders, overheat, combo |
+| 12 | Grand Finale | Combo, shifty, overheat, fading, VIP, rush (180 s) |
+
+Campaigns are data (`Resource/Campaigns/*.tres`), so a third campaign is a new list of day files plus a line in `GameManager.CAMPAIGN_PATHS`.
+
 ## Endless mode, progression and unlocks
 
 Endless mode unlocks after the campaign on Steam and is available from the start on Android. Stars and achievements unlock cosmetics.
@@ -209,8 +238,12 @@ Done so far (September 2026):
 - [x] Smoothie pour scene transition, painted board text
 - [x] Touch rotate (second finger tap) and always-on order bubbles on mobile
 - [ ] Balance pass on star targets (current values are first guesses)
-- [ ] Shop upgrades and cosmetic recolors
-- [ ] Settings: fullscreen toggle, colorblind mode
+- [x] Style unlocks: blender, wall, conveyor, transition and board paint colors
+- [x] Second campaign (Boardwalk Nights) with five new mechanics
+- [x] Hands-on day 1 tutorial, redone settings and credits screens
+- [ ] Shop upgrades (gameplay unlocks)
+- [x] Settings: fullscreen toggle
+- [ ] Colorblind mode
 - [ ] Steam achievements and leaderboard, Android ads
 
 ## Team and decisions

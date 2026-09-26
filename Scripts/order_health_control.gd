@@ -92,6 +92,12 @@ var day: DayConfig = null
 var day_time_left: float = 0.0
 var _vip_spawned: bool = false
 var _day_finished: bool = false
+
+# Combo twist: good smoothies in a row multiply the score
+const COMBO_ACCURACY := 80.0
+const COMBO_STEP := 0.25
+const COMBO_MAX_MULT := 2.0
+var combo: int = 0
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
 	FruitData.FruitType.STRAWBERRY,
@@ -187,8 +193,36 @@ func _finish_day() -> void:
 	customerSpawnTimer.stop()
 	_stop_game_music()
 	GameManager.stars_before_day = SaveManager.total_stars()
-	SaveManager.record_day(day.day_number, day.stars_for_score(GameManager.score))
+	SaveManager.record_day(GameManager.current_campaign.id, day.day_number, day.stars_for_score(GameManager.score))
 	get_tree().paused = true
+
+# Returns the score multiplier for this serve and shows the combo popup
+func _update_combo(good: bool) -> float:
+	if not good:
+		if combo >= 2:
+			_combo_popup("Combo lost", Color(1.0, 0.55, 0.5))
+		combo = 0
+		return 1.0
+	combo += 1
+	var mult := minf(1.0 + COMBO_STEP * (combo - 1), COMBO_MAX_MULT)
+	if combo >= 2:
+		_combo_popup("Combo x%.2f" % mult, Color(1.0, 0.84, 0.35))
+	return mult
+
+func _combo_popup(text: String, color: Color) -> void:
+	var lbl := Label.new()
+	lbl.text = text
+	lbl.add_theme_font_size_override("font_size", 64)
+	lbl.add_theme_constant_override("outline_size", 12)
+	lbl.add_theme_color_override("font_outline_color", Color.BLACK)
+	lbl.add_theme_color_override("font_color", color)
+	lbl.position = score_label.position + Vector2(250, 0)
+	lbl.z_index = 20
+	add_child(lbl)
+	var tw := lbl.create_tween()
+	tw.tween_property(lbl, "position:y", lbl.position.y - 70.0, 1.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.parallel().tween_property(lbl, "modulate:a", 0.0, 1.1).set_delay(0.5)
+	tw.finished.connect(lbl.queue_free)
 
 # Usable cells per blender, so a packed small blender scores like a packed big one
 func blender_cells() -> int:
@@ -311,6 +345,8 @@ func compareValues(inputer) -> void:
 		scoreGain = int(round(100.0 * (percent / 100.0) * float(total_count) * cell_scale * GameManager.smoothie_quality * fill_bonus * custom.score_mult))
 		if too_sloppy:
 			scoreGain /= 2
+	if day and day.combo:
+		scoreGain = int(round(scoreGain * _update_combo(typeMatch and percent >= COMBO_ACCURACY)))
 	GameManager.smoothies_served += 1
 	var old_score := GameManager.score
 	GameManager.score += scoreGain

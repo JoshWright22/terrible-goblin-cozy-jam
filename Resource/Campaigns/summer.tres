@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="Campaign" load_steps=21 format=3]
+
+[ext_resource type="Script" path="res://Scripts/campaign.gd" id="1_campaign"]
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="2_day"]
+[ext_resource type="Resource" path="res://Resource/Days/day_01.tres" id="d1"]
+[ext_resource type="Resource" path="res://Resource/Days/day_02.tres" id="d2"]
+[ext_resource type="Resource" path="res://Resource/Days/day_03.tres" id="d3"]
+[ext_resource type="Resource" path="res://Resource/Days/day_04.tres" id="d4"]
+[ext_resource type="Resource" path="res://Resource/Days/day_05.tres" id="d5"]
+[ext_resource type="Resource" path="res://Resource/Days/day_06.tres" id="d6"]
+[ext_resource type="Resource" path="res://Resource/Days/day_07.tres" id="d7"]
+[ext_resource type="Resource" path="res://Resource/Days/day_08.tres" id="d8"]
+[ext_resource type="Resource" path="res://Resource/Days/day_09.tres" id="d9"]
+[ext_resource type="Resource" path="res://Resource/Days/day_10.tres" id="d10"]
+[ext_resource type="Resource" path="res://Resource/Days/day_11.tres" id="d11"]
+[ext_resource type="Resource" path="res://Resource/Days/day_12.tres" id="d12"]
+[ext_resource type="Resource" path="res://Resource/Days/day_13.tres" id="d13"]
+[ext_resource type="Resource" path="res://Resource/Days/day_14.tres" id="d14"]
+[ext_resource type="Resource" path="res://Resource/Days/day_15.tres" id="d15"]
+[ext_resource type="Resource" path="res://Resource/Days/day_16.tres" id="d16"]
+[ext_resource type="Resource" path="res://Resource/Days/day_17.tres" id="d17"]
+[ext_resource type="Resource" path="res://Resource/Days/day_18.tres" id="d18"]
+
+[resource]
+script = ExtResource("1_campaign")
+id = "summer"
+title = "Summer Calendar"
+days = Array[ExtResource("2_day")]([ExtResource("d1"), ExtResource("d2"), ExtResource("d3"), ExtResource("d4"), ExtResource("d5"), ExtResource("d6"), ExtResource("d7"), ExtResource("d8"), ExtResource("d9"), ExtResource("d10"), ExtResource("d11"), ExtResource("d12"), ExtResource("d13"), ExtResource("d14"), ExtResource("d15"), ExtResource("d16"), ExtResource("d17"), ExtResource("d18")])
+stars_to_unlock = 0
+unlock_hint = ""
+end_tint = Color(1.0, 0.86, 0.74, 1)

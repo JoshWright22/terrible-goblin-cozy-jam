@@ -2,7 +2,6 @@ extends CanvasLayer
 
 # Campaign-only HUD: shop timer, live star progress, and the day's screen effects
 
-const SUNSET_TINT := Color(1.0, 0.86, 0.74)
 const NIGHT_TINT := Color(0.72, 0.74, 0.95)
 const POWER_ON_TIME := Vector2(9.0, 15.0)   # random range between outages
 const POWER_OFF_TIME := 3.0
@@ -51,7 +50,7 @@ func _process(delta: float) -> void:
 
 	var progress := 1.0 - left / _day.duration
 	if is_instance_valid(_tint):
-		var target := NIGHT_TINT if _day.night_shift else SUNSET_TINT
+		var target := NIGHT_TINT if _day.night_shift else GameManager.current_campaign.end_tint
 		_tint.color = Color.WHITE.lerp(target, clampf(progress, 0.0, 1.0))
 
 	if _day.night_shift:

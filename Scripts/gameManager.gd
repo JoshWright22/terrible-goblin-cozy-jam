@@ -26,24 +26,35 @@ var smoothie_quality: float = 1.0  # set by smoothie before delivery, applied to
 var seen_fruit_types: Array[int] = []  # FruitType ints that have appeared on the belt
 var game_over: bool = false
 
-# Campaign
-const DAY_COUNT := 18
+# Campaigns
+const CAMPAIGN_PATHS := [
+	"res://Resource/Campaigns/summer.tres",
+	"res://Resource/Campaigns/boardwalk.tres",
+]
 @onready var daySelectScene = load("res://Scenes/Primary/day_select.tscn")
+@onready var styleScene = load("res://Scenes/Primary/style_shop.tscn")
+var campaigns: Array[Campaign] = []
+var current_campaign: Campaign = null
 var current_day: DayConfig = null   # null = endless mode
 var day_complete: bool = false
 var power_out: bool = false          # Power Outage twist: blenders can't blend while true
-var stars_before_day: int = 0
+var stars_before_day: int = 0        # total stars when the day started, for unlock announcements
+
 # Tutorial: while true, customers are patient and the timers stop
 var tutorial_active: bool = false
 var rotations: int = 0          # pieces rotated this run
-var smoothies_served: int = 0   # smoothies delivered this run        # total stars when the day started, for unlock announcements
-@onready var styleScene = load("res://Scenes/Primary/style_shop.tscn")
+var smoothies_served: int = 0   # smoothies delivered this run
 
 func _ready() -> void:
-	pass
+	for path in CAMPAIGN_PATHS:
+		campaigns.append(load(path) as Campaign)
+	current_campaign = campaigns[0]
+
+func campaign_unlocked(campaign: Campaign) -> bool:
+	return SaveManager.total_stars() >= campaign.stars_to_unlock
 
 func load_day(day_number: int) -> DayConfig:
-	return load("res://Resource/Days/day_%02d.tres" % day_number) as DayConfig
+	return current_campaign.days[day_number - 1]
 
 func start_day(day_number: int) -> void:
 	current_day = load_day(day_number)
@@ -54,11 +65,12 @@ func start_endless() -> void:
 	get_tree().call_group("hostController", "transition_to_scene", gameLoop)
 
 func endless_unlocked() -> bool:
-	# Mobile gets endless from the start, Steam unlocks it by finishing the campaign
-	return OS.has_feature("mobile") or SaveManager.unlocked_day > DAY_COUNT
+	# Mobile gets endless from the start, Steam unlocks it by finishing the first campaign
+	var first := campaigns[0]
+	return OS.has_feature("mobile") or SaveManager.unlocked_day(first.id) > first.day_count()
 
 func has_next_day() -> bool:
-	return current_day != null and current_day.day_number < DAY_COUNT
+	return current_day != null and current_day.day_number < current_campaign.day_count()
 
 
 func slushiData(output) -> void:
