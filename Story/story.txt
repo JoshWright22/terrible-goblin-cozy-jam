@@ -11,11 +11,11 @@
 
 [summer 1] Opening Day
 Uncle Gus left you his beach smoothie shack and fled the country. He left a note telling you the shack was completely legal.
-In the back you found two fruit carts.
+In the back you found two fruit crates.
 
 [summer 2] New Delivery
 Blueberries arrived. Nobody ordered them. A note from Uncle Gus assures you there is nothing wrong with them.
-A third fruit cart now sits out back.
+A third fruit crate now sits out back.
 
 [summer 3] Odd Shapes
 Gus left his "custom" fruit cutter behind. His note says it only cuts shapes he describes as spiritual.
@@ -23,7 +23,7 @@ The fruit comes out bent, but you can right click a piece to spin it into place.
 
 [summer 4] Mango Season
 Someone carved "trust the mangoes" into the counter. It is Gus's handwriting.
-A mango cart rolled up this morning, and the customers have noticed.
+A crate of mangoes turned up this morning, and the customers have noticed.
 
 [summer 5] Lunch Rush
 The lifeguards all eat at noon, and every one of them says Gus owes them money.
