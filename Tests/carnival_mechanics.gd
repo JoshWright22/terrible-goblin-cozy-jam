@@ -18,6 +18,9 @@ func _run() -> void:
 	var introductions := ["prize_customers", "overheat", "belt_stops", "shifty_fruit", "fading_orders", "night_shift", "rush_orders", "allergy_orders", "power_outage", "min_accuracy", "double_orders", "mystery_orders", "frozen_chance", "varied_recipes", "critic_orders", "belt_speed_scale", "sticky_fruit"]
 	var defaults = load("res://Scripts/day_config.gd").new()
 	check(campaign.days.size() == 18, "18 carnival days")
+	for day in campaign.days:
+		for fruit in range(5):
+			check(day.allows_fruit(fruit), "All fruit available throughout carnival")
 	for index in introductions.size():
 		var rule: String = introductions[index]
 		check(campaign.days[index].get(rule) != defaults.get(rule), "Day %d introduces %s" % [index + 1, rule])
@@ -105,6 +108,7 @@ func _run() -> void:
 func serve(control: Node, ingredients: Dictionary) -> void:
 	control._on_customer_s_pawner_timeout()
 	var id: int = control.customerNo
+	check(control.find_child("Customer_" + str(id), true, false).get_node("Sprite2D").has_node("CarnivalCostume"), "Carnival customer wears costume")
 	control.currentOrders[id] = {0: 50, 1: 50}
 	root.get_node("GameManager").trgID = id
 	control.compareValues(ingredients)

@@ -9,6 +9,5 @@ title = "Carnival Day"
 intro_text = "The carnival hired you, no questions asked. PRIZE customers spin the wheel, good streaks build a combo."
 combo = true
 prize_customers = true
-fruits = Array[int]([0, 1, 2, 3])
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1950, 3500, 5250])

@@ -33,6 +33,7 @@ var _pickup_fall_velocity: float = 0.0  # velocity stored when picking up mid-fa
 var detached_from_conveyor: bool = false
 var spawn_position: Vector2 = Vector2.ZERO
 var target_rotation: float = 0.0
+var _return_tween: Tween = null
 
 @export var fall_gravity: float = 800.0
 @export var pop_up_speed: float = -250.0
@@ -218,14 +219,32 @@ func _process(delta: float) -> void:
 	elif detached_from_conveyor:
 		spawn_position = global_position
 
-# Returns competing fruit pieces whose click area overlaps this one
+# Only pieces under this click can win it. Overlapping grab circles alone do not
+# mean the other piece received the click, especially on a crowded, slow belt.
 func _get_overlapping_pieces() -> Array:
 	var result := []
-	for area in main_click_area.get_overlapping_areas():
-		var parent = area.get_parent()
-		if parent != self and "total_block_count" in parent:
-			result.append(parent)
+	var point := get_global_mouse_position()
+	for piece in get_tree().get_nodes_in_group("fruit_piece"):
+		if piece == self or piece.is_queued_for_deletion() or not piece.is_visible_in_tree():
+			continue
+		if piece._pickup_contains_point(point):
+			result.append(piece)
 	return result
+
+func _pickup_contains_point(point: Vector2) -> bool:
+	var collision := main_click_area.get_child(0) as CollisionShape2D
+	if collision == null or collision.disabled:
+		return false
+	var local := collision.to_local(point)
+	if collision.shape is CircleShape2D:
+		return local.length_squared() <= pow(collision.shape.radius, 2)
+	if collision.shape is RectangleShape2D:
+		return Rect2(-collision.shape.size / 2.0, collision.shape.size).has_point(local)
+	return false
+
+func _filled_cell_at(point: Vector2) -> bool:
+	var cell := (to_local(point) + layout_center_offset) / dynamic_cell_size
+	return Vector2(roundf(cell.x), roundf(cell.y)) in block_layout
 
 # Master bounding click processor
 func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
@@ -254,15 +273,23 @@ func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: i
 		# Skip this check for locked grid pieces — they should always be re-pickable.
 		# Never defer to a locked blender piece — belt/falling pieces take priority.
 		if not is_locked:
+			var direct_hit := _filled_cell_at(get_global_mouse_position())
 			for other in _get_overlapping_pieces():
 				if other.is_locked:
 					continue
+				var other_direct: bool = other._filled_cell_at(get_global_mouse_position())
+				if direct_hit and not other_direct:
+					continue
+				if other_direct and not direct_hit:
+					return
 				if other.total_block_count > total_block_count:
 					return
 				if other.total_block_count == total_block_count and other.get_instance_id() > get_instance_id():
 					return
 
 		GameManager.fruit_held = true
+		if _return_tween != null and _return_tween.is_valid():
+			_return_tween.kill()
 		AudioManager.play_fruit_pickup()
 
 		if is_falling:
@@ -507,7 +534,10 @@ func return_to_spawn() -> void:
 	z_as_relative = true
 	z_index = 0
 	target_rotation = 0.0
+	if _return_tween != null and _return_tween.is_valid():
+		_return_tween.kill()
 	var tween = create_tween()
+	_return_tween = tween
 	tween.set_parallel(true)
 	if not detached_from_conveyor:
 		# Tween local position back to (0,0) within the moving belt root node

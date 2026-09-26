@@ -117,7 +117,7 @@ Playtest changes: mango got its own day instead of sharing a day with a flat 80%
 
 ## Campaign 2: Boardwalk Carnival
 
-The twist on summer: a carnival takes over the boardwalk and hires you, no questions asked. Opens at 24 total stars. Eighteen days, lit with a warm carnival tint. There's no tutorial; it assumes you've played Summer Fun.
+The twist on summer: a carnival takes over the boardwalk and hires you, no questions asked. Opens at 24 total stars. Eighteen days, lit with a warm carnival tint. There's no tutorial; it assumes you've played Summer Fun. All five fruits are available from the first carnival day, with no repeated introductions. Every carnival customer wears a red clown nose and colorful curly side wigs that follow their sprite and expressions.
 
 **Gimmick: prize wheel.** Every fourth customer is a PRIZE customer (pink badge). Serve them a good smoothie and a drawn prize wheel spins over the customer window without pausing the shop. It lands on one of four prizes:
 

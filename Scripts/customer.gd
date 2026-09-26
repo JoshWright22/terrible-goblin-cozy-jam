@@ -70,6 +70,10 @@ func _ready() -> void:
 	self.modulate = Color(1, 1, 1, 0)
 	genCustomer()
 	_base_sprite_scale = sprite.scale
+	if GameManager.current_day != null and GameManager.current_campaign.id == "boardwalk":
+		var costume = load("res://Scripts/carnival_costume.gd").new()
+		costume.look = _look
+		sprite.add_child(costume)
 	_update_badge()
 
 func _roll_wait() -> float:
