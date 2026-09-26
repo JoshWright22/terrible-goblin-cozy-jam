@@ -43,7 +43,7 @@ func _show_option(option: Dictionary) -> void:
 	if Cosmetics.is_unlocked(option):
 		_set_hint([option["name"]])
 	elif option.has("endless"):
-		_set_hint(["%s: %dk in endless" % [option["name"], int(option["endless"] / 1000)]])
+		_set_hint(["%s: %dk in roguelike" % [option["name"], int(option["endless"] / 1000)]])
 	else:
 		_set_hint(["%s: %d" % [option["name"], Cosmetics.stars_needed(option)], BoardPaint.STAR, "to unlock"])
 
@@ -93,8 +93,8 @@ func _lock_badge(option: Dictionary) -> Control:
 	ButtonFx.outline_label(lbl, 38, 6)
 	box.add_child(lbl)
 	if option.has("endless"):
-		lbl.text = "%dk\nendless" % int(option["endless"] / 1000)
-		lbl.add_theme_font_size_override("font_size", 28)
+		lbl.text = "%dk\nroguelike" % int(option["endless"] / 1000)
+		lbl.add_theme_font_size_override("font_size", 24)
 	else:
 		lbl.text = str(Cosmetics.stars_needed(option))
 		var star := StarIcon.new()

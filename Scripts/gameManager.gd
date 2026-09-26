@@ -40,6 +40,20 @@ var day_complete: bool = false
 var power_out: bool = false          # Power Outage twist: blenders can't blend while true
 var stars_before_day: int = 0        # total stars when the day started, for unlock announcements
 
+# Roguelike upgrades last for one run. The old endless save key keeps existing best scores.
+var rogue_level: int = 1
+var rogue_score_mult: float = 1.0
+var rogue_patience_mult: float = 1.0
+var rogue_belt_mult: float = 1.0
+var rogue_pressure: float = 1.0
+
+func reset_run_upgrades() -> void:
+	rogue_level = 1
+	rogue_score_mult = 1.0
+	rogue_patience_mult = 1.0
+	rogue_belt_mult = 1.0
+	rogue_pressure = 1.0
+
 # Tutorial: while true, customers are patient and the timers stop
 var tutorial_active: bool = false
 var rotations: int = 0          # pieces rotated this run

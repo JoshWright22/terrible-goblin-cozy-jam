@@ -4,7 +4,7 @@ Last updated: 2026-09-25
 
 ## Overview
 
-Slush Rush is a cozy spatial puzzle game: fit fruit pieces into a blender, blend smoothies that match each customer's order, and serve them before customers lose patience. The full release expands the Comfy Jam: Summer 2026 entry into an 18-day campaign plus endless mode.
+Slush Rush is a cozy spatial puzzle game: fit fruit pieces into a blender, blend smoothies that match each customer's order, and serve them before customers lose patience. The full release expands the Comfy Jam: Summer 2026 entry into an 18-day campaign plus an unlimited roguelike mode.
 
 | | |
 | --- | --- |
@@ -13,7 +13,7 @@ Slush Rush is a cozy spatial puzzle game: fit fruit pieces into a blender, blend
 | Platforms | Steam (Windows), Android |
 | Price | Steam $5 premium; Android free with ads |
 | Session length | 3–6 min per day |
-| Target playtime | 2–3 hours campaign, plus endless |
+| Target playtime | 2–3 hours campaign, plus roguelike |
 | Jam version | [joshwright.itch.io/slush-rush](https://joshwright.itch.io/slush-rush) (free) |
 
 **Pitch:** Summer has arrived and the smoothie bar is open. Drag fruit off the conveyor, rotate and pack it into the blender, then blend a drink that hits the customer's fruit percentages.
@@ -138,13 +138,17 @@ Opens at 24 total stars. Twelve evening days, lit with a purple dusk tint, built
 
 Campaigns are data (`Resource/Campaigns/*.tres`), so a third campaign is a new list of day files plus a line in `GameManager.CAMPAIGN_PATHS`.
 
-## Endless mode, progression and unlocks
+## Roguelike mode, progression and unlocks
 
-Endless mode unlocks after the campaign on Steam and is available from the start on Android. Stars and achievements unlock cosmetics.
+Roguelike mode unlocks after the campaign on Steam and is available from the start on Android. Stars and achievements unlock cosmetics.
 
-**Endless:** all fruits and shapes, difficulty ramps over time, and the run ends when a set number of customers leave angry. Steam has a global leaderboard for it.
+**Roguelike:** an unlimited survival run inspired by Vampire Survivors' upgrade rhythm, using the smoothie-making loop. All fruits and shapes are available. The run ends when shop health reaches zero; health drains while customers are present, missed customers take extra health, and good smoothies restore it. There are no timed rounds or final wave.
 
-Endless starts with no twists. Every 45 seconds it adds one (first up is Fickle Customers, where angry customers change their order, then the rest of the campaign twists in random order) and customers get a little less patient. Once every twist is on, only the patience keeps dropping.
+Score milestones pause the shop and offer three distinct random upgrades. Pick one to resume. The first choices arrive at 2,500, 7,500, 15,000 and 25,000 cumulative points, with each following gap growing by 2,500. Large score jumps award each earned choice separately. Upgrades improve scoring, customer patience, maximum health, health from good service or conveyor control; an instant heal is also available. Conveyor slowing caps at 50% and disappears from the pool when maxed.
+
+Difficulty scales independently of score. The first twist arrives after 40 seconds, then another arrives every 45 seconds. Fickle Customers comes first; the rest are shuffled. Each step increases health drain and missed-customer penalties by 6% of their base values, and reduces base patience toward a 60% floor. Pressure keeps increasing after every twist is active. Upgrade choices and pauses freeze this timer.
+
+Upgrades and difficulty reset on death or a new run; best score and cosmetics persist. Existing roguelike best scores carry over. The calendar is the separate **Campaign** mode: authored days, score-based star goals, saved day unlocks, and the early blender progression. Roguelike upgrades never change campaign day resources.
 
 **Shop upgrades (between days, bought with tips):**
 
@@ -185,12 +189,14 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 | | Steam | Android |
 | --- | --- | --- |
 | Price | $5 | Free |
-| Ads | None | Rewarded ads (main), interstitials only between days |
+| Ads | None | Heavy: interstitials after every day and every run, rewarded ads for unlocks and revives |
 | Purchases | None | Optional "Remove ads" (~$2.99) |
-| Content | Full campaign and endless | Same content as Steam |
-| Endless | Unlocked after the campaign | Unlocked from the start |
-| Cosmetics | Earned by playing | Harder to earn by playing; rewarded ads speed it up |
-| Extras | Achievements, endless leaderboard (GodotSteam); cloud saves later | None at launch |
+| Content | Full campaign and roguelike | Same content as Steam |
+| Roguelike | Unlocked after the campaign | Unlocked from the start |
+| Unlocks | Earned at a normal pace | Take much longer; rewarded ads speed them up |
+| Daily Slush | Online leaderboard | Offline, personal best and streak only |
+| Online | Achievements, leaderboards, multiplayer, cloud saves (GodotSteam) | None |
+| Builds | Windows and Linux, plus a demo on the same store page | Android |
 
 **Android ad requirements:** AdMob plugin for Godot 4, GDPR consent popup (Google UMP), a privacy policy, and a Play Data Safety form that declares ad data.
 
@@ -199,12 +205,67 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 ## Technical notes
 
 - **Engine:** Godot 4.6. Steam uses the Forward+ renderer. Android switches to the Mobile renderer (or Compatibility for low-end phones).
-- **Save system (new):** `user://` save with day progress, stars, upgrades, cosmetics, settings and endless best score. Saves on day end and on `NOTIFICATION_APPLICATION_PAUSED`.
+- **Save system (new):** `user://` save with day progress, stars, upgrades, cosmetics, settings and roguelike best score. Saves on day end and on `NOTIFICATION_APPLICATION_PAUSED`.
 - **DayConfig (new):** one resource per day. `GameManager` reads it at day start.
 - **Input:** rotation is right-click only today (`dragable_fruit.gd`, `dragable_smoothie.gd`). Add a touch rotate path, and force `auto_show_orders` on for mobile.
 - **Settings:** fullscreen/windowed, separate music and SFX volume, auto-show orders, colorblind mode (icons or patterns on fruit).
 - **Font:** Delicious Handrawn (Google Fonts, OFL), set once as the project default through `Assets/fonts/slush_font.tres`. Text on the wooden boards uses a painted style (`BoardPaint`).
 - **Cleanup:** remove the `.tscn*.tmp` files and the build outputs in the project root.
+
+## Builds and exports
+
+Plans for the Steam and Android builds. Only the jam Web and Windows presets exist so far.
+
+**Shared setup (do first):**
+
+- [x] Project renamed to "Slush Rush", version 0.1.0. Saves live in a custom user folder named "Slush Rush" (`%APPDATA%\Slush Rush` on Windows), so the path won't change again.
+- [x] Presets export into a gitignored `builds/` folder.
+- [x] Exclude filter on the presets: `addons/godot_mcp/*, *.tmp, builds/*`.
+- [x] Old jam build outputs and unused test assets removed from the repo.
+- A `tools/build.ps1` script that runs `godot --headless --export-release` for each preset, stamps the version, and refuses to build while the MCP autoloads are still in `project.godot`.
+- Custom feature tags per preset (`steam`, `mobile`, `demo`) so code checks `OS.has_feature()` instead of separate branches.
+- Show the version number in the settings or credits screen so bug reports say which build they came from.
+
+**Steam (Windows, plus Linux for Steam Deck):**
+
+- Windows preset: product name, company, `.ico` icon, embedded pck for a single exe, Forward+ renderer.
+- Linux preset as a cheap extra so the Deck runs it natively. Aim for Deck "Playable", not Verified (still out of scope). The 1280x800 screen already works with the `expand` stretch aspect; check board text size there.
+- GodotSteam as a GDExtension, only loaded with the `steam` tag. If Steam fails to start, the game still runs offline with no achievements.
+- Pause the game when the Steam overlay opens.
+- Cloud saves through Steam Auto-Cloud (point it at the save file in the Steamworks settings, no code needed).
+- Rich presence: "Summer, Day 7" or "Roguelike, 12,400 pts".
+- Achievements from existing content: finish each campaign, 3 stars on every day, first upgrade pick, roguelike score thresholds, unlock every style.
+- Leaderboards: roguelike best, plus a seeded **Daily Slush** run where everyone gets the same fruit order and twists that day. This is the async multiplayer idea: Steam hosts the scores, so no servers are needed. Friends-only filter by default.
+- Uploads with SteamPipe (`steamcmd` + a depot script in `tools/`). A `beta` branch for testers, and the free Steam Playtest app during the Coming Soon period.
+- **Demo idea:** a separate demo app (built with the `demo` tag) with Summer Days 1 to 6 and a roguelike run capped at the first two upgrades, for Next Fest and wishlists. Demo saves carry into the full game.
+
+**Android:**
+
+- Gradle build (the AdMob plugin needs it), AAB output, arm64-v8a plus armeabi-v7a, current Play target API level.
+- Keystore kept outside the repo, backed up twice. Losing it means the app can never be updated.
+- Mobile renderer on the Android preset; turn on ETC2/ASTC texture import. Keep a Compatibility build in reserve for low-end phones if the melt and frozen shaders are too slow.
+- Landscape only (sensor landscape). Pad the HUD with `DisplayServer.get_display_safe_area()` for notches and rounded corners.
+- Anything that relies on hover (like the star score popup) needs a tap version.
+- Android back button: pause in game, go back in menus, confirm before quitting on the title screen.
+- Cap at 60 fps in game and 30 fps on menus to save battery.
+- Keep the download small: Ogg audio, check the export for unused assets.
+- No Play Games sign-in or online features. Daily Slush runs offline from a date-based seed.
+- Closed test: recruit the 12 testers from the itch jam page and Discord before the build is finished, since the 14 days only start once they join.
+
+**Decisions:**
+
+- **Demo:** yes, on Steam, attached to the main store page. A Steam demo is its own app ID but shows as a "Download demo" button on the full game's page, so there is no second store page to maintain.
+- **Linux:** ships at launch. It is just another export preset and GodotSteam has Linux builds, so the cost is one extra upload and a test on the Deck.
+- **Daily Slush:** on both platforms. Steam gets online leaderboards; Android plays the same daily seed but only tracks your own best and streak.
+- **Online features are Steam only.** Android has no leaderboards, multiplayer or sign-in. The other differences on Android are much slower unlocks and far more ads.
+
+## Multiplayer (Steam only)
+
+Async, using Steam's servers through GodotSteam, so there is nothing to host or pay for.
+
+**Daily Slush** is the only online mode at launch: one seeded roguelike run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the date, so no server is needed to hand it out. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
+
+Ideas for after launch, only if the game does well: Friend Challenge (race a friend's seed as a ghost), Weekly Shift, Next Rival target line, a community Tip Jar goal, Custom Days with share codes, and real-time Rush Duel through Steam lobbies.
 
 ## Schedule and release checklist
 
@@ -235,15 +296,17 @@ About 6 weeks of building, then about 5 weeks of store waits during which other 
 
 Done so far (September 2026):
 
-- [x] Save system (`SaveManager`): settings, day progress, stars, endless best
+- [x] Save system (`SaveManager`): settings, day progress, stars, roguelike best
 - [x] Campaign: 18 `DayConfig` days, every twist implemented
 - [x] Day select calendar, day intro card, day end screen with stars, in-game day timer
 - [x] Sunset tint over each day, night shift and power outage effects
 - [x] Smoothie pour scene transition, painted board text
-- [x] Calendar footer keeps Style beside Endless; star counts use drawn icons, and calendar tiles, Style swatches and board controls paint on with the text
+- [x] Calendar footer keeps Style beside Roguelike; star counts use drawn icons, and calendar tiles, Style swatches and board controls paint on with the text
 - [x] Summer starts with one blender and opens one more each day through Day 4
 - [x] Touch rotate (second finger tap) and always-on order bubbles on mobile
 - [ ] Balance pass on star targets (current values are first guesses)
+- [x] Unlimited roguelike: score-based upgrade choices, escalating survival pressure, and upgrades that reset each run
+- [ ] Playtest roguelike milestone costs, upgrade strength and pressure growth
 - [x] Style unlocks: blender, wall, conveyor, transition and board paint colors
 - [x] Second campaign (Boardwalk Nights) with five new mechanics
 - [x] Hands-on day 1 tutorial, redone settings and credits screens

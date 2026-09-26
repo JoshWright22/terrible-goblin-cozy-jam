@@ -12,6 +12,9 @@ func _ready() -> void:
 	_score_lbl.text = "Score: %d" % GameManager.score
 	if GameManager.current_day == null:
 		SaveManager.record_endless_score(GameManager.score)
+		_title_lbl.text = "RUN OVER"
+		_score_lbl.text = "Level %d\nScore: %d" % [GameManager.rogue_level, GameManager.score]
+		_score_lbl.add_theme_font_size_override("font_size", 40)
 	else:
 		_title_lbl.text = "SHOP CLOSED"
 	BoardPaint.style(_title_lbl, true)

@@ -155,6 +155,8 @@ func _process(delta: float) -> void:
 	var tc := minf(pow(t, 0.75), 0.75)  # ramps to medium-hard quickly, then plateaus there
 	_current_tc = tc
 	_current_belt_speed = lerpf(initial_belt_speed, max_belt_speed, tc)
+	if _day == null:
+		_current_belt_speed *= GameManager.rogue_belt_mult
 	_current_spawn_interval = lerpf(initial_spawn_interval, min_spawn_interval, tc)
 	var twists := GameManager.twists()
 	if twists.belt_stops:

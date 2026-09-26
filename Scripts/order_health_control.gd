@@ -109,6 +109,7 @@ var ingredients: Array[FruitData.FruitType] = [
 func _enter_tree() -> void:
 	# Fresh endless rules before the belt and blenders read them in _ready
 	GameManager.endless_twists = DayConfig.new()
+	GameManager.reset_run_upgrades()
 
 func _ready() -> void:
 	GameManager.paused = true
@@ -144,7 +145,7 @@ func _ready() -> void:
 		var director: Node = load("res://Scripts/endless_director.gd").new()
 		director.name = "EndlessDirector"
 		add_child(director)
-	_help_layer.tree_exited.connect(_start_game_music)
+	_help_layer.tree_exited.connect(_start_game_music, CONNECT_DEFERRED)
 	REMAIN_TIME = MAX_TIME
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
@@ -168,7 +169,7 @@ func _process(delta: float) -> void:
 			customerSpawnTimer.start(customerSpawnTimer.wait_time)
 
 	if currentCustomer.size() != 0 and not handBreak and not GameManager.paused and not GameManager.hold and not GameManager.tutorial_active:
-		REMAIN_TIME -= delta
+		REMAIN_TIME -= delta * (GameManager.rogue_pressure if day == null else 1.0)
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 
 	if day and not _day_finished and not GameManager.paused and not gameOver and not GameManager.tutorial_active:
@@ -244,7 +245,7 @@ func _arc_pos(start: Vector2, end: Vector2, arc_h: float, t: float) -> Vector2:
 	)
 
 func _start_game_music() -> void:
-	if game_music == null:
+	if game_music == null or not is_inside_tree() or is_queued_for_deletion() or get_parent().is_queued_for_deletion():
 		return
 	_music_player = AudioStreamPlayer.new()
 	_music_player.stream = game_music
@@ -355,6 +356,8 @@ func compareValues(inputer) -> void:
 			scoreGain /= 2
 	if twists.combo:
 		scoreGain = int(round(scoreGain * _update_combo(typeMatch and percent >= COMBO_ACCURACY)))
+	if day == null:
+		scoreGain = int(round(scoreGain * GameManager.rogue_score_mult))
 	GameManager.smoothies_served += 1
 	var old_score := GameManager.score
 	GameManager.score += scoreGain
@@ -475,10 +478,14 @@ func scaleDiff() -> void:
 			leave_penalty = LEAVE_PENALTY_HARD
 	minWaitTime = minWaitTime * GameManager.twists().patience_scale
 	maxWaitTime = maxWaitTime * GameManager.twists().patience_scale
+	if day == null:
+		minWaitTime *= GameManager.rogue_patience_mult
+		maxWaitTime *= GameManager.rogue_patience_mult
 
 func customer_left() -> void:
 	AudioManager.play_health_lose()
-	REMAIN_TIME = max(REMAIN_TIME - leave_penalty, 0.0)
+	var penalty := leave_penalty * (GameManager.rogue_pressure if day == null else 1.0)
+	REMAIN_TIME = max(REMAIN_TIME - penalty, 0.0)
 	healthBar.ratio = REMAIN_TIME / MAX_TIME
 	var tw := healthBar.create_tween()
 	tw.tween_property(healthBar, "modulate", Color(2.2, 1.0, 1.0), 0.07)

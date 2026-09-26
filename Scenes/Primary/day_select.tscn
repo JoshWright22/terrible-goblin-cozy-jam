@@ -33,7 +33,7 @@ offset_top = 105.0
 offset_right = 1420.0
 offset_bottom = 205.0
 theme_override_font_sizes/font_size = 110
-text = "Summer Calendar"
+text = "Summer Campaign"
 horizontal_alignment = 1
 
 [node name="PrevButton" type="Button" parent="Board"]
@@ -102,7 +102,7 @@ offset_top = 790.0
 offset_right = 1540.0
 offset_bottom = 875.0
 action_mode = 0
-text = "Endless"
+text = "Roguelike"
 
 [node name="StyleButton" type="Button" parent="Board"]
 layout_mode = 0

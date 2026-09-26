@@ -22,9 +22,9 @@ func _ready() -> void:
 
 	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 50)
 	if GameManager.endless_unlocked():
-		_endless_btn.text = "Endless  (best %d)" % SaveManager.endless_best
+		_endless_btn.text = "Roguelike  (best %d)" % SaveManager.endless_best
 	else:
-		_endless_btn.text = "Endless: beat summer"
+		_endless_btn.text = "Roguelike: beat summer"
 		_endless_btn.disabled = true
 	ButtonFx.setup(_endless_btn)
 	_endless_btn.pressed.connect(func(): _go(GameManager.start_endless))
@@ -59,6 +59,7 @@ func _flip(direction: int) -> void:
 func _show_campaign() -> void:
 	var campaign := GameManager.current_campaign
 	_title.text = campaign.title
+	_title.tooltip_text = "Campaign: complete days and earn stars to progress"
 	for box in [_grid, _stars_box, _locked_stars]:
 		for child in box.get_children():
 			box.remove_child(child)
