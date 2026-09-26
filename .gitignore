@@ -14,3 +14,9 @@ export_credentials.cfg
 .mono/
 data_*/
 mono_crash.*.json
+
+# Godot editor temp saves
+*.tmp
+
+# Local editor tooling
+addons/godot_mcp/
