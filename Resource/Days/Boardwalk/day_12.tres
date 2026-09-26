@@ -5,13 +5,9 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 12
-title = "Grand Finale"
-intro_text = "The last night of summer. Everything at once. Make it count!"
+title = "Fortune Teller"
+intro_text = "The fortune teller says your next customer wants a mystery fruit. She is right. One fruit per order is a secret."
+mystery_orders = true
 combo = true
-shifty_fruit = true
-overheat = true
-fading_orders = true
-vip_customer = true
-rush_orders = true
-duration = 180
-star_scores = Array[int]([3300, 5950, 8900])
+prize_customers = true
+star_scores = Array[int]([2750, 4950, 7450])

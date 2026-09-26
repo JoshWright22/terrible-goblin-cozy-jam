@@ -50,10 +50,13 @@ var _stalled: bool = false
 var _belt_tint: Color = Color.WHITE  # belt color while running, restored after a stall
 var _shape_pools: Dictionary = {}  # shape name ("3x2_T") -> Array[FruitData], for shifty fruit
 
+const SLOW_BELT_MULT := 0.5   # while a prize wheel slow belt lasts
+
 var _day: DayConfig = null
 
 func _ready() -> void:
 	_day = GameManager.current_day
+	GameManager.slow_belt_time = 0.0
 	if _day:
 		initial_belt_speed *= _day.belt_speed_scale
 		max_belt_speed *= _day.belt_speed_scale
@@ -157,6 +160,9 @@ func _process(delta: float) -> void:
 	_current_belt_speed = lerpf(initial_belt_speed, max_belt_speed, tc)
 	if _day == null:
 		_current_belt_speed *= GameManager.rogue_belt_mult
+	if GameManager.slow_belt_time > 0.0:
+		GameManager.slow_belt_time -= delta
+		_current_belt_speed *= SLOW_BELT_MULT
 	_current_spawn_interval = lerpf(initial_spawn_interval, min_spawn_interval, tc)
 	var twists := GameManager.twists()
 	if twists.belt_stops:

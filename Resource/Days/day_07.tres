@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 7
 title = "Broken Blender"
-intro_text = "The blenders shrank in the wash. 3x3 grids today."
+intro_text = "Someone put the blenders in the dryer. They shrank. 3x3 grids today. No one is taking questions."
 fruits = Array[int]([0, 1, 2, 3])
 grid_size = 3
 max_difficulty = "MEDIUM"

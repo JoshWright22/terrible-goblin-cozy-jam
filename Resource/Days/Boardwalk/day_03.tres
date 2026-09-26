@@ -6,7 +6,8 @@
 script = ExtResource("1_day")
 day_number = 3
 title = "Belt Hiccups"
-intro_text = "The old conveyor keeps stalling. Grab what you can while it runs."
+intro_text = "The conveyor used to be a ride. It still remembers. It stalls now and then, so grab what you can."
 belt_stops = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2100, 3800, 5650])

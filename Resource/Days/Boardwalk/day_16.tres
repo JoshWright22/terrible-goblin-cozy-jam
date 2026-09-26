@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 16
+title = "Rollercoaster"
+intro_text = "The conveyor is now technically a rollercoaster. It speeds up, it stalls, RUSH customers love it."
+belt_stops = true
+rush_orders = true
+belt_speed_scale = 1.2
+combo = true
+prize_customers = true
+star_scores = Array[int]([3050, 5500, 8250])

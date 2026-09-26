@@ -5,9 +5,10 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 10
-title = "Midnight Critics"
-intro_text = "Critics with short memories. 85% accurate or bust!"
+title = "Judging Day"
+intro_text = "The food contest. Judges want 85% accuracy and forget their orders fast. They have tasted fear before."
 min_accuracy = 85.0
 fading_orders = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2550, 4600, 6900])

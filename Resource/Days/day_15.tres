@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 15
 title = "Summer Storm"
-intro_text = "A summer thunderstorm keeps knocking the power out. Blenders only work when the lights are on."
+intro_text = "A storm rolls in. The power keeps going out, and blenders only work with the lights on. Very normal weather."
 power_outage = true
 star_scores = Array[int]([1950, 3500, 5250])

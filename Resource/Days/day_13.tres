@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 13
 title = "Mystery Menu"
-intro_text = "Customers are being vague today. One fruit in each order is a mystery."
+intro_text = "Customers are being vague today, almost spiritually. One fruit in each order is a mystery."
 mystery_orders = true
 star_scores = Array[int]([1950, 3500, 5250])

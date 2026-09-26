@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_day")
-day_number = 8
-title = "Mixed Up"
-intro_text = "The magician is back and brought allergies. Shifty fruit and banned fruit, check before you drop!"
-shifty_fruit = true
+day_number = 17
+title = "Rain Delay"
+intro_text = "Rain over the carnival. The power keeps cutting out, and everyone is suddenly allergic to something."
+power_outage = true
 allergy_orders = true
 combo = true
 prize_customers = true
-star_scores = Array[int]([2500, 4500, 6750])
+star_scores = Array[int]([3150, 5650, 8500])

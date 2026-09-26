@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 9
 title = "Rotten Batch"
-intro_text = "Rotten fruit is stuck in the blenders. Pack around it."
+intro_text = "Something was living in the blenders. It has moved on. Its rotten fruit has not, so pack around it."
 rotten_cells = 2
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1800, 3250, 4850])

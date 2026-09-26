@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 18
 title = "Summer Festival"
-intro_text = "The festival finale. A bit of everything. Good luck!"
+intro_text = "The summer festival. Uncle Gus has returned to watch, and he is not alone. A bit of everything. Good luck."
 rush_orders = true
 allergy_orders = true
 rotten_cells = 1

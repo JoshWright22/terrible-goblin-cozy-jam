@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 14
 title = "Bonfire Night"
-intro_text = "The beach bonfire runs late tonight. The shop lights are off, so work by flashlight."
+intro_text = "The bonfire runs late and the shack blew a fuse. Work by flashlight. The dark is probably empty."
 night_shift = true
 star_scores = Array[int]([1950, 3500, 5250])

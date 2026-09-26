@@ -6,7 +6,8 @@
 script = ExtResource("1_day")
 day_number = 5
 title = "Short Memory"
-intro_text = "Orders fade fast tonight. Hover a customer to peek at their order again."
+intro_text = "Everyone just got off the rollercoaster and forgot their own names. Orders fade, hover to peek."
 fading_orders = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2250, 4050, 6100])

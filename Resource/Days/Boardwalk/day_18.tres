@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="DayConfig" format=3]
+
+[ext_resource type="Script" path="res://Scripts/day_config.gd" id="1_day"]
+
+[resource]
+script = ExtResource("1_day")
+day_number = 18
+title = "Grand Finale"
+intro_text = "The last day of the carnival. Everything at once. Uncle Gus says he is proud of you. That is new."
+combo = true
+prize_customers = true
+shifty_fruit = true
+overheat = true
+fading_orders = true
+vip_customer = true
+rush_orders = true
+duration = 180
+star_scores = Array[int]([3300, 5950, 8900])

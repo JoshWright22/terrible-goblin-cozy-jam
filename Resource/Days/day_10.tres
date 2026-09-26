@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 10
 title = "Heatwave"
-intro_text = "It's a scorcher. Fruit left on the belt too long melts away."
+intro_text = "It is so hot the seagulls have unionized. Fruit left on the belt too long melts away."
 heatwave = true
 star_scores = Array[int]([1950, 3500, 5250])

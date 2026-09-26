@@ -6,7 +6,8 @@
 script = ExtResource("1_day")
 day_number = 4
 title = "Shifty Fruit"
-intro_text = "Boardwalk magic! Fruit on the belt keeps changing until you grab it."
+intro_text = "The magician next door is bored. Fruit on the belt keeps changing until you grab it."
 shifty_fruit = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2250, 4050, 6100])

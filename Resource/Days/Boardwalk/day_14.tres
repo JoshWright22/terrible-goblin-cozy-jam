@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_day")
-day_number = 8
-title = "Mixed Up"
-intro_text = "The magician is back and brought allergies. Shifty fruit and banned fruit, check before you drop!"
+day_number = 14
+title = "Hall of Mirrors"
+intro_text = "Your stand is in the hall of mirrors now. Fruit keeps changing and orders fade. Trust nothing."
 shifty_fruit = true
-allergy_orders = true
+fading_orders = true
 combo = true
 prize_customers = true
-star_scores = Array[int]([2500, 4500, 6750])
+star_scores = Array[int]([2900, 5200, 7850])

@@ -97,6 +97,13 @@ var _day_finished: bool = false
 const COMBO_ACCURACY := 80.0
 const CRITIC_ACCURACY := 90.0   # critics pay nothing for anything less
 const PERFECT_ACCURACY := 95.0  # Perfectionist upgrade threshold
+# Boardwalk Carnival prize wheel: every PRIZE_EVERY-th customer spins it when served well
+const PRIZE_EVERY := 4
+const PRIZES := ["+400", "Health", "Slow Belt", "Calm"]
+const PRIZE_BONUS := 400
+const PRIZE_HEAL := 0.25        # of max health
+const PRIZE_SLOW_TIME := 10.0
+const PRIZE_WHEEL_CENTER := Vector2(585, 300)   # over the customer window
 const COMBO_STEP := 0.25
 const COMBO_MAX_MULT := 2.0
 var combo: int = 0
@@ -133,19 +140,20 @@ func _ready() -> void:
 		ingredients = ingredients.filter(func(t): return day.allows_fruit(t))
 		SteamService.set_status("%s, Day %d" % [GameManager.current_campaign.title.trim_suffix(" Campaign"), day.day_number])
 	else:
-		SteamService.set_status("Daily Slush" if GameManager.daily_run else "Roguelike run")
+		SteamService.set_status("Daily Slush" if GameManager.daily_run else "Endless run")
 	var _help_layer := CanvasLayer.new()
 	_help_layer.layer = 12
 	add_child(_help_layer)
-	# Each day opens with its intro card, day 1 then runs the hands-on tutorial.
-	# Endless jumps straight in.
+	# Each day opens with its intro card. The first campaign's day 1 then runs the
+	# hands-on tutorial; later campaigns assume you know the ropes. Endless jumps straight in.
+	# Cleared first: quitting mid-tutorial would otherwise leave customers frozen next time
+	GameManager.tutorial_active = false
 	if day:
 		_help_layer.add_child(load("res://Scenes/day_intro.tscn").instantiate())
-		if day.day_number == 1:
+		if day.day_number == 1 and GameManager.current_campaign == GameManager.campaigns[0]:
 			GameManager.tutorial_active = true
 			add_child(load("res://Scenes/tutorial_guide.tscn").instantiate())
 	else:
-		GameManager.tutorial_active = false
 		GameManager.paused = false
 		_help_layer.queue_free()
 		var director: Node = load("res://Scripts/endless_director.gd").new()
@@ -256,6 +264,45 @@ func _combo_popup(text: String, color: Color) -> void:
 	tw.tween_property(lbl, "position:y", lbl.position.y - 70.0, 1.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(lbl, "modulate:a", 0.0, 1.1).set_delay(0.5)
 	tw.finished.connect(lbl.queue_free)
+
+# Spins over the customer window without pausing, then pays out whatever it lands on
+func _spin_prize_wheel() -> void:
+	var layer := CanvasLayer.new()
+	layer.layer = 6
+	add_child(layer)
+	var wheel := PrizeWheel.new()
+	wheel.prizes = PRIZES
+	wheel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	wheel.size = Vector2(300, 300)
+	wheel.position = PRIZE_WHEEL_CENTER - wheel.size / 2.0
+	wheel.tree_exited.connect(layer.queue_free)
+	layer.add_child(wheel)
+	AudioManager.play_transition()
+	var index := randi() % PRIZES.size()
+	wheel.spin(index, _give_prize.bind(index))
+
+func _give_prize(index: int) -> void:
+	AudioManager.play_health_gain()
+	match index:
+		0:
+			var old_score := GameManager.score
+			GameManager.score += PRIZE_BONUS
+			_animate_score(old_score, GameManager.score)
+			_combo_popup("+%d!" % PRIZE_BONUS, Color(1.0, 0.85, 0.3))
+		1:
+			REMAIN_TIME = minf(MAX_TIME, REMAIN_TIME + MAX_TIME * PRIZE_HEAL)
+			healthBar.ratio = REMAIN_TIME / MAX_TIME
+			_flash_health_bar()
+			_combo_popup("Health!", Color(0.6, 1.0, 0.6))
+		2:
+			GameManager.slow_belt_time = PRIZE_SLOW_TIME
+			_combo_popup("Slow belt!", Color(0.55, 0.8, 1.0))
+		3:
+			# Everyone waiting gets their patience back
+			for waiting in $custWindow/characterSprites/SubViewport.get_children():
+				if "timer" in waiting and is_instance_valid(waiting.timer):
+					waiting.timer.start(waiting.timer.wait_time)
+			_combo_popup("Everyone calms down", Color(0.75, 1.0, 0.6))
 
 # Usable cells per blender, so a packed small blender scores like a packed big one
 func blender_cells() -> int:
@@ -391,6 +438,8 @@ func compareValues(inputer) -> void:
 		SteamService.unlock(SteamService.ACH_FIRST_SMOOTHIE)
 	var old_score := GameManager.score
 	GameManager.score += scoreGain
+	if custom.kind == "prize" and stars > 0 and not wants_another:
+		_spin_prize_wheel()
 	GameManager.smoothie_quality = 1.0
 	_animate_score(old_score, GameManager.score)
 
@@ -588,6 +637,8 @@ func _on_customer_s_pawner_timeout() -> void:
 		if day and day.vip_customer and not _vip_spawned and day_time_left < day.duration * 0.6:
 			c.kind = "vip"
 			_vip_spawned = true
+		elif twists.prize_customers and customerNo % PRIZE_EVERY == 0:
+			c.kind = "prize"
 		elif twists.rush_orders and randf() < 0.3:
 			c.kind = "rush"
 		elif twists.critic_orders and randf() < 0.3:

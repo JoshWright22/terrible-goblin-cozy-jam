@@ -6,8 +6,9 @@
 script = ExtResource("1_day")
 day_number = 2
 title = "Hot Blenders"
-intro_text = "Blend too fast and a blender overheats. Spread the work around!"
+intro_text = "The carnival's blenders were bought from a man in a van. Blend too fast and they overheat."
 overheat = true
 combo = true
+prize_customers = true
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([2100, 3800, 5650])

@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_day")
-day_number = 11
-title = "Double Heat"
-intro_text = "The strongman contest just ended. Double orders and overheating blenders. Plan your blends."
+day_number = 15
+title = "Food Fight"
+intro_text = "Someone started a food fight. CRITIC customers want 90% or they pay nothing, and some want seconds."
+critic_orders = true
 double_orders = true
-overheat = true
 combo = true
 prize_customers = true
-star_scores = Array[int]([2700, 4850, 7300])
+star_scores = Array[int]([2950, 5300, 7950])

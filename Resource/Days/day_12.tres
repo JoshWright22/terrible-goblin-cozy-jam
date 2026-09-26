@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 12
 title = "Food Critics"
-intro_text = "Food critics are in town. Customers marked CRITIC want 90% accuracy or better, but they pay triple."
+intro_text = "A food blogger found the shack. CRITIC customers want 90% accuracy or better, but pay triple. No pressure."
 critic_orders = true
 star_scores = Array[int]([1700, 3050, 4600])

@@ -6,8 +6,9 @@
 script = ExtResource("1_day")
 day_number = 7
 title = "Overtime"
-intro_text = "Rush customers and hot blenders. Pace yourself!"
+intro_text = "The carnival is packed. Rush customers and hot blenders. Pace yourself, or don't, it's your funeral."
 overheat = true
 rush_orders = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2500, 4500, 6750])

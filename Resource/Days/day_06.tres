@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 6
 title = "Allergy Season"
-intro_text = "Some customers are allergic. Anything with a crossed out fruit must not go in!"
+intro_text = "Half the beach is allergic to something. Never add a crossed out fruit. Lawyers are expensive."
 fruits = Array[int]([0, 1, 2, 3])
 allergy_orders = true
 max_difficulty = "MEDIUM"

@@ -36,6 +36,7 @@ var current_day: DayConfig = null   # null = endless mode
 var endless_twists: DayConfig = null # endless starts plain and picks up twists as it goes
 var daily_run: bool = false          # roguelike run seeded by the date, with set buffs and debuffs
 var day_complete: bool = false
+var slow_belt_time: float = 0.0      # prize wheel: the belt runs at half speed while above 0
 var power_out: bool = false          # Power Outage twist: blenders can't blend while true
 var stars_before_day: int = 0        # total stars when the day started, for unlock announcements
 

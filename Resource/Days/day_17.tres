@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 17
 title = "VIP Visit"
-intro_text = "A VIP is stopping by. Serve them well for a huge bonus!"
+intro_text = "A famous surfer is stopping by. Serve the VIP well for a huge bonus. Do not ask about the shark."
 vip_customer = true
 star_scores = Array[int]([2400, 4300, 6500])

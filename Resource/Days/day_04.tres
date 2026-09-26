@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 4
 title = "Mango Season"
-intro_text = "The first mangoes of the summer are in! Customers will start asking for them."
+intro_text = "Mango season. The beach has lost all dignity. Customers will start asking for mangoes."
 fruits = Array[int]([0, 1, 2, 3])
 max_difficulty = "MEDIUM"
 patience_scale = 1.2

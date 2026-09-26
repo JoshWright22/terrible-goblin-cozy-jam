@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 5
 title = "Lunch Rush"
-intro_text = "Rush orders! Customers marked RUSH leave fast but tip double."
+intro_text = "The lifeguards all eat at noon. RUSH customers leave fast but tip double. The ocean can wait."
 fruits = Array[int]([0, 1, 2, 3])
 rush_orders = true
 max_difficulty = "MEDIUM"

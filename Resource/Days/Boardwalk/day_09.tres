@@ -6,8 +6,9 @@
 script = ExtResource("1_day")
 day_number = 9
 title = "Blackout"
-intro_text = "The power flickers and the belt stalls. Stay calm and keep blending."
+intro_text = "Someone plugged the ferris wheel into your outlet. The power flickers and the belt stalls."
 power_outage = true
 belt_stops = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2500, 4500, 6750])

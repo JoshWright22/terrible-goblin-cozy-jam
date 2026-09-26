@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 6
-title = "Lantern Light"
-intro_text = "Only the lanterns are lit. Keep that combo going in the dark."
+title = "Haunted House"
+intro_text = "Your stand has been moved inside the haunted house. It is pitch black. Work by flashlight. Don't look back."
 night_shift = true
 combo = true
+prize_customers = true
 star_scores = Array[int]([2300, 4150, 6200])

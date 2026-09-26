@@ -33,7 +33,7 @@ offset_top = 90.0
 offset_right = 1420.0
 offset_bottom = 190.0
 theme_override_font_sizes/font_size = 104
-text = "Summer Days"
+text = "Summer Fun"
 horizontal_alignment = 1
 
 [node name="PrevButton" type="Button" parent="Board"]
@@ -102,7 +102,7 @@ offset_top = 790.0
 offset_right = 1240.0
 offset_bottom = 875.0
 action_mode = 0
-text = "Roguelike"
+text = "Endless"
 
 [node name="StyleButton" type="Button" parent="Board"]
 layout_mode = 0

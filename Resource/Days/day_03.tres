@@ -6,7 +6,7 @@
 script = ExtResource("1_day")
 day_number = 3
 title = "Odd Shapes"
-intro_text = "The supplier sent bendy fruit. Right click to rotate pieces so they fit."
+intro_text = "The new fruit comes in shapes nature did not intend. Right click to spin pieces so they fit."
 fruits = Array[int]([0, 1, 2])
 shapes = PackedStringArray("1x1", "2x1", "3x1", "2x2_L", "3x2_L", "3x2_T")
 max_difficulty = "MEDIUM"

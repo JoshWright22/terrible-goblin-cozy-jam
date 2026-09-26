@@ -5,9 +5,10 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 1
-title = "Lights On"
-intro_text = "Summer isn't over, it just moved to the boardwalk after dark. Serve good smoothies back to back to build a combo!"
+title = "Carnival Day"
+intro_text = "The carnival hired you, no questions asked. PRIZE customers spin the wheel, good streaks build a combo."
 combo = true
+prize_customers = true
 fruits = Array[int]([0, 1, 2, 3])
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1950, 3500, 5250])

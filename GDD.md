@@ -4,7 +4,7 @@ Last updated: 2026-09-25
 
 ## Overview
 
-Slush Rush is a cozy spatial puzzle game: fit fruit pieces into a blender, blend smoothies that match each customer's order, and serve them before customers lose patience. The full release expands the Comfy Jam: Summer 2026 entry into an 18-day campaign plus an unlimited roguelike mode.
+Slush Rush is a cozy spatial puzzle game: fit fruit pieces into a blender, blend smoothies that match each customer's order, and serve them before customers lose patience. The full release expands the Comfy Jam: Summer 2026 entry into two 18-day campaigns plus an unlimited Endless mode.
 
 | | |
 | --- | --- |
@@ -13,7 +13,7 @@ Slush Rush is a cozy spatial puzzle game: fit fruit pieces into a blender, blend
 | Platforms | Steam (Windows), Android |
 | Price | Steam $5 premium; Android free with ads |
 | Session length | 3–6 min per day |
-| Target playtime | 2–3 hours campaign, plus roguelike |
+| Target playtime | 4–5 hours of campaigns, plus Endless |
 | Jam version | [joshwright.itch.io/slush-rush](https://joshwright.itch.io/slush-rush) (free) |
 
 **Pitch:** Summer has arrived and the smoothie bar is open. Drag fruit off the conveyor, rotate and pack it into the blender, then blend a drink that hits the customer's fruit percentages.
@@ -78,9 +78,9 @@ The full game uses the jam's existing art: 5 fruits × 7 shapes (35 pieces). New
 - **Double order:** wants two smoothies.
 - **VIP:** high value, appears once per day on late days.
 
-## Campaign 1: Summer Days
+## Campaign 1: Summer Fun
 
-A classic summer: sunshine, the beach, mango season and a festival to finish. The campaign runs 18 days, each with its own twist. To keep this fast to build, each day is a `DayConfig` resource. Most twists are just different values in it, so about half the days need no new code.
+A classic summer: sunshine, the beach, mango season and a festival to finish. You run the smoothie shack Uncle Gus left you before fleeing the country. The campaign runs 18 days, each with its own twist. To keep this fast to build, each day is a `DayConfig` resource. Most twists are just different values in it, so about half the days need no new code.
 
 **DayConfig fields:** fruits allowed, shapes allowed, grid size, belt speed, customer patience, % tolerance, customer mix, day length, target score (1/2/3 stars), twist ID, sky/shader preset.
 
@@ -113,9 +113,20 @@ Playtest changes: mango got its own day instead of sharing Day 4 with a flat 80%
 
 **Stars:** each star is still a score target. Star 1 is roughly what surviving the day earns, star 2 is 1.8 times that and star 3 is 2.7 times that. Playtesters found stars 2 and 3 too far apart (they were 3x and 6.7x), so getting better at the game rarely showed up as a new star. The closer steps reward each improvement. Hovering a star shows its target. Losing, or ending a day short of three stars, shows a tip for scoring higher.
 
-## Campaign 2: Summer Nights
+## Campaign 2: Boardwalk Carnival
 
-The twist on summer: the same season after dark on the boardwalk, with lanterns, magic fruit and midnight critics. Opens at 24 total stars. Twelve evening days, lit with a purple dusk tint, built around five mechanics that need no new art:
+The twist on summer: a carnival takes over the boardwalk and hires you, no questions asked. Opens at 24 total stars. Eighteen days, lit with a warm carnival tint. There's no tutorial; it assumes you've played Summer Fun.
+
+**Gimmick: prize wheel.** Every fourth customer is a PRIZE customer (pink badge). Serve them a good smoothie and a drawn prize wheel spins over the customer window without pausing the shop. It lands on one of four prizes:
+
+| Prize | Effect |
+| --- | --- |
+| +400 | Bonus points |
+| Health | Restores 25% of max health |
+| Slow Belt | The conveyor runs at half speed for 10 seconds |
+| Calm | Every waiting customer's patience resets |
+
+Every carnival day also has Combo, plus the day's own twists from these five mechanics (none need new art):
 
 | Mechanic | What happens |
 | --- | --- |
@@ -125,34 +136,42 @@ The twist on summer: the same season after dark on the boardwalk, with lanterns,
 | Shifty Fruit | Loose fruit changes type every 2.2 seconds until it's grabbed |
 | Short Memory | Order bubbles fade after 3.5 seconds; hover the customer to peek |
 
-| Day | Name | Twists |
+| Day | Name | Twists (all also have combo and prize customers) |
 | --- | --- | --- |
-| 1 | Lights On | Combo |
-| 2 | Hot Blenders | Overheat, combo |
-| 3 | Belt Hiccups | Belt stalls, combo |
-| 4 | Shifty Fruit | Shifty fruit, combo |
-| 5 | Short Memory | Fading orders, combo |
-| 6 | Lantern Light | Night shift, combo |
-| 7 | Overtime | Overheat, rush, combo |
-| 8 | Mixed Up | Shifty fruit, allergies, combo |
-| 9 | Blackout | Power outage, belt stalls, combo |
-| 10 | Midnight Critics | 85% accuracy, fading orders, combo |
-| 11 | Double Heat | Double orders, overheat, combo |
-| 12 | Grand Finale | Combo, shifty, overheat, fading, VIP, rush (180 s) |
+| 1 | Carnival Day | None, learn the wheel |
+| 2 | Hot Blenders | Overheat |
+| 3 | Belt Hiccups | Belt stalls |
+| 4 | Shifty Fruit | Shifty fruit |
+| 5 | Short Memory | Fading orders |
+| 6 | Haunted House | Flashlight darkness |
+| 7 | Overtime | Overheat, rush |
+| 8 | Mixed Up | Shifty fruit, allergies |
+| 9 | Blackout | Power outage, belt stalls |
+| 10 | Judging Day | 85% accuracy, fading orders |
+| 11 | Double Heat | Double orders, overheat |
+| 12 | Fortune Teller | Mystery orders |
+| 13 | Ice Cream Truck | Frozen fruit |
+| 14 | Hall of Mirrors | Shifty fruit, fading orders |
+| 15 | Food Fight | Critics, double orders |
+| 16 | Rollercoaster | Belt stalls, rush, faster belt |
+| 17 | Rain Delay | Power outage, allergies |
+| 18 | Grand Finale | Shifty, overheat, fading, VIP, rush (180 s) |
+
+**Story:** every day's intro card tells a line of story in a deadpan voice and then states the day's rule, e.g. "The magician next door is bored. Fruit on the belt keeps changing until you grab it."
 
 Campaigns are data (`Resource/Campaigns/*.tres`), so a third campaign is a new list of day files plus a line in `GameManager.CAMPAIGN_PATHS`.
 
-## Roguelike mode, progression and unlocks
+## Endless mode, progression and unlocks
 
-Roguelike and Daily Slush are open from the start on Steam; on Android they unlock after beating Summer. Stars and achievements unlock cosmetics.
+Endless and Daily Slush are open from the start on Steam; on Android they unlock after beating Summer Fun. Stars and achievements unlock cosmetics.
 
-**Roguelike:** an unlimited survival run inspired by Vampire Survivors' upgrade rhythm, using the smoothie-making loop. All fruits and shapes are available. The run ends when shop health reaches zero; health drains while customers are present, missed customers take extra health, and good smoothies restore it. There are no timed rounds or final wave.
+**Endless:** an unlimited survival run inspired by Vampire Survivors' upgrade rhythm, using the smoothie-making loop. All fruits and shapes are available. The run ends when shop health reaches zero; health drains while customers are present, missed customers take extra health, and good smoothies restore it. There are no timed rounds or final wave.
 
-Score milestones pause the shop and offer three distinct random upgrades. Pick one to resume. The first choices arrive at 2,500, 7,500, 15,000 and 25,000 cumulative points, with each following gap growing by 2,500. Large score jumps award each earned choice separately. Upgrades improve scoring, customer patience, maximum health, health from good service or conveyor control; an instant heal is also available. Conveyor slowing caps at 50% and disappears from the pool when maxed.
+Score milestones pause the shop and offer three distinct random upgrades. Pick one to resume. The first choices arrive at 2,500, 7,500, 15,000 and 25,000 cumulative points, with each following gap growing by 2,500. Large score jumps award each earned choice separately. Upgrades: Tip Jar (+40% score), Friendly Service (customers wait 30% longer), Bigger Reserve (+30 max health, full heal), Feel Good Blend (+4 health per star), Easy Conveyor (belt 20% slower, caps at 60%), Combo Meter, Thick Skin (walkouts cost half), Perfectionist (95%+ smoothies score double), Second Wind (one revive) and Quiet Day (undo the newest twist). One-off upgrades leave the pool once taken.
 
 Difficulty scales independently of score. The first twist arrives after 40 seconds, then another arrives every 45 seconds. Fickle Customers comes first; the rest are shuffled. Each step increases health drain and missed-customer penalties by 6% of their base values, and reduces base patience toward a 60% floor. Pressure keeps increasing after every twist is active. Upgrade choices and pauses freeze this timer.
 
-Upgrades and difficulty reset on death or a new run; best score and cosmetics persist. Existing roguelike best scores carry over. The calendar is the separate **Campaign** mode: authored days, score-based star goals, saved day unlocks, and the early blender progression. Roguelike upgrades never change campaign day resources.
+Upgrades and difficulty reset on death or a new run; best score and cosmetics persist. Existing best scores carry over. The calendar is the separate **Campaign** mode: authored days, score-based star goals, saved day unlocks, and the early blender progression. Endless upgrades never change campaign day resources.
 
 **Shop upgrades (between days, bought with tips):**
 
@@ -195,8 +214,8 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 | Price | $5 | Free |
 | Ads | None | Heavy: interstitials after every day and every run, rewarded ads for unlocks and revives |
 | Purchases | None | Optional "Remove ads" (~$2.99) |
-| Content | Full campaign and roguelike | Same content as Steam |
-| Roguelike and Daily Slush | Open from the start | Unlocked by beating Summer |
+| Content | Both campaigns and Endless | Same content as Steam |
+| Endless and Daily Slush | Open from the start | Unlocked by beating Summer Fun |
 | Unlocks | Earned at a normal pace | Take much longer; rewarded ads speed them up |
 | Daily Slush | Online leaderboard | Offline, personal best and streak only |
 | Online | Achievements, leaderboards, multiplayer, cloud saves (GodotSteam) | None |
@@ -209,7 +228,7 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 ## Technical notes
 
 - **Engine:** Godot 4.6. Steam uses the Forward+ renderer. Android switches to the Mobile renderer (or Compatibility for low-end phones).
-- **Save system (new):** `user://` save with day progress, stars, upgrades, cosmetics, settings and roguelike best score. Saves on day end and on `NOTIFICATION_APPLICATION_PAUSED`.
+- **Save system (new):** `user://` save with day progress, stars, upgrades, cosmetics, settings and Endless best score. Saves on day end and on `NOTIFICATION_APPLICATION_PAUSED`.
 - **DayConfig (new):** one resource per day. `GameManager` reads it at day start.
 - **Input:** rotation is right-click only today (`dragable_fruit.gd`, `dragable_smoothie.gd`). Add a touch rotate path, and force `auto_show_orders` on for mobile.
 - **Settings:** fullscreen/windowed, separate music and SFX volume, auto-show orders, colorblind mode (icons or patterns on fruit).
@@ -237,11 +256,11 @@ Plans for the Steam and Android builds. Only the jam Web and Windows presets exi
 - GodotSteam as a GDExtension, only loaded with the `steam` tag. If Steam fails to start, the game still runs offline with no achievements.
 - Pause the game when the Steam overlay opens.
 - Cloud saves through Steam Auto-Cloud (point it at the save file in the Steamworks settings, no code needed).
-- Rich presence: "Summer, Day 7" or "Roguelike, 12,400 pts".
-- Achievements from existing content: finish each campaign, 3 stars on every day, first upgrade pick, roguelike score thresholds, unlock every style.
-- Leaderboards: roguelike best, plus a seeded **Daily Slush** run where everyone gets the same fruit order and twists that day. This is the async multiplayer idea: Steam hosts the scores, so no servers are needed. Friends-only filter by default.
+- Rich presence: "Summer Fun, Day 7" or "Endless run".
+- Achievements from existing content: finish each campaign, 3 stars on every day, first upgrade pick, Endless score thresholds, unlock every style.
+- Leaderboards: Endless best, plus a seeded **Daily Slush** run where everyone gets the same fruit order and twists that day. This is the async multiplayer idea: Steam hosts the scores, so no servers are needed. Friends-only filter by default.
 - Uploads with SteamPipe (`steamcmd` + a depot script in `tools/`). A `beta` branch for testers, and the free Steam Playtest app during the Coming Soon period.
-- **Demo idea:** a separate demo app (built with the `demo` tag) with Summer Days 1 to 6 and a roguelike run capped at the first two upgrades, for Next Fest and wishlists. Demo saves carry into the full game.
+- **Demo idea:** a separate demo app (built with the `demo` tag) with Summer Fun days 1 to 6 and an Endless run capped at the first two upgrades, for Next Fest and wishlists. Demo saves carry into the full game.
 
 **Steam integration (built, needs the extension):** `SteamService` (autoload) handles achievements, leaderboards, rich presence and pausing when the overlay opens. It finds Steam at runtime, so without GodotSteam, on Android or on the web every call does nothing.
 
@@ -275,7 +294,7 @@ Plans for the Steam and Android builds. Only the jam Web and Windows presets exi
 
 Async, using Steam's servers through GodotSteam, so there is nothing to host or pay for.
 
-**Daily Slush** is the only online mode at launch: one seeded roguelike run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the UTC date, so no server is needed to hand it out. Each daily opens with 1 to 4 random campaign twists as debuffs and 1 to 3 random roguelike upgrades as buffs, with the counts also set by the seed, so some days are harder than others, then plays like a normal roguelike run. Unlimited retries; the best score of the day counts, and playing on consecutive days builds a streak. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
+**Daily Slush** is the only online mode at launch: one seeded Endless run per day, with the same fruit, twists and upgrade offers for everyone. The seed comes from the UTC date, so no server is needed to hand it out. Each daily opens with 1 to 4 random campaign twists as debuffs and 1 to 3 random Endless upgrades as buffs, with the counts also set by the seed, so some days are harder than others, then plays like a normal Endless run. Unlimited retries; the best score of the day counts, and playing on consecutive days builds a streak. Scores go to a daily Steam leaderboard with global and friends tabs. Android plays the same seed offline.
 
 Ideas for after launch, only if the game does well: Friend Challenge (race a friend's seed as a ghost), Weekly Shift, Next Rival target line, a community Tip Jar goal, Custom Days with share codes, and real-time Rush Duel through Steam lobbies.
 
@@ -308,26 +327,26 @@ About 6 weeks of building, then about 5 weeks of store waits during which other 
 
 Done so far (September 2026):
 
-- [x] Save system (`SaveManager`): settings, day progress, stars, roguelike best
+- [x] Save system (`SaveManager`): settings, day progress, stars, Endless best
 - [x] Campaign: 18 `DayConfig` days, every twist implemented
 - [x] Day select calendar, day intro card, day end screen with stars, in-game day timer
 - [x] Sunset tint over each day, night shift and power outage effects
 - [x] Smoothie pour scene transition, painted board text
-- [x] Calendar footer keeps Style beside Roguelike; star counts use drawn icons, and calendar tiles, Style swatches and board controls paint on with the text
+- [x] Calendar footer keeps Style beside Endless and Daily Slush; star counts use drawn icons
 - [x] Summer starts with one blender and opens one more each day through Day 4
 - [x] Touch rotate (second finger tap) and always-on order bubbles on mobile
 - [ ] Balance pass on star targets (current values are first guesses)
-- [x] Unlimited roguelike: score-based upgrade choices, escalating survival pressure, and upgrades that reset each run
-- [ ] Playtest roguelike milestone costs, upgrade strength and pressure growth
+- [x] Unlimited Endless mode: score-based upgrade choices, escalating survival pressure, and upgrades that reset each run
+- [ ] Playtest Endless milestone costs, upgrade strength and pressure growth
 - [x] Style unlocks: blender, wall, conveyor, transition and board paint colors
-- [x] Second campaign (Summer Nights) with five new mechanics
+- [x] Second campaign (Boardwalk Carnival): 18 days, prize wheel gimmick, five new mechanics
 - [x] Hands-on day 1 tutorial, redone settings and credits screens
 - [ ] Shop upgrades (gameplay unlocks)
 - [x] Settings: fullscreen toggle
 - [ ] Colorblind mode
 - [x] Daily Slush: date-seeded run with daily buffs and debuffs, local best and streak
 - [x] Playtest pass 1: settings on the pause screen, star hints, hard text shadows, 3x3 blender scaling, melt and ice shaders, conveyor rails, four pour styles, loss tips
-- [x] Steam layer: achievements, roguelike and Daily Slush leaderboards, rich presence, overlay pause (waiting on the GodotSteam extension and a real app ID)
+- [x] Steam layer: achievements, Endless and Daily Slush leaderboards, rich presence, overlay pause (waiting on the GodotSteam extension and a real app ID)
 - [ ] Android ads
 
 ## Team and decisions

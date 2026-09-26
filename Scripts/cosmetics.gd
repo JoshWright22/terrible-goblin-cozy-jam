@@ -102,7 +102,7 @@ static func is_unlocked(option: Dictionary, total_stars: int = -1, endless_best:
 
 static func requirement_text(option: Dictionary) -> String:
 	if option.has("endless"):
-		return "%d in roguelike" % option["endless"]
+		return "%d in endless" % option["endless"]
 	return "%d stars" % stars_needed(option)
 
 static func selected(category: String) -> Dictionary:
