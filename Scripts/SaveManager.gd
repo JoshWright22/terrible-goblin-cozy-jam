@@ -37,6 +37,12 @@ func save_game() -> void:
 		push_warning("SaveManager: couldn't save (error %d)" % err)
 
 func load_game() -> void:
+	_load_file()
+	# No hover on touch screens, so orders always show
+	if OS.has_feature("mobile"):
+		GameManager.auto_show_orders = true
+
+func _load_file() -> void:
 	var cfg := ConfigFile.new()
 	if cfg.load(SAVE_PATH) != OK:
 		return  # first launch, keep defaults

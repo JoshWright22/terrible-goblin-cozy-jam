@@ -30,8 +30,9 @@ func _ready() -> void:
 		var banned = item.instantiate()
 		banned.spriter = getSPrite(parent.bannedFruit[cusID])
 		vbox.add_child(banned)
-		banned.get_node("RichTextLabel").text = ": NO!"
-		banned.modulate = Color(1.0, 0.45, 0.45)
+		var no_label: Label = banned.get_node("RichTextLabel")
+		no_label.text = ": NO!"
+		no_label.add_theme_color_override("font_color", Color(0.85, 0.15, 0.1))
 
 
 func getSPrite(skin):

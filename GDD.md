@@ -65,7 +65,7 @@ The full game uses the jam's existing art: 5 fruits × 7 shapes (35 pieces). New
 - Small (3×3) – the broken-blender day
 - Standard – the jam default
 - Large – an upgrade
-- Wide (6×3) – a day modifier
+- Fewer blenders (2 of 4) – a day modifier
 
 **Customers:** new types reuse the existing customer sprites. They're told apart by color tints and a small icon badge (for example a star for the critic or a clock for the rusher), not by new art.
 
@@ -95,7 +95,7 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 | 9 | Rotten Batch | Blocked cells to avoid (`blank_cells` exists) | Small |
 | 10 | Heatwave | Fruit melts if left on the belt | Small |
 | 11 | Brain Freeze | Some pieces can't rotate | Small |
-| 12 | Big Order Day | Wide 6×3 blender | Setting |
+| 12 | Blender Down | Only 2 of the 4 blenders work | Setting |
 | 13 | Mystery Menu | Order percentages partly hidden | Small |
 | 14 | Night Shift | Dark screen, light around the cursor | Shader |
 | 15 | Power Outage | Blend button flickers / cooldown | Small + shader |
@@ -104,6 +104,8 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 | 18 | Summer Festival | Finale remixing earlier twists | Setting |
 
 **Totals:** 9 setting-only days, 7 small, 2 medium. Day names and order can change; the twist list is the scope.
+
+The wide 6×3 blender was swapped for Blender Down because the blender art can't stretch to a wide grid without new sprites.
 
 ## Endless mode, progression and unlocks
 
@@ -168,7 +170,7 @@ Shaders are driven by the day timer, so each day both looks and plays differentl
 - **DayConfig (new):** one resource per day. `GameManager` reads it at day start.
 - **Input:** rotation is right-click only today (`dragable_fruit.gd`, `dragable_smoothie.gd`). Add a touch rotate path, and force `auto_show_orders` on for mobile.
 - **Settings:** fullscreen/windowed, separate music and SFX volume, auto-show orders, colorblind mode (icons or patterns on fruit).
-- **Font:** replace Magic Yellow with a free Google Font (OFL license, commercial use allowed). Set it once as the project's default theme font; it's currently set in 8 places.
+- **Font:** Delicious Handrawn (Google Fonts, OFL), set once as the project default through `Assets/fonts/slush_font.tres`. Text on the wooden boards uses a painted style (`BoardPaint`).
 - **Cleanup:** remove the `.tscn*.tmp` files and the build outputs in the project root.
 
 ## Schedule and release checklist
@@ -187,7 +189,7 @@ About 6 weeks of building, then about 5 weeks of store waits during which other 
 
 - [ ] Confirm "Slush Rush" is free on Steam and Google Play
 - [ ] Written permission from Jack, Robert, Aurora and Nivadra to use their jam work in the commercial release, noting the agreed bonus
-- [ ] Font switched to a Google Font; credits updated
+- [x] Font switched to a Google Font; credits updated
 - [ ] Pay the Steam app fee ($100), which starts the 30-day wait
 - [ ] Steam store page, capsule art, trailer; live as Coming Soon for at least 2 weeks
 - [ ] Google Play developer account ($25), keystore, AAB export, current target API level
@@ -195,6 +197,21 @@ About 6 weeks of building, then about 5 weeks of store waits during which other 
 - [ ] Play closed test with 12+ testers for 14 days in a row
 - [ ] Update the itch page with a wishlist link
 - [ ] Submit builds for review, then launch on a day someone can watch for 48 hours
+
+## Build status
+
+Done so far (September 2026):
+
+- [x] Save system (`SaveManager`): settings, day progress, stars, endless best
+- [x] Campaign: 18 `DayConfig` days, every twist implemented
+- [x] Day select calendar, day intro card, day end screen with stars, in-game day timer
+- [x] Sunset tint over each day, night shift and power outage effects
+- [x] Smoothie pour scene transition, painted board text
+- [x] Touch rotate (second finger tap) and always-on order bubbles on mobile
+- [ ] Balance pass on star targets (current values are first guesses)
+- [ ] Shop upgrades and cosmetic recolors
+- [ ] Settings: fullscreen toggle, colorblind mode
+- [ ] Steam achievements and leaderboard, Android ads
 
 ## Team and decisions
 
@@ -213,6 +230,6 @@ Sound effects by Kenney (kenney.nl). The font will be credited once the Google F
 **Decisions:**
 
 - **New art:** no new sprites unless free art is available.
-- **Font:** switch to a free Google Font.
+- **Font:** Delicious Handrawn, with text on the boards styled to look painted on.
 - **Team:** solo release, with bonuses to the jam contributors after launch.
 - **Android vs Steam:** same content; on Android, recolors and other cosmetics are harder to unlock.

@@ -87,15 +87,24 @@ func _add_rotten_cells(count: int) -> void:
 		var tile: Node2D = tiles[i]
 		tile.set_meta("is_occupied", true)
 		tile.set_meta("rotten", true)
-		for child in tile.get_children():
-			if child is Sprite2D:
-				child.modulate = Color(0.45, 0.33, 0.2)
+		var mold := Panel.new()
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(0.52, 0.44, 0.24)
+		style.set_corner_radius_all(14)
+		style.set_border_width_all(3)
+		style.border_color = Color(0.25, 0.2, 0.1)
+		mold.add_theme_stylebox_override("panel", style)
+		mold.size = tile_size - Vector2(8, 8)
+		mold.position = -mold.size / 2.0
+		mold.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tile.add_child(mold)
 		var mark := Label.new()
 		mark.text = "X"
 		mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		mark.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		mark.add_theme_font_size_override("font_size", 40)
-		mark.add_theme_color_override("font_color", Color(0.25, 0.4, 0.15))
+		mark.add_theme_color_override("font_color", Color(0.3, 0.45, 0.18))
+		mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		mark.size = tile_size
 		mark.position = -tile_size / 2.0
 		tile.add_child(mark)

@@ -270,6 +270,14 @@ func _input(event: InputEvent) -> void:
 	if not is_dragging:
 		return
 
+	# Touch screens: tap with a second finger while dragging to rotate
+	if event is InputEventScreenTouch and event.pressed and event.index > 0 and not is_locked:
+		if frozen:
+			_shiver()
+		else:
+			rotate_piece_90_degrees()
+		return
+
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 			is_dragging = false

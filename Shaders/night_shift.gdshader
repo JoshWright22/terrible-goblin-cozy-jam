@@ -6,7 +6,7 @@ uniform vec2 light_uv = vec2(0.5);
 uniform float aspect = 1.7778;
 uniform float radius = 0.17;
 uniform float softness = 0.09;
-uniform float darkness : hint_range(0.0, 1.0) = 0.9;
+uniform float darkness : hint_range(0.0, 1.0) = 0.8;
 
 void fragment() {
 	vec2 offset = (UV - light_uv) * vec2(aspect, 1.0);

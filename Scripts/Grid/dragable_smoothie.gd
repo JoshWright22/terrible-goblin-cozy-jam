@@ -72,6 +72,10 @@ func _physics_process(delta: float) -> void:
 			queue_free()
 
 func _input(event: InputEvent) -> void:
+	# Touch screens: second finger tap while dragging rotates
+	if event is InputEventScreenTouch and event.pressed and event.index > 0 and is_dragging:
+		_rotate_90()
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
