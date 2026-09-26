@@ -9,6 +9,7 @@ const BLENDER := "blender"
 const WALL := "wall"
 const BELT := "belt"
 const TRANSITION := "transition"
+const POUR := "pour"
 const PAINT := "paint"
 
 const CATEGORY_NAMES := {
@@ -16,6 +17,7 @@ const CATEGORY_NAMES := {
 	WALL: "Walls",
 	BELT: "Conveyor",
 	TRANSITION: "Transitions",
+	POUR: "Pour style",
 	PAINT: "Board paint",
 }
 
@@ -53,6 +55,13 @@ const OPTIONS := {
 		# Hidden until the game has a green fruit
 		{"name": "Green Machine", "color": Color(0.62, 0.82, 0.45), "stars": 26, "hidden": true},
 		{"name": "Midnight", "color": Color(0.25, 0.25, 0.45), "stars": 36},
+	],
+	# How the transition juice moves. "label" is shown on the swatch since these aren't colors
+	POUR: [
+		{"name": "Pour", "label": "Pour", "style": 0, "color": Color(0.93, 0.6, 0.35), "stars": 0},
+		{"name": "Bubbles", "label": "Pop", "style": 1, "color": Color(0.93, 0.6, 0.35), "stars": 6},
+		{"name": "Swirl", "label": "Spin", "style": 2, "color": Color(0.93, 0.6, 0.35), "stars": 12},
+		{"name": "Splash", "label": "Wave", "style": 3, "color": Color(0.93, 0.6, 0.35), "stars": 19},
 	],
 	PAINT: [
 		{"name": "Cream", "color": Color(1.0, 0.97, 0.9), "stars": 0},

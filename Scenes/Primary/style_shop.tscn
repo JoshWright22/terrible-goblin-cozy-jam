@@ -42,7 +42,7 @@ offset_left = 400.0
 offset_top = 245.0
 offset_right = 1540.0
 offset_bottom = 820.0
-theme_override_constants/separation = 16
+theme_override_constants/separation = 12
 
 [node name="StarsBox" type="HBoxContainer" parent="Board"]
 layout_mode = 0

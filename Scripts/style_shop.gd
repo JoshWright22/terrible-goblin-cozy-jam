@@ -1,8 +1,8 @@
 extends Node2D
 
-# Style unlocks: pick blender, wall, conveyor, transition and paint colors earned with stars
+# Style unlocks: pick blender, wall, conveyor, transition, pour style and paint options earned with stars
 
-const SWATCH_SIZE := Vector2(96, 96)
+const SWATCH_SIZE := Vector2(84, 84)
 const SELECTED_BORDER := Color(1.0, 0.84, 0.3)
 const NORMAL_BORDER := Color(0.24, 0.13, 0.05)
 
@@ -131,3 +131,8 @@ func _style_swatch(swatch: Button, option: Dictionary, is_selected: bool) -> voi
 		box.border_color = SELECTED_BORDER if is_selected else NORMAL_BORDER
 		swatch.add_theme_stylebox_override(state, box)
 	swatch.add_theme_color_override("font_disabled_color", Color(1.0, 0.95, 0.85))
+	if option.has("label") and unlocked:
+		swatch.text = option["label"]
+		swatch.add_theme_font_size_override("font_size", 32)
+		swatch.add_theme_constant_override("outline_size", 6)
+		swatch.add_theme_color_override("font_outline_color", Color.BLACK)
