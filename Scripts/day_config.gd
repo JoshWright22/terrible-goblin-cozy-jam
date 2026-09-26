@@ -40,6 +40,7 @@ class_name DayConfig
 @export var power_outage: bool = false      # blend buttons flicker off now and then
 @export var double_orders: bool = false     # some customers want two smoothies
 @export var vip_customer: bool = false      # one VIP per day, big score, short patience
+@export var critic_orders: bool = false     # some customers are critics: 90%+ or nothing, triple pay
 @export var overheat: bool = false          # blending too often overheats a blender for a bit
 @export var belt_stops: bool = false        # the conveyor stalls every so often
 @export var shifty_fruit: bool = false      # loose fruit keeps changing type until it's grabbed

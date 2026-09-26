@@ -95,6 +95,7 @@ var _day_finished: bool = false
 
 # Combo twist: good smoothies in a row multiply the score
 const COMBO_ACCURACY := 80.0
+const CRITIC_ACCURACY := 90.0   # critics pay nothing for anything less
 const COMBO_STEP := 0.25
 const COMBO_MAX_MULT := 2.0
 var combo: int = 0
@@ -336,7 +337,8 @@ func compareValues(inputer) -> void:
 	var stars: int = moodStars if typeMatch else 0
 	# Food critic: close isn't good enough
 	var twists := GameManager.twists()
-	var too_sloppy: bool = percent < twists.min_accuracy
+	var critic: bool = custom.kind == "critic"
+	var too_sloppy: bool = percent < (CRITIC_ACCURACY if critic else twists.min_accuracy)
 	if too_sloppy:
 		stars = 0
 
@@ -350,7 +352,7 @@ func compareValues(inputer) -> void:
 		var cell_scale: float = 16.0 / float(cells)
 		scoreGain = int(round(100.0 * (percent / 100.0) * float(total_count) * cell_scale * GameManager.smoothie_quality * fill_bonus * custom.score_mult))
 		if too_sloppy:
-			scoreGain /= 2
+			scoreGain = 0 if critic else scoreGain / 2
 	if twists.combo:
 		scoreGain = int(round(scoreGain * _update_combo(typeMatch and percent >= COMBO_ACCURACY)))
 	if day == null:
@@ -549,6 +551,8 @@ func _on_customer_s_pawner_timeout() -> void:
 			_vip_spawned = true
 		elif twists.rush_orders and randf() < 0.3:
 			c.kind = "rush"
+		elif twists.critic_orders and randf() < 0.3:
+			c.kind = "critic"
 		if twists.double_orders and randf() < 0.4:
 			c.orders_left = 2
 		currentCustomer[customerNo] = trgPos

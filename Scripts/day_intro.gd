@@ -8,6 +8,12 @@ extends Control
 @onready var _title_lbl: Label = $TitleLabel
 @onready var _intro_lbl: Label = $IntroLabel
 @onready var _goal_box: HBoxContainer = $GoalBox
+@onready var _fruit_reveal: HBoxContainer = $FruitReveal
+
+const REVEAL_SHAPES := ["1x1", "2x1", "3x2_T"]
+const REVEAL_HEIGHT := 72.0
+const REVEAL_SHIFT := 40.0
+const CELL_PIXELS := 120   # fruit piece art is drawn at 120 px per cell
 @onready var _start_btn: TextureButton = $StartButton
 
 var _closing: bool = false
@@ -20,6 +26,16 @@ func _ready() -> void:
 	_intro_lbl.text = day.intro_text
 	if day.day_number > 1 and day.blender_count > GameManager.load_day(day.day_number - 1).blender_count:
 		_intro_lbl.text += "\nA new blender is open!"
+	var new_fruits := _new_fruits(day)
+	if not new_fruits.is_empty():
+		# Make room under the intro for the new fruit: smaller intro text, everything below shifts down
+		_intro_lbl.add_theme_font_size_override("font_size", 46)
+		for item in [_fruit_reveal, _goal_box]:
+			item.position.y += REVEAL_SHIFT
+		_start_btn.position.y += REVEAL_SHIFT / 2.0
+		_intro_lbl.offset_bottom = _fruit_reveal.offset_top
+		for fruit in new_fruits:
+			_show_new_fruit(fruit)
 	var goals := BoardPaint.star_row([BoardPaint.STAR, "%d   " % day.star_scores[0], BoardPaint.STAR, "%d   " % day.star_scores[1],
 		BoardPaint.STAR, str(day.star_scores[2])], 52, true)
 	var hints := day.star_hints()
@@ -28,11 +44,65 @@ func _ready() -> void:
 		star.mouse_filter = Control.MOUSE_FILTER_PASS
 	_goal_box.add_child(goals)
 	BoardPaint.apply(self, true, 0.25)
+	BoardPaint.paint_tree(_fruit_reveal, 0.55, false)
 	BoardPaint.paint_tree(_goal_box, 0.7, false)
 	BoardPaint.paint_tree(_start_btn, 0.85, false)
 	ButtonFx.setup(_start_btn)
 	_start_btn.pressed.connect(_close)
 	_play_in()
+
+# Fruits on today's belt that weren't on yesterday's. Day 1 has the tutorial instead
+func _new_fruits(day: DayConfig) -> Array:
+	if day.day_number <= 1:
+		return []
+	var today := _fruits_of(day)
+	var yesterday := _fruits_of(GameManager.load_day(day.day_number - 1))
+	return today.filter(func(fruit): return fruit not in yesterday)
+
+func _fruits_of(day: DayConfig) -> Array:
+	return Array(day.fruits) if not day.fruits.is_empty() else range(FruitData.FruitType.size())
+
+# "Mango  [order icon]  =  [a few mango pieces]" so the player knows both looks before it arrives
+func _show_new_fruit(fruit: int) -> void:
+	var fruit_name: String = FruitData.FruitType.keys()[fruit].to_lower()
+	var title := Label.new()
+	title.text = "New: %s" % fruit_name.capitalize()
+	title.add_theme_font_size_override("font_size", 52)
+	title.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_fruit_reveal.add_child(title)
+	BoardPaint.style(title, true, false)
+
+	_fruit_reveal.add_child(_picture(load("res://Assets/sprites/fruitSprites/%sSprite.PNG" % fruit_name)))
+	var equals := Label.new()
+	equals.text = "="
+	equals.add_theme_font_size_override("font_size", 52)
+	equals.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	_fruit_reveal.add_child(equals)
+	BoardPaint.style(equals, false, false)
+
+	for shape in REVEAL_SHAPES:
+		var piece: FruitData = load("res://Resource/%s_%s.tres" % [fruit_name, shape])
+		_fruit_reveal.add_child(_picture(_piece_art(piece)))
+
+# Just the cells the piece fills, not the empty canvas around a small piece
+func _piece_art(piece: FruitData) -> Texture2D:
+	var cells := Vector2.ZERO
+	for cell in piece.layout:
+		cells = cells.max(cell + Vector2.ONE)
+	var art := AtlasTexture.new()
+	art.atlas = piece.texture
+	art.region = Rect2(Vector2.ZERO, (cells * CELL_PIXELS).min(piece.texture.get_size()))
+	return art
+
+func _picture(texture: Texture2D) -> TextureRect:
+	var picture := TextureRect.new()
+	picture.texture = texture
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	var size := texture.get_size()
+	picture.custom_minimum_size = Vector2(REVEAL_HEIGHT * size.x / size.y, REVEAL_HEIGHT)
+	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return picture
 
 func _play_in() -> void:
 	var base := _panel.scale

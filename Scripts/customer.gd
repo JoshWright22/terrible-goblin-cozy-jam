@@ -43,12 +43,12 @@ var patience = 0
 var mood = 3  # 3=happy 2=neutral 1=angry 0=leave
 
 # Day twists, set by orderControl before the customer is added
-var kind: String = ""        # "", "rush" or "vip"
+var kind: String = ""        # "", "rush", "vip" or "critic"
 var orders_left: int = 1     # 2 for double orders
 var score_mult: float = 1.0
 var _badge: Label = null
 const BADGE_CENTER := Vector2(-25, 0)   # middle of the customer sprite
-const BADGE_COLORS := {"rush": Color(0.95, 0.2, 0.2), "vip": Color(1.0, 0.85, 0.2)}
+const BADGE_COLORS := {"rush": Color(0.95, 0.2, 0.2), "vip": Color(1.0, 0.85, 0.2), "critic": Color(0.72, 0.5, 1.0)}
 const ORDER_FADE_TIME := 3.5  # Short Memory twist: seconds an order stays up on its own
 var _hovered: bool = false
 
@@ -56,7 +56,7 @@ func _ready() -> void:
 	match kind:
 		"rush":
 			score_mult = 2.0
-		"vip":
+		"vip", "critic":
 			score_mult = 3.0
 	timer.wait_time = _roll_wait()
 	timer.start(timer.wait_time)
@@ -84,6 +84,8 @@ func _update_badge() -> void:
 			text = "RUSH"
 		"vip":
 			text = "VIP"
+		"critic":
+			text = "CRITIC"
 	if orders_left > 1:
 		text = (text + " x%d" % orders_left).strip_edges()
 	if text == "":

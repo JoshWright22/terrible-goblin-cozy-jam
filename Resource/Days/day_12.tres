@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 12
-title = "Blender Down"
-intro_text = "Two blenders are out for repairs. Make the other two count."
-blender_count = 2
+title = "Food Critics"
+intro_text = "Food critics are in town. Customers marked CRITIC want 90% accuracy or better, but they pay triple."
+critic_orders = true
 star_scores = Array[int]([1700, 5200, 11500])
