@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="2_go"]
 [ext_resource type="Texture2D" uid="uid://droqks88vso3y" path="res://Assets/sprites/ui sprites/playButtonSprite.PNG" id="3_go"]
 [ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_go"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="5_go"]
+[ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="5_go"]
 
 [node name="gameOver" type="CanvasLayer"]
 layer = 10

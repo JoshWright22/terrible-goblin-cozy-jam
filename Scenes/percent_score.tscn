@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bqbficj3j840g"]
 
 [ext_resource type="Script" path="res://Scripts/percent_score.gd" id="1_ps"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_ps"]
+[ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="2_ps"]
 
 [node name="percentScore" type="Node2D"]
 script = ExtResource("1_ps")

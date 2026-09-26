@@ -109,7 +109,7 @@ func _ready() -> void:
 	REMAIN_TIME = MAX_TIME
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
-	var font = load("res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf")
+	var font = load("res://Assets/fonts/slush_font.tres")
 	score_label.add_theme_font_override("font", font)
 	score_label.add_theme_font_size_override("font_size", 58)
 	score_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))

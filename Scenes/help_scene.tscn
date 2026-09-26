@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bt22uq0my282f" path="res://Scripts/help_scene.gd" id="1_kmmeu"]
 [ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="2_4lyhu"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_5m6pi"]
+[ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="2_5m6pi"]
 [ext_resource type="Texture2D" uid="uid://c30sii8gjinpn" path="res://Assets/sprites/orderWindowSprites/healthbarSprite.PNG" id="3_piy52"]
 [ext_resource type="Texture2D" uid="uid://ba3cyy0fuknb4" path="res://Assets/sprites/fruitSprites/appleSprite.PNG" id="4_a1jem"]
 [ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://Assets/sprites/fruitSprites/mangoSprite.PNG" id="5_51a3o"]

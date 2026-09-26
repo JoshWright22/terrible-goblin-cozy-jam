@@ -41,4 +41,4 @@ Autoloads: `GameManager` (shared game state), `AudioManager` (sound effects and 
 - Aurora (Roranart): Art
 - Nivadra: Music
 
-Sound effects by [Kenney](https://kenney.nl). "Magic Yellow" font by Syaf Rizal (Khurasan TM), to be replaced for the commercial release.
+Sound effects by [Kenney](https://kenney.nl). Font: [Fredoka](https://fonts.google.com/specimen/Fredoka) (SIL Open Font License).

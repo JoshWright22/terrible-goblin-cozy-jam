@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://twnwd11gq0wl"
-path="res://.godot/imported/Magic Yellow by Syaf Rizal [Khurasan™].otf-f0e477344d795e22d6eecaac88baf506.fontdata"
+uid="uid://kgaqdhib01af"
+path="res://.godot/imported/Fredoka.ttf-91eeca8d28e250690cf4789016a60d24.fontdata"
 
 [deps]
 
-source_file="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf"
-dest_files=["res://.godot/imported/Magic Yellow by Syaf Rizal [Khurasan™].otf-f0e477344d795e22d6eecaac88baf506.fontdata"]
+source_file="res://Assets/fonts/Fredoka.ttf"
+dest_files=["res://.godot/imported/Fredoka.ttf-91eeca8d28e250690cf4789016a60d24.fontdata"]
 
 [params]
 

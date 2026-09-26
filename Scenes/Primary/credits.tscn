@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b7h0qnvv28pe0"]
 
 [ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://Assets/sprites/backgroundSprite.PNG" id="1_meb0d"]
-[ext_resource type="FontFile" uid="uid://twnwd11gq0wl" path="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf" id="2_cfch2"]
+[ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="2_cfch2"]
 
 [sub_resource type="GDScript" id="GDScript_meb0d"]
 script/source = "extends Node2D
@@ -169,9 +169,8 @@ Joshua Wright - Godot Dev
 Jack | H4rb1nger - Godot Dev
 Nivadra - Music
 
- Thank you to Syaf Rizal [Khurasan TM] 
-for \"Magic Yellow\" font and
-Kenney (kenney.nl) for sound effects
+ Fredoka font by the Fredoka Project Authors (OFL)
+Sound effects by Kenney (kenney.nl)
 
 And a thanks to you for playing :)[/center]"
 fit_content = true

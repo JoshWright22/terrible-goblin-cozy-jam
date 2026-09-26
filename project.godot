@@ -40,6 +40,10 @@ enabled=PackedStringArray("res://addons/find-everywhere/plugin.cfg")
 orderControl=""
 hostController=""
 
+[gui]
+
+theme/custom_font="res://Assets/fonts/slush_font.tres"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
