@@ -7,6 +7,7 @@ const TWIST_INTERVAL := 45.0
 const PATIENCE_STEP := 0.94
 const MIN_PATIENCE := 0.6
 const SCORE_STEP := 2500
+const STATUS_CENTER_X := 585.0   # middle of the customer window, same spot as the day board
 const DAILY_BUFFS := Vector2i(1, 3)    # the seed picks how many of each
 const DAILY_DEBUFFS := Vector2i(1, 4)
 const UPGRADES := [
@@ -81,8 +82,9 @@ func _start_daily() -> void:
 # Same cream board as the campaign's day HUD
 func _build_status_board() -> void:
 	var panel := PanelContainer.new()
-	panel.position = Vector2(380, 8)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Centered over the customer window; the text changes width, so re-center on resize
+	panel.resized.connect(func(): panel.position = Vector2(STATUS_CENTER_X - panel.size.x / 2.0, 8))
 	var box := StyleBoxFlat.new()
 	box.bg_color = Color(0.99, 0.95, 0.82, 0.92)
 	box.border_color = Color(0.24, 0.13, 0.05)

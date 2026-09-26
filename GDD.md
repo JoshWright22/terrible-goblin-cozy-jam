@@ -89,7 +89,7 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 | 1 | Opening Day | 2 fruits, simple shapes; tutorial built in | Setting |
 | 2 | New Delivery | Third fruit arrives | Setting |
 | 3 | Odd Shapes | L and T shapes introduced | Setting |
-| 4 | Food Critic | Tight % tolerance | Setting |
+| 4 | Mango Season | Mango arrives on its own day, shown on the intro card | Setting |
 | 5 | Lunch Rush | Rush orders with a timer | Small |
 | 6 | Allergy Season | "No banana" style orders | Small |
 | 7 | Broken Blender | 3×3 grid | Setting |
@@ -97,7 +97,7 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 | 9 | Rotten Batch | Blocked cells to avoid (`blank_cells` exists) | Small |
 | 10 | Heatwave | Fruit melts if left on the belt | Small |
 | 11 | Brain Freeze | Some pieces can't rotate | Small |
-| 12 | Blender Down | Only 2 of the 4 blenders work | Setting |
+| 12 | Food Critics | CRITIC customers want 90%+ accuracy and pay triple | Small |
 | 13 | Mystery Menu | Order percentages partly hidden | Small |
 | 14 | Night Shift | Dark screen, light around the cursor | Shader |
 | 15 | Power Outage | Blend button flickers / cooldown | Small + shader |
@@ -107,7 +107,11 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 
 **Totals:** 9 setting-only days, 7 small, 2 medium. Day names and order can change; the twist list is the scope.
 
-The wide 6×3 blender was swapped for Blender Down because the blender art can't stretch to a wide grid without new sprites.
+The wide 6×3 blender was swapped out because the blender art can't stretch to a wide grid without new sprites.
+
+Playtest changes: mango got its own day instead of sharing Day 4 with a flat 80% rule. Day 12 was the point where the campaign dragged, so the plain "two blenders" day became Food Critics, where a few marked customers demand accuracy for a big payout. Any day that adds a fruit shows it on the intro card: the order icon next to a few of its pieces.
+
+**Stars:** each star is still a score target, tuned to mean something. Star 1 is roughly what surviving the day earns, star 2 what serving every order accurately earns, star 3 an ambitious high score. Hovering a star shows its target. Losing, or ending a day short of three stars, shows a tip for scoring higher.
 
 ## Campaign 2: Boardwalk Nights
 
@@ -314,6 +318,7 @@ Done so far (September 2026):
 - [x] Settings: fullscreen toggle
 - [ ] Colorblind mode
 - [x] Daily Slush: date-seeded run with daily buffs and debuffs, local best and streak
+- [x] Playtest pass 1: settings on the pause screen, star hints, hard text shadows, 3x3 blender scaling, melt and ice shaders, conveyor rails, four pour styles, loss tips
 - [ ] Steam achievements and leaderboards (roguelike, Daily Slush), Android ads
 
 ## Team and decisions
