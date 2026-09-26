@@ -13,12 +13,20 @@ func _ready() -> void:
 	_score_lbl.text = "Score: %d" % GameManager.score
 	if GameManager.daily_run:
 		var best := SaveManager.record_daily_score(GameManager.score)
+		SteamService.submit_score(SteamService.daily_board(), GameManager.score)
+		if SaveManager.daily_streak >= 7:
+			SteamService.unlock(SteamService.ACH_DAILY_WEEK)
 		_title_lbl.text = "DAILY SLUSH"
 		_score_lbl.text = "Score: %d%s\nToday's best: %d   Streak: %d" % [GameManager.score,
 			"  New best!" if best else "", SaveManager.daily_best, SaveManager.daily_streak]
 		_score_lbl.add_theme_font_size_override("font_size", 40)
 	elif GameManager.current_day == null:
 		SaveManager.record_endless_score(GameManager.score)
+		SteamService.submit_score(SteamService.BOARD_ROGUELIKE, GameManager.score)
+		if GameManager.score >= 10000:
+			SteamService.unlock(SteamService.ACH_ROGUE_10K)
+		if GameManager.score >= 25000:
+			SteamService.unlock(SteamService.ACH_ROGUE_25K)
 		_title_lbl.text = "RUN OVER"
 		_score_lbl.text = "Level %d\nScore: %d" % [GameManager.rogue_level, GameManager.score]
 		_score_lbl.add_theme_font_size_override("font_size", 40)

@@ -129,6 +129,9 @@ func _ready() -> void:
 		day_time_left = day.duration
 		customer_spawn_delay = 5.0
 		ingredients = ingredients.filter(func(t): return day.allows_fruit(t))
+		SteamService.set_status("%s, Day %d" % [GameManager.current_campaign.title.trim_suffix(" Campaign"), day.day_number])
+	else:
+		SteamService.set_status("Daily Slush" if GameManager.daily_run else "Roguelike run")
 	var _help_layer := CanvasLayer.new()
 	_help_layer.layer = 12
 	add_child(_help_layer)
@@ -200,7 +203,15 @@ func _finish_day() -> void:
 	_stop_game_music()
 	GameManager.stars_before_day = SaveManager.total_stars()
 	SaveManager.record_day(GameManager.current_campaign.id, day.day_number, day.stars_for_score(GameManager.score))
+	_check_campaign_achievements()
 	get_tree().paused = true
+
+func _check_campaign_achievements() -> void:
+	var campaign := GameManager.current_campaign
+	if SaveManager.unlocked_day(campaign.id) > campaign.day_count():
+		SteamService.unlock(SteamService.ACH_SUMMER_DONE if campaign.id == "summer" else SteamService.ACH_BOARDWALK_DONE)
+	if campaign.id == "summer" and SaveManager.campaign_stars(campaign.id) >= campaign.day_count() * 3:
+		SteamService.unlock(SteamService.ACH_SUMMER_PERFECT)
 
 # Returns the score multiplier for this serve and shows the combo popup
 func _update_combo(good: bool) -> float:
@@ -358,6 +369,8 @@ func compareValues(inputer) -> void:
 	if day == null:
 		scoreGain = int(round(scoreGain * GameManager.rogue_score_mult))
 	GameManager.smoothies_served += 1
+	if typeMatch and GameManager.smoothies_served == 1:
+		SteamService.unlock(SteamService.ACH_FIRST_SMOOTHIE)
 	var old_score := GameManager.score
 	GameManager.score += scoreGain
 	GameManager.smoothie_quality = 1.0

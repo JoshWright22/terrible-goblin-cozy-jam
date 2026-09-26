@@ -12,6 +12,11 @@ func _ready() -> void:
 	Cosmetics.apply_shop(get_parent())
 	if GameManager.current_day:
 		get_parent().add_child.call_deferred(_day_hud_scene.instantiate())
+	# Opening the Steam overlay mid-shift pauses the game, same as pressing ESC
+	SteamService.overlay_opened.connect(func():
+		if not GameManager.game_over and not GameManager.day_complete and not GameManager.paused:
+			_do_pause()
+	)
 
 func _process(_delta: float) -> void:
 	# HUD owns the game-over screen so it lives at the right canvas layer.

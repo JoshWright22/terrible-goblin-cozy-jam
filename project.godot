@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 GameManager="*uid://53obwu7m0u1s"
 AudioManager="*res://Scripts/AudioManager.gd"
 SaveManager="*res://Scripts/SaveManager.gd"
+SteamService="*res://Scripts/steam_service.gd"
 
 [display]
 

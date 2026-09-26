@@ -243,6 +243,14 @@ Plans for the Steam and Android builds. Only the jam Web and Windows presets exi
 - Uploads with SteamPipe (`steamcmd` + a depot script in `tools/`). A `beta` branch for testers, and the free Steam Playtest app during the Coming Soon period.
 - **Demo idea:** a separate demo app (built with the `demo` tag) with Summer Days 1 to 6 and a roguelike run capped at the first two upgrades, for Next Fest and wishlists. Demo saves carry into the full game.
 
+**Steam integration (built, needs the extension):** `SteamService` (autoload) handles achievements, leaderboards, rich presence and pausing when the overlay opens. It finds Steam at runtime, so without GodotSteam, on Android or on the web every call does nothing.
+
+- Install: in the editor, AssetLib tab, search "GodotSteam", Download and Install the GDExtension. Nothing else to wire up.
+- Uses app 480 (Spacewar) for testing. Swap `APP_ID` once the real app exists, and create the achievements and leaderboards in Steamworks with these names:
+  - Achievements: `FIRST_SMOOTHIE`, `SUMMER_DONE`, `SUMMER_PERFECT`, `BOARDWALK_DONE`, `ROGUE_10K`, `ROGUE_25K`, `DAILY_WEEK`
+  - Leaderboards: `roguelike_best`, plus `daily_YYYYMMDD` boards the game creates itself
+- Cloud saves: Steam Auto-Cloud on `%APPDATA%/Slush Rush/save.cfg`, set up in Steamworks, no code.
+
 **Android:**
 
 - Gradle build (the AdMob plugin needs it), AAB output, arm64-v8a plus armeabi-v7a, current Play target API level.
@@ -319,7 +327,8 @@ Done so far (September 2026):
 - [ ] Colorblind mode
 - [x] Daily Slush: date-seeded run with daily buffs and debuffs, local best and streak
 - [x] Playtest pass 1: settings on the pause screen, star hints, hard text shadows, 3x3 blender scaling, melt and ice shaders, conveyor rails, four pour styles, loss tips
-- [ ] Steam achievements and leaderboards (roguelike, Daily Slush), Android ads
+- [x] Steam layer: achievements, roguelike and Daily Slush leaderboards, rich presence, overlay pause (waiting on the GodotSteam extension and a real app ID)
+- [ ] Android ads
 
 ## Team and decisions
 
