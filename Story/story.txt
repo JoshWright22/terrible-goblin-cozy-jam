@@ -146,8 +146,8 @@ The conveyor is now technically a rollercoaster. Gus has been riding it all morn
 The belt runs faster, stalls now and then, and the rush customers love it.
 
 [carnival 17] Rain Delay
-Rain over the carnival. Gus is sheltering in your stand and eating the stock.
-The power keeps cutting out, and everyone is suddenly allergic to something.
+Gus is waiting out the rain in your stand. He brought a cat. He says it isn't his.
+The cat keeps chewing the power cord, and everyone sneezing at it suddenly remembers their allergies.
 
 [carnival 18] Grand Finale
 The last day of the carnival. Uncle Gus says he is proud of you. That is new.
