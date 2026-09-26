@@ -67,6 +67,8 @@ The full game uses the jam's existing art: 5 fruits × 7 shapes (35 pieces). New
 - Large – an upgrade
 - Fewer blenders (2 of 4) – a day modifier
 
+**Opening progression:** start Summer with one blender on Day 1, then unlock a second on Day 2, a third on Day 3 and the fourth on Day 4. Closed blenders show their opening day; the Day 12 repair modifier still leaves only two working. Early score targets are reduced for the smaller setup and still need a playtest balance pass.
+
 **Customers:** new types reuse the existing customer sprites. They're told apart by color tints and a small icon badge (for example a star for the critic or a clock for the rusher), not by new art.
 
 - **Regular:** normal patience and tolerance.
@@ -238,6 +240,8 @@ Done so far (September 2026):
 - [x] Day select calendar, day intro card, day end screen with stars, in-game day timer
 - [x] Sunset tint over each day, night shift and power outage effects
 - [x] Smoothie pour scene transition, painted board text
+- [x] Calendar footer keeps Style beside Endless; star counts use drawn icons, and calendar tiles, Style swatches and board controls paint on with the text
+- [x] Summer starts with one blender and opens one more each day through Day 4
 - [x] Touch rotate (second finger tap) and always-on order bubbles on mobile
 - [ ] Balance pass on star targets (current values are first guesses)
 - [x] Style unlocks: blender, wall, conveyor, transition and board paint colors

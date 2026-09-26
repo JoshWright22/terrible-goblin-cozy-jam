@@ -12,4 +12,5 @@ shapes = PackedStringArray("1x1", "2x1", "3x1")
 max_difficulty = "EASY"
 patience_scale = 1.4
 duration = 120
-star_scores = Array[int]([1500, 4000, 7000])
+star_scores = Array[int]([1000, 2800, 5000])
+blender_count = 1

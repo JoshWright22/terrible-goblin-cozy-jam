@@ -15,7 +15,7 @@ extends CanvasLayer
 func _ready() -> void:
 	var day: DayConfig = GameManager.current_day
 	var stars := day.stars_for_score(GameManager.score)
-	_title_lbl.text = "Day %d done!" % day.day_number if stars > 0 else "Day %d: no stars" % day.day_number
+	_title_lbl.text = "Day %d done!" % day.day_number if stars > 0 else "Day %d: try again!" % day.day_number
 	_score_lbl.text = "Score: %d" % GameManager.score
 	_note_lbl.text = _note_for(day, stars)
 	var unlocked := Cosmetics.newly_unlocked(GameManager.stars_before_day, SaveManager.total_stars())
@@ -33,6 +33,8 @@ func _ready() -> void:
 	_menu_btn.pressed.connect(_on_menu)
 
 	BoardPaint.apply(self, true, 0.4)
+	BoardPaint.paint_tree($Stars, 0.5, false)
+	BoardPaint.paint_tree($ButtonBox, 0.8, false)
 	_play_in(stars)
 
 func _note_for(day: DayConfig, stars: int) -> String:
@@ -41,7 +43,7 @@ func _note_for(day: DayConfig, stars: int) -> String:
 	if not GameManager.has_next_day():
 		return "%s complete!" % GameManager.current_campaign.title
 	if stars < 3:
-		return "%d points for the next star" % day.star_scores[stars]
+		return "Next goal: %d points" % day.star_scores[stars]
 	return "Perfect day!"
 
 func _play_in(stars: int) -> void:

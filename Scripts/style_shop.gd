@@ -7,16 +7,16 @@ const SELECTED_BORDER := Color(1.0, 0.84, 0.3)
 const NORMAL_BORDER := Color(0.24, 0.13, 0.05)
 
 @onready var _rows: VBoxContainer = $Board/Rows
-@onready var _stars_lbl: Label = $Board/StarsLabel
-@onready var _hint_lbl: Label = $Board/HintLabel
+@onready var _stars_box: HBoxContainer = $Board/StarsBox
+@onready var _hint_box: HBoxContainer = $Board/HintBox
 @onready var _back_btn: TextureButton = $BackButton
 
 var _swatches: Dictionary = {}   # category -> Array[Button]
 
 func _ready() -> void:
 	AudioManager.start_menu_music()
-	_stars_lbl.text = "%d stars" % SaveManager.total_stars()
-	_hint_lbl.text = "Earn stars to unlock more"
+	_stars_box.add_child(BoardPaint.star_row([str(SaveManager.total_stars()), BoardPaint.STAR], 60, true))
+	_set_hint(["Earn", BoardPaint.STAR, "to unlock more"])
 	for category in Cosmetics.OPTIONS:
 		_rows.add_child(_make_row(category))
 	_refresh()
@@ -25,9 +25,27 @@ func _ready() -> void:
 	_back_btn.pressed.connect(func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.daySelectScene)
 	)
-	for lbl in [$Board/Title, _stars_lbl, _hint_lbl]:
-		BoardPaint.style(lbl)
-		BoardPaint.paint_on(lbl, 0.2)
+	BoardPaint.style($Board/Title)
+	BoardPaint.paint_tree($Board/Title, 0.15)
+	for i in _rows.get_child_count():
+		BoardPaint.paint_tree(_rows.get_child(i), 0.25 + i * 0.12)
+	BoardPaint.paint_tree(_stars_box, 0.7, false)
+	BoardPaint.paint_tree(_hint_box, 0.7, false)
+
+func _set_hint(parts: Array) -> void:
+	for child in _hint_box.get_children():
+		_hint_box.remove_child(child)
+		child.queue_free()
+	_hint_box.add_child(BoardPaint.star_row(parts, 36))
+	BoardPaint.paint_tree(_hint_box, 0.0, false)
+
+func _show_option(option: Dictionary) -> void:
+	if Cosmetics.is_unlocked(option):
+		_set_hint([option["name"]])
+	elif option.has("endless"):
+		_set_hint(["%s: %dk in endless" % [option["name"], int(option["endless"] / 1000)]])
+	else:
+		_set_hint(["%s: %d" % [option["name"], Cosmetics.stars_needed(option)], BoardPaint.STAR, "to unlock"])
 
 func _make_row(category: String) -> HBoxContainer:
 	var row := HBoxContainer.new()
@@ -51,11 +69,10 @@ func _make_row(category: String) -> HBoxContainer:
 		var unlocked := Cosmetics.is_unlocked(option)
 		if unlocked:
 			swatch.pressed.connect(_select.bind(category, i))
-			swatch.mouse_entered.connect(func(): _hint_lbl.text = option["name"])
 		else:
 			swatch.disabled = true
 			swatch.add_child(_lock_badge(option))
-			swatch.mouse_entered.connect(func(): _hint_lbl.text = "%s: unlock at %s" % [option["name"], Cosmetics.requirement_text(option)])
+		swatch.mouse_entered.connect(_show_option.bind(option))
 		ButtonFx.setup(swatch)
 		row.add_child(swatch)
 		buttons.append(swatch)
@@ -72,6 +89,7 @@ func _lock_badge(option: Dictionary) -> Control:
 	var lbl := Label.new()
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ButtonFx.outline_label(lbl, 38, 6)
 	box.add_child(lbl)
 	if option.has("endless"):
@@ -89,7 +107,7 @@ func _lock_badge(option: Dictionary) -> Control:
 func _select(category: String, index: int) -> void:
 	SaveManager.cosmetics[category] = index
 	SaveManager.save_game()
-	_hint_lbl.text = Cosmetics.options(category)[index]["name"]
+	_show_option(Cosmetics.options(category)[index])
 	_refresh()
 
 func _refresh() -> void:

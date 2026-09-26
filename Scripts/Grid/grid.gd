@@ -101,7 +101,16 @@ func _blender_number() -> int:
 	var suffix := String(node.name).trim_prefix("GridScene")
 	return int(suffix) if suffix.is_valid_int() else 1
 
-# Blender Down day: grey it out and remove the tiles so nothing can be dropped in
+# First campaign day this blender is open, so early days can say when it arrives
+func _opening_day() -> int:
+	var number := _blender_number()
+	for d in GameManager.current_campaign.days:
+		if d.blender_count >= number:
+			return d.day_number
+	return 0
+
+# Closed blender: grey it out and remove the tiles so nothing can be dropped in.
+# Early days show when it opens, Blender Down says it's broken
 func _show_out_of_order() -> void:
 	for tile in grid_visuals.get_children():
 		if tile.has_meta("is_occupied"):
@@ -110,13 +119,15 @@ func _show_out_of_order() -> void:
 	if blend_button:
 		blend_button.modulate = Color(0.5, 0.5, 0.55)
 		blend_button.disabled = true
+	var opens := _opening_day()
+	var not_yet := opens > GameManager.current_day.day_number
 	var sign_label := Label.new()
-	sign_label.text = "OUT OF\nORDER"
+	sign_label.text = "OPENS\nDAY %d" % opens if not_yet else "OUT OF\nORDER"
 	sign_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	sign_label.add_theme_font_size_override("font_size", 55)
 	sign_label.add_theme_constant_override("outline_size", 10)
 	sign_label.add_theme_color_override("font_outline_color", Color.BLACK)
-	sign_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.35))
+	sign_label.add_theme_color_override("font_color", Color(1.0, 0.84, 0.45) if not_yet else Color(1.0, 0.45, 0.35))
 	sign_label.size = Vector2(300, 120)
 	sign_label.position = grid_anchor.position - sign_label.size / 2.0
 	sign_label.rotation_degrees = -8.0

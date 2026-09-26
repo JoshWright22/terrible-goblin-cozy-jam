@@ -6,7 +6,7 @@ extends Control
 @onready var _day_lbl: Label = $DayLabel
 @onready var _title_lbl: Label = $TitleLabel
 @onready var _intro_lbl: Label = $IntroLabel
-@onready var _goal_lbl: Label = $GoalLabel
+@onready var _goal_box: HBoxContainer = $GoalBox
 @onready var _start_btn: TextureButton = $StartButton
 
 var _closing: bool = false
@@ -17,8 +17,12 @@ func _ready() -> void:
 	_day_lbl.text = "DAY %d" % day.day_number
 	_title_lbl.text = day.title
 	_intro_lbl.text = day.intro_text
-	_goal_lbl.text = "Stars at %d / %d / %d points" % [day.star_scores[0], day.star_scores[1], day.star_scores[2]]
+	if day.day_number > 1 and day.blender_count > GameManager.load_day(day.day_number - 1).blender_count:
+		_intro_lbl.text += "\nA new blender is open!"
+	_goal_box.add_child(BoardPaint.star_row([BoardPaint.STAR, "%d / %d / %d points" % [day.star_scores[0], day.star_scores[1], day.star_scores[2]]], 52, true))
 	BoardPaint.apply(self, true, 0.25)
+	BoardPaint.paint_tree(_goal_box, 0.7, false)
+	BoardPaint.paint_tree(_start_btn, 0.85, false)
 	ButtonFx.setup(_start_btn)
 	_start_btn.pressed.connect(_close)
 	_play_in()

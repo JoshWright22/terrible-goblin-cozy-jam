@@ -44,27 +44,22 @@ offset_right = 1540.0
 offset_bottom = 820.0
 theme_override_constants/separation = 16
 
-[node name="StarsLabel" type="Label" parent="Board"]
+[node name="StarsBox" type="HBoxContainer" parent="Board"]
 layout_mode = 0
 offset_left = 400.0
 offset_top = 830.0
 offset_right = 800.0
 offset_bottom = 900.0
-theme_override_colors/font_color = Color(1, 0.84, 0.45, 1)
-theme_override_font_sizes/font_size = 60
-text = "0 stars"
-vertical_alignment = 1
+mouse_filter = 2
 
-[node name="HintLabel" type="Label" parent="Board"]
+[node name="HintBox" type="HBoxContainer" parent="Board"]
 layout_mode = 0
 offset_left = 820.0
 offset_top = 830.0
 offset_right = 1540.0
 offset_bottom = 900.0
-theme_override_font_sizes/font_size = 48
-text = "hint"
-horizontal_alignment = 2
-vertical_alignment = 1
+mouse_filter = 2
+alignment = 2
 
 [node name="BackButton" type="TextureButton" parent="."]
 offset_left = 40.0

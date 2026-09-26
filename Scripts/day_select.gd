@@ -9,7 +9,8 @@ const DONE_COLOR := Color(0.55, 0.75, 0.4)
 @onready var _title: Label = $Board/Title
 @onready var _grid: GridContainer = $Board/DayGrid
 @onready var _locked_lbl: Label = $Board/LockedLabel
-@onready var _stars_lbl: Label = $Board/StarsLabel
+@onready var _locked_stars: VBoxContainer = $Board/LockedStars
+@onready var _stars_box: HBoxContainer = $Board/StarsBox
 @onready var _endless_btn: Button = $Board/EndlessButton
 @onready var _back_btn: TextureButton = $BackButton
 @onready var _style_btn: Button = $Board/StyleButton
@@ -23,7 +24,7 @@ func _ready() -> void:
 	if GameManager.endless_unlocked():
 		_endless_btn.text = "Endless  (best %d)" % SaveManager.endless_best
 	else:
-		_endless_btn.text = "Endless: finish summer to unlock"
+		_endless_btn.text = "Endless: beat summer"
 		_endless_btn.disabled = true
 	ButtonFx.setup(_endless_btn)
 	_endless_btn.pressed.connect(func(): _go(GameManager.start_endless))
@@ -45,6 +46,8 @@ func _ready() -> void:
 	)
 	BoardPaint.style(_locked_lbl)
 	_show_campaign()
+	for item in [_prev_btn, _next_btn, _style_btn, _endless_btn]:
+		BoardPaint.paint_tree(item, 0.5, false)
 
 func _flip(direction: int) -> void:
 	var index := GameManager.campaigns.find(GameManager.current_campaign)
@@ -56,27 +59,44 @@ func _flip(direction: int) -> void:
 func _show_campaign() -> void:
 	var campaign := GameManager.current_campaign
 	_title.text = campaign.title
-	for child in _grid.get_children():
-		child.queue_free()
+	for box in [_grid, _stars_box, _locked_stars]:
+		for child in box.get_children():
+			box.remove_child(child)
+			child.queue_free()
 
 	var unlocked := GameManager.campaign_unlocked(campaign)
 	_grid.visible = unlocked
 	_locked_lbl.visible = not unlocked
+	_locked_stars.visible = not unlocked
+	var stars_row: HBoxContainer
 	if unlocked:
 		for day_number in range(1, campaign.day_count() + 1):
-			_grid.add_child(_make_tile(campaign, day_number))
-		_stars_lbl.text = "%d / %d stars" % [SaveManager.campaign_stars(campaign.id), campaign.day_count() * 3]
+			var tile := _make_tile(campaign, day_number)
+			_grid.add_child(tile)
+			# Tiles paint on in reading order, one swish per row
+			var index := day_number - 1
+			BoardPaint.paint_tree(tile, 0.25 + index * 0.035, index % _grid.columns == 0)
+		stars_row = BoardPaint.star_row(["%d / %d" % [SaveManager.campaign_stars(campaign.id), campaign.day_count() * 3], BoardPaint.STAR], 60, true)
 	else:
-		_locked_lbl.text = "%s\nEarn %d stars to open\n(you have %d)" % [campaign.unlock_hint, campaign.stars_to_unlock, SaveManager.total_stars()]
-		_stars_lbl.text = ""
+		_locked_lbl.text = campaign.unlock_hint
 		BoardPaint.paint_on(_locked_lbl, 0.1)
+		var need := BoardPaint.star_row(["Earn %d" % campaign.stars_to_unlock, BoardPaint.STAR, "to open"], 70)
+		var have := BoardPaint.star_row(["You have %d" % SaveManager.total_stars(), BoardPaint.STAR], 56, true)
+		_locked_stars.add_child(need)
+		_locked_stars.add_child(have)
+		BoardPaint.paint_tree(need, 0.35)
+		BoardPaint.paint_tree(have, 0.6)
+		stars_row = BoardPaint.star_row(["%d" % SaveManager.total_stars(), BoardPaint.STAR], 60, true)
+	stars_row.alignment = BoxContainer.ALIGNMENT_BEGIN
+	stars_row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_stars_box.add_child(stars_row)
+	BoardPaint.paint_tree(stars_row, 0.4, false)
 
 	var many := GameManager.campaigns.size() > 1
 	_prev_btn.visible = many
 	_next_btn.visible = many
-	for lbl in [_title, _stars_lbl]:
-		BoardPaint.style(lbl)
-		BoardPaint.paint_on(lbl, 0.1)
+	BoardPaint.style(_title)
+	BoardPaint.paint_on(_title, 0.1)
 
 func _make_tile(campaign: Campaign, day_number: int) -> Button:
 	var unlocked := day_number <= SaveManager.unlocked_day(campaign.id)
@@ -96,6 +116,7 @@ func _make_tile(campaign: Campaign, day_number: int) -> Button:
 	var number := Label.new()
 	number.text = str(day_number) if unlocked else "?"
 	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	number.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ButtonFx.outline_label(number, 75)
 	box.add_child(number)
 
