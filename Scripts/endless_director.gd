@@ -43,7 +43,8 @@ const TWISTS := [
 var _queue: Array = []
 var _active_twists: Array = []   # in the order they arrived, for Quiet Day
 var _timer: float = FIRST_TWIST_TIME
-var _layer: CanvasLayer
+var _layer: CanvasLayer         # announcements and the upgrade choice, above everything
+var _board_layer: CanvasLayer   # status board, under the pause menu so it dims with the shop
 var _next_score: int = SCORE_STEP
 var _choosing: bool = false
 var _offers: Array = []
@@ -55,32 +56,51 @@ var _run_time: float = 0.0
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	# The daily seed fixes the twist order, upgrade offers and belt fruit for everyone that day
+	var roll := {}
 	if GameManager.daily_run:
-		seed(GameManager.daily_seed())
-	_queue = TWISTS.duplicate()
-	_queue.shuffle()
-	_queue.push_front(FIRST_TWIST)
+		# Leaves the RNG on the daily seed, so upgrade offers and belt fruit match for everyone too
+		roll = daily_roll()
+		_queue = roll["queue"]
+	else:
+		_queue = TWISTS.duplicate()
+		_queue.shuffle()
+		_queue.push_front(FIRST_TWIST)
 	_layer = CanvasLayer.new()
 	_layer.layer = 11
 	add_child(_layer)
+	_board_layer = CanvasLayer.new()
+	_board_layer.layer = 4
+	add_child(_board_layer)
 	_build_status_board()
 	if GameManager.daily_run:
-		_start_daily()
+		_start_daily(roll)
 	_update_status()
 
-# Daily Slush opens with two campaign twists as debuffs and two free upgrades as buffs
-func _start_daily() -> void:
-	var twists := GameManager.twists()
+# Today's Daily Slush, the same for everyone: the twist order plus the starting debuffs and buffs.
+# The Daily Slush board shows this before the run, so it has to roll the same way every time
+static func daily_roll() -> Dictionary:
+	seed(GameManager.daily_seed())
+	var queue: Array = TWISTS.duplicate()
+	queue.shuffle()
+	queue.push_front(FIRST_TWIST)
 	var debuffs: Array = []
 	for i in randi_range(DAILY_DEBUFFS.x, DAILY_DEBUFFS.y):
-		var twist: Dictionary = _queue.pop_back()
+		debuffs.append(queue.pop_back())
+	# A fresh run can take any upgrade except Quiet Day, which needs a twist to undo
+	var buffs: Array = UPGRADES.filter(func(upgrade): return upgrade["id"] != "quiet")
+	buffs.shuffle()
+	buffs = buffs.slice(0, randi_range(DAILY_BUFFS.x, DAILY_BUFFS.y))
+	return {"queue": queue, "debuffs": debuffs, "buffs": buffs}
+
+# Daily Slush opens with a few campaign twists as debuffs and a few free upgrades as buffs
+func _start_daily(roll: Dictionary) -> void:
+	var twists := GameManager.twists()
+	var debuffs: Array = []
+	for twist in roll["debuffs"]:
 		twists.set(twist["key"], twist["value"])
 		_active_twists.append(twist)
 		debuffs.append(twist["name"])
-	var buffs: Array = UPGRADES.filter(func(upgrade): return upgrade["id"] != "quiet" and _can_offer(upgrade))
-	buffs.shuffle()
-	buffs = buffs.slice(0, randi_range(DAILY_BUFFS.x, DAILY_BUFFS.y))
+	var buffs: Array = roll["buffs"]
 	for buff in buffs:
 		_apply_upgrade(buff["id"])
 	_announce("Daily Slush", "Buffs: %s\nDebuffs: %s" % [
@@ -102,7 +122,7 @@ func _build_status_board() -> void:
 	box.content_margin_top = 6.0
 	box.content_margin_bottom = 6.0
 	panel.add_theme_stylebox_override("panel", box)
-	_layer.add_child(panel)
+	_board_layer.add_child(panel)
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 28)
 	row.mouse_filter = Control.MOUSE_FILTER_IGNORE

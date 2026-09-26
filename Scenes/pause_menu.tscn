@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_pm"]
 [ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="5_pm"]
 [ext_resource type="Script" path="res://Scripts/gear_icon.gd" id="6_pm"]
+[ext_resource type="Texture2D" path="res://Assets/sprites/ui sprites/blankButtonSprite.PNG" id="7_pm"]
 
 [node name="PauseMenu" type="CanvasLayer"]
 layer = 10
@@ -68,21 +69,24 @@ texture_normal = ExtResource("3_pm")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="SettingsButton" type="Button" parent="ButtonBox"]
+[node name="SettingsButton" type="TextureButton" parent="ButtonBox"]
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 size_flags_horizontal = 4
 action_mode = 0
+texture_normal = ExtResource("7_pm")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Gear" type="Control" parent="ButtonBox/SettingsButton"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 34.0
-offset_top = 34.0
-offset_right = -34.0
-offset_bottom = -34.0
+offset_left = 36.0
+offset_top = 36.0
+offset_right = -36.0
+offset_bottom = -36.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2

@@ -8,6 +8,7 @@ const PAINT := Color(1.0, 0.97, 0.9)
 const ACCENT_PAINT := Color(1.0, 0.84, 0.45)
 const EDGE := Color(0.24, 0.13, 0.05, 0.75)
 const STAR := "*"   # marks where star_row draws a star icon
+const PAINT_ON := false   # the brush reveal is switched off for now, text shows straight away
 
 static func apply(root: Node, reveal: bool = true, delay: float = 0.15) -> void:
 	var i := 0
@@ -40,7 +41,7 @@ static func paint_on(lbl: Control, delay: float = 0.0, sound: bool = true) -> vo
 	var mat := lbl.material as ShaderMaterial
 	if mat == null:
 		return
-	if not SaveManager.paint_on:
+	if not PAINT_ON:
 		_show_painted(mat)
 		return
 	if not (lbl is Label or lbl is RichTextLabel):
@@ -93,11 +94,11 @@ static func paint_tree(root: Control, delay: float = 0.0, sound: bool = true, st
 	for item in items:
 		if not item.material is ShaderMaterial:
 			item.material = _paint_material(0.0, 0.12)
-		if SaveManager.paint_on:
+		if PAINT_ON:
 			(item.material as ShaderMaterial).set_shader_parameter("reveal", 0.0)
 		else:
 			_show_painted(item.material)
-	if not SaveManager.paint_on:
+	if not PAINT_ON:
 		return
 	await root.get_tree().process_frame
 	if not is_instance_valid(root) or root.is_queued_for_deletion():
@@ -151,7 +152,7 @@ static func _sweep(item: Control, mat: ShaderMaterial, delay: float, sound: bool
 	tw.tween_method(func(v: float): mat.set_shader_parameter("reveal", v), 0.0, 1.0, stroke) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 
-# Paint-on turned off in settings: skip the stroke and show it finished, however wide it is
+# Paint-on switched off: skip the stroke and show it finished, however wide it is
 static func _show_painted(mat: ShaderMaterial) -> void:
 	mat.set_shader_parameter("label_width", 100000.0)
 	mat.set_shader_parameter("line_count", 1.0)

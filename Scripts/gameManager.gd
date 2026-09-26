@@ -29,6 +29,7 @@ const CAMPAIGN_PATHS := [
 ]
 @onready var daySelectScene = load("res://Scenes/Primary/day_select.tscn")
 @onready var styleScene = load("res://Scenes/Primary/style_shop.tscn")
+@onready var dailyScene = load("res://Scenes/Primary/daily_slush.tscn")
 var campaigns: Array[Campaign] = []
 var current_campaign: Campaign = null
 var current_day: DayConfig = null   # null = endless mode

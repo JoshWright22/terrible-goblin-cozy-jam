@@ -5,6 +5,7 @@ extends CanvasLayer
 const NIGHT_TINT := Color(0.72, 0.74, 0.95)
 const POWER_ON_TIME := Vector2(9.0, 15.0)   # random range between outages
 const POWER_OFF_TIME := 3.0
+const FLASHLIGHT_MASK := preload("res://Shaders/flashlight_mask.gdshader")
 
 @onready var _night: ColorRect = $NightOverlay
 @onready var _outage: ColorRect = $OutageOverlay
@@ -16,6 +17,7 @@ var _day: DayConfig
 var _control: Node = null
 var _tint: CanvasModulate = null
 var _power_timer: float = 0.0
+var _order_mask: ShaderMaterial = null
 
 func _ready() -> void:
 	_day = GameManager.current_day
@@ -57,13 +59,31 @@ func _process(delta: float) -> void:
 		_tint.color = Color.WHITE.lerp(target, clampf(progress, 0.0, 1.0))
 
 	if _day.night_shift:
-		var view := get_viewport().get_visible_rect().size
-		var mat := _night.material as ShaderMaterial
-		mat.set_shader_parameter("light_uv", get_viewport().get_mouse_position() / view)
-		mat.set_shader_parameter("aspect", view.x / view.y)
+		_update_flashlight()
 
 	if _day.power_outage and not GameManager.paused:
 		_update_power(delta)
+
+# Moves the light to the cursor and keeps every order bubble hidden outside it.
+# Fruit pieces already read the same light in their own shader
+func _update_flashlight() -> void:
+	var view := get_viewport().get_visible_rect().size
+	var light := get_viewport().get_mouse_position() / view
+	RenderingServer.global_shader_parameter_set("flashlight", Vector4(light.x, light.y, view.x / view.y, 1.0))
+	if _order_mask == null:
+		_order_mask = ShaderMaterial.new()
+		_order_mask.shader = FLASHLIGHT_MASK
+	for node in get_tree().get_nodes_in_group("order_ui"):
+		_mask_tree(node)
+
+func _mask_tree(node: Node) -> void:
+	if node is CanvasItem and node.material == null:
+		node.material = _order_mask
+	for child in node.get_children():
+		_mask_tree(child)
+
+func _exit_tree() -> void:
+	RenderingServer.global_shader_parameter_set("flashlight", Vector4(0.5, 0.5, 1.0, 0.0))
 
 func _update_power(delta: float) -> void:
 	_power_timer -= delta

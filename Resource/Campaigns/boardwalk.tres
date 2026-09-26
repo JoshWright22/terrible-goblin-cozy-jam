@@ -18,8 +18,8 @@
 [resource]
 script = ExtResource("1_campaign")
 id = "boardwalk"
-title = "Boardwalk Nights"
+title = "Summer Nights"
 days = Array[ExtResource("2_day")]([ExtResource("d1"), ExtResource("d2"), ExtResource("d3"), ExtResource("d4"), ExtResource("d5"), ExtResource("d6"), ExtResource("d7"), ExtResource("d8"), ExtResource("d9"), ExtResource("d10"), ExtResource("d11"), ExtResource("d12")])
 stars_to_unlock = 24
-unlock_hint = "The boardwalk opens after dark."
+unlock_hint = "Summer keeps going after dark."
 end_tint = Color(0.78, 0.74, 0.95, 1)

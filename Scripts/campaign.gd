@@ -4,7 +4,7 @@ class_name Campaign
 # A set of days played in order on the calendar
 
 @export var id: String = "summer"
-@export var title: String = "Summer Campaign"
+@export var title: String = "Summer Days"
 @export var days: Array[DayConfig] = []
 @export var stars_to_unlock: int = 0      # total stars from earlier campaigns
 @export var unlock_hint: String = ""

@@ -24,7 +24,7 @@
 [resource]
 script = ExtResource("1_campaign")
 id = "summer"
-title = "Summer Campaign"
+title = "Summer Days"
 days = Array[ExtResource("2_day")]([ExtResource("d1"), ExtResource("d2"), ExtResource("d3"), ExtResource("d4"), ExtResource("d5"), ExtResource("d6"), ExtResource("d7"), ExtResource("d8"), ExtResource("d9"), ExtResource("d10"), ExtResource("d11"), ExtResource("d12"), ExtResource("d13"), ExtResource("d14"), ExtResource("d15"), ExtResource("d16"), ExtResource("d17"), ExtResource("d18")])
 stars_to_unlock = 0
 unlock_hint = ""

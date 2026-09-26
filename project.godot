@@ -58,3 +58,10 @@ timers/tooltip_delay_sec=0.25
 
 rendering_device/driver.windows="d3d12"
 environment/defaults/default_clear_color=Color(1, 0.99, 0.82, 1)
+
+[shader_globals]
+
+flashlight={
+"type": "vec4",
+"value": Vector4(0.5, 0.5, 1.7778, 0)
+}

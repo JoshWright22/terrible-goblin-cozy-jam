@@ -7,7 +7,6 @@ var music_volume: float = 1.0
 var sfx_volume: float = 1.0
 var fullscreen: bool = false
 var screen_shake: bool = true
-var paint_on: bool = true          # boards paint their text on instead of showing it at once
 var mute_unfocused: bool = false   # desktop only: go quiet when the window loses focus
 
 # Progress
@@ -56,7 +55,6 @@ func save_game() -> void:
 	cfg.set_value("settings", "sfx_volume", sfx_volume)
 	cfg.set_value("settings", "fullscreen", fullscreen)
 	cfg.set_value("settings", "screen_shake", screen_shake)
-	cfg.set_value("settings", "paint_on", paint_on)
 	cfg.set_value("settings", "mute_unfocused", mute_unfocused)
 	cfg.set_value("progress", "unlocked_days", unlocked_days)
 	cfg.set_value("progress", "day_stars", day_stars)
@@ -80,7 +78,6 @@ func _load_file() -> void:
 	sfx_volume = cfg.get_value("settings", "sfx_volume", sfx_volume)
 	fullscreen = cfg.get_value("settings", "fullscreen", fullscreen)
 	screen_shake = cfg.get_value("settings", "screen_shake", screen_shake)
-	paint_on = cfg.get_value("settings", "paint_on", paint_on)
 	mute_unfocused = cfg.get_value("settings", "mute_unfocused", mute_unfocused)
 	unlocked_days = cfg.get_value("progress", "unlocked_days", unlocked_days)
 	day_stars = cfg.get_value("progress", "day_stars", day_stars)

@@ -24,13 +24,15 @@ func _ready() -> void:
 	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 50)
 	ButtonFx.style_text_button(_daily_btn, Color(0.55, 0.72, 0.45), 50)
 	var unlocked := GameManager.endless_unlocked()
-	_endless_btn.tooltip_text = "Best %d" % SaveManager.endless_best if unlocked else "Beat Summer to unlock"
-	_daily_btn.tooltip_text = "Today's best %d" % SaveManager.todays_daily_best() if unlocked else "Beat Summer to unlock"
+	_endless_btn.tooltip_text = "Best %d" % SaveManager.endless_best if unlocked else "Beat Summer Days to unlock"
+	_daily_btn.tooltip_text = "Today's best %d" % SaveManager.todays_daily_best() if unlocked else "Beat Summer Days to unlock"
 	for btn in [_endless_btn, _daily_btn]:
 		btn.disabled = not unlocked
 		ButtonFx.setup(btn)
 	_endless_btn.pressed.connect(func(): _go(GameManager.start_endless))
-	_daily_btn.pressed.connect(func(): _go(GameManager.start_daily))
+	_daily_btn.pressed.connect(func():
+		get_tree().call_group("hostController", "transition_to_scene", GameManager.dailyScene)
+	)
 
 	ButtonFx.style_text_button(_style_btn, Color(0.85, 0.5, 0.65), 50)
 	ButtonFx.setup(_style_btn)

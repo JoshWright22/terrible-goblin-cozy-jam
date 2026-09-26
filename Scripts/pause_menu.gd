@@ -4,7 +4,7 @@ signal resume_requested
 
 @onready var _resume_btn:   TextureButton = $ButtonBox/ResumeButton
 @onready var _exit_btn:     TextureButton = $ButtonBox/ExitButton
-@onready var _settings_btn: Button        = $ButtonBox/SettingsButton
+@onready var _settings_btn: TextureButton = $ButtonBox/SettingsButton
 @onready var _dimmer:       ColorRect     = $Dimmer
 @onready var _bg:           Sprite2D      = $BgSprite
 @onready var _label:        Label         = $PausedLabel
@@ -19,23 +19,9 @@ func _ready() -> void:
 	BoardPaint.apply(self, true, 0.2)
 	_setup_btn(_resume_btn)
 	_setup_btn(_exit_btn)
-	_style_round(_settings_btn)
 	_setup_btn(_settings_btn)
 	_play_in()
 
-# Tan disc with an ink outline, same look as the play and exit sprites
-func _style_round(btn: Button) -> void:
-	for state in ["normal", "hover", "pressed", "focus"]:
-		var box := StyleBoxFlat.new()
-		box.bg_color = Color(0.86, 0.72, 0.54)
-		if state == "hover":
-			box.bg_color = box.bg_color.lightened(0.08)
-		elif state == "focus":
-			box.draw_center = false
-		box.set_corner_radius_all(80)
-		box.set_border_width_all(6)
-		box.border_color = Color(0.2, 0.13, 0.08)
-		btn.add_theme_stylebox_override(state, box)
 
 func _setup_btn(btn: BaseButton) -> void:
 	btn.pivot_offset = btn.custom_minimum_size / 2.0

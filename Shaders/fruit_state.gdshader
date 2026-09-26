@@ -4,6 +4,9 @@ shader_type canvas_item;
 // melt 0 -> 1: the fruit warms up, slumps into uneven drips and fades away at the end.
 // frozen: icy tint with frosted edges, white cracks, and icicles hanging off the underside.
 // Pieces rotate, so the script passes which way is down in texture space.
+// Night Shift: fruit outside the flashlight disappears.
+
+#include "res://Shaders/flashlight.gdshaderinc"
 
 uniform float melt : hint_range(0.0, 1.0) = 0.0;
 uniform bool frozen = false;
@@ -118,4 +121,5 @@ void fragment() {
 		col = iced(TEXTURE, UV, TEXTURE_PIXEL_SIZE, col);
 	}
 	COLOR = col * tint;
+	COLOR.a *= 1.0 - flashlight_shade(SCREEN_UV);
 }

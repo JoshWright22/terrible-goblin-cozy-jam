@@ -78,9 +78,9 @@ The full game uses the jam's existing art: 5 fruits × 7 shapes (35 pieces). New
 - **Double order:** wants two smoothies.
 - **VIP:** high value, appears once per day on late days.
 
-## Campaign
+## Campaign 1: Summer Days
 
-The campaign runs 18 days, each with its own twist. To keep this fast to build, each day is a `DayConfig` resource. Most twists are just different values in it, so about half the days need no new code.
+A classic summer: sunshine, the beach, mango season and a festival to finish. The campaign runs 18 days, each with its own twist. To keep this fast to build, each day is a `DayConfig` resource. Most twists are just different values in it, so about half the days need no new code.
 
 **DayConfig fields:** fruits allowed, shapes allowed, grid size, belt speed, customer patience, % tolerance, customer mix, day length, target score (1/2/3 stars), twist ID, sky/shader preset.
 
@@ -99,8 +99,8 @@ The campaign runs 18 days, each with its own twist. To keep this fast to build, 
 | 11 | Brain Freeze | Some pieces can't rotate | Small |
 | 12 | Food Critics | CRITIC customers want 90%+ accuracy and pay triple | Small |
 | 13 | Mystery Menu | Order percentages partly hidden | Small |
-| 14 | Night Shift | Dark screen, light around the cursor | Shader |
-| 15 | Power Outage | Blend button flickers / cooldown | Small + shader |
+| 14 | Bonfire Night | Dark screen, light around the cursor. Orders and fruit only show inside the light | Shader |
+| 15 | Summer Storm | Thunderstorm cuts the power, blend button flickers / cooldown | Small + shader |
 | 16 | Double Trouble | Customers order two smoothies | Medium |
 | 17 | VIP Visit | One big-tipping VIP plus a crowd | Medium |
 | 18 | Summer Festival | Finale remixing earlier twists | Setting |
@@ -113,9 +113,9 @@ Playtest changes: mango got its own day instead of sharing Day 4 with a flat 80%
 
 **Stars:** each star is still a score target, tuned to mean something. Star 1 is roughly what surviving the day earns, star 2 what serving every order accurately earns, star 3 an ambitious high score. Hovering a star shows its target. Losing, or ending a day short of three stars, shows a tip for scoring higher.
 
-## Campaign 2: Boardwalk Nights
+## Campaign 2: Summer Nights
 
-Opens at 24 total stars. Twelve evening days, lit with a purple dusk tint, built around five mechanics that need no new art:
+The twist on summer: the same season after dark on the boardwalk, with lanterns, magic fruit and midnight critics. Opens at 24 total stars. Twelve evening days, lit with a purple dusk tint, built around five mechanics that need no new art:
 
 | Mechanic | What happens |
 | --- | --- |
@@ -320,7 +320,7 @@ Done so far (September 2026):
 - [x] Unlimited roguelike: score-based upgrade choices, escalating survival pressure, and upgrades that reset each run
 - [ ] Playtest roguelike milestone costs, upgrade strength and pressure growth
 - [x] Style unlocks: blender, wall, conveyor, transition and board paint colors
-- [x] Second campaign (Boardwalk Nights) with five new mechanics
+- [x] Second campaign (Summer Nights) with five new mechanics
 - [x] Hands-on day 1 tutorial, redone settings and credits screens
 - [ ] Shop upgrades (gameplay unlocks)
 - [x] Settings: fullscreen toggle
