@@ -10,15 +10,15 @@
 # version and a touch version split by ||
 
 [summer 1] Opening Day
-Uncle Gus left you his beach smoothie shack and fled the country. He left a note telling you the shack was completely legal.
+Uncle Gus left you his beach smoothie shack and fled the country. He left his journal on the counter. The first entry says the shack is completely legal.
 In the back you found two fruit crates.
 
 [summer 2] New Delivery
-Blueberries arrived. Nobody ordered them. A note from Uncle Gus assures you there is nothing wrong with them.
+Blueberries arrived. Nobody ordered them. Gus's journal: "The blueberries are fine. The blueberries are FINE."
 A third fruit crate now sits out back.
 
 [summer 3] Odd Shapes
-Gus left his "custom" fruit cutter behind. His note says it only cuts shapes he describes as spiritual.
+Gus's journal: "Bought a fruit cutter off a guy. It only cuts spiritual shapes. No refunds."
 The fruit comes out bent, but you can right click a piece to spin it into place.
 
 [summer 4] Mango Season
@@ -34,23 +34,23 @@ A man hands you a laminated card listing every fruit that has tried to kill him.
 Some orders now come with a fruit marked NO. Keep it out of the cup.
 
 [summer 7] Broken Blender
-Gus's note on the blenders said hot wash, tumble dry. You followed it.
+Gus's journal: "Blenders: hot wash, tumble dry." You followed it.
 The blenders shrank to 3x3.
 
 [summer 8] Belt on Overdrive
-Another note from Gus: do not press the red button. It has been pressed.
+Gus's journal, page 40: "Never press the red button under the belt." You found this page this morning. You pressed the button yesterday.
 The belt now runs a lot faster than it should.
 
 [summer 9] Rotten Batch
-Something was living in the blenders. Gus's notes call it Kevin and ask you not to feed him.
-Kevin has moved out, but his rotten fruit is stuck in the blenders.
+Gus's journal: "Cleaned the blenders today." The entry is from two summers ago.
+Old fruit has set like cement in the bottom of the blenders. You'll have to pack around it.
 
 [summer 10] Heatwave
 A postcard from Gus arrived. It says "hot here too." There is no return address.
 Fruit left on the belt too long melts away.
 
 [summer 11] Brain Freeze
-Gus's note says the freezer runs a little cold. It froze the fruit, the mop and Kevin, who came back.
+Gus's journal: "Freezer runs a little cold." It froze the fruit, the mop and a seagull. The seagull is fine.
 Frozen pieces won't turn.
 
 [summer 12] Food Critics
@@ -66,7 +66,7 @@ Someone swears they saw Gus at the bonfire. Then the shack blew a fuse.
 The lights are out, so you work by flashlight.
 
 [summer 15] Summer Storm
-Gus's emergency plan is taped to the wall. It says "run." A storm is rolling in.
+Gus's journal, under "storms": "Run." A storm is rolling in.
 The power keeps cutting out, and the blenders only work when the lights are on.
 
 [summer 16] Double Trouble
@@ -74,7 +74,7 @@ The volleyball team Gus used to coach won without him. They are starving.
 Some of them want two smoothies.
 
 [summer 17] VIP Visit
-A famous surfer who used to ride with Gus is stopping by. His note says not to ask about the shark.
+A famous surfer who used to ride with Gus is stopping by. Gus's journal: "Do not ask him about the shark."
 The surfer is a VIP and tips like one.
 
 [summer 18] Summer Festival
@@ -90,7 +90,7 @@ The carnival's blenders were bought from a man in a van. The van was Gus's.
 Blend too fast and they overheat.
 
 [carnival 3] Belt Hiccups
-The conveyor used to be a ride. Gus's note says it still remembers.
+The conveyor used to be a ride. Gus's journal: "It still remembers." You don't ask what.
 It stalls every so often.
 
 [carnival 4] Shifty Fruit
