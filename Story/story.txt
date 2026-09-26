@@ -10,7 +10,7 @@
 # version and a touch version split by ||
 
 [summer 1] Opening Day
-Uncle Gus left you his beach smoothie shack and fled the country. He left his journal on the counter. The first entry says the shack is completely legal.
+Uncle Gus left you his beach smoothie shack and fled the country. He left his journal on the counter. The first entry guarantees the shack is completely legal.
 In the back you found two unattended fruit crates.
 
 [summer 2] Odd Shapes
