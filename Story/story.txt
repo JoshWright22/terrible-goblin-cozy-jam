@@ -82,6 +82,153 @@ The summer festival. A postcard arrives with no return address. It says "Save me
 Everything that happened this summer happens today.
 
 [carnival 1] Carnival Day
+The carnival manager hired you on the spot after reading a reference letter signed "G." He also handed you a bucket of prize tickets and a wheel.
+Customers marked PRIZE spin the wheel, and good smoothies in a row build a combo.
+
+[carnival 2] Hot Blenders
+The carnival's blenders came from a man in a van who asked for cash and left fast. The motors already smell like a campfire.
+Blend too fast and they overheat.
+
+[carnival 3] Belt Hiccups
+Your conveyor used to be the kiddie train. It still stops every so often to let passengers off.
+The belt stalls now and then.
+
+[carnival 4] Shifty Fruit
+The magician next door is practising a trick where things turn into other things. He keeps aiming it at your fruit crates.
+Fruit on the belt keeps changing until you grab it.
+
+[carnival 5] Short Memory
+Your stand is at the exit of the Spin Cycle. People order, then need to lie down for a moment.
+Orders fade after a moment, but you can hover a customer to see theirs again.
+
+[carnival 6] Haunted House
+Your stand has been moved inside the haunted house, which is only scary because nobody paid the light bill. One of the ghosts is wearing sandals.
+It is pitch black, so you work by flashlight.
+
+[carnival 7] Overtime
+Someone sold twice as many tickets as the carnival printed. The extras are hand drawn, in handwriting you recognise from the journal.
+Everyone is in a hurry, and the blenders are working hard enough to overheat.
+
+[carnival 8] Mixed Up
+The magician tried to turn a strawberry into a dove in front of a crowd. The dove came out allergic to strawberries, and so did the crowd.
+The fruit is still changing, and some orders now come with a fruit marked NO.
+
+[carnival 9] Blackout
+The ferris wheel has been plugged into your outlet. The sticky note on the plug says "Borrowing this. G."
+Every time the wheel turns, your power flickers and the belt stalls.
+
+[carnival 10] Judging Day
+An entry form for the food contest arrived with your stand's name on it, signed "G." The judges have been eating funnel cake since breakfast.
+They want 85% or better, and they can't remember what they ordered.
+
+[carnival 11] Double Heat
+The strongman contest just ended and the competitors are starving. The winner says an old man in a Hawaiian shirt bet against her and paid in blueberries.
+The strongmen want two smoothies each, and the blenders are working hard enough to overheat.
+
+[carnival 12] Fortune Teller
+The fortune teller is sending customers over with orders she read in their palms. Palms don't show amounts. She also says someone you know is lying about something.
+One fruit in every order has no amount, just a question mark.
+
+[carnival 13] Ice Cream Truck
+The ice cream truck parked next door and pointed its freezer at your stand. The driver asks if you're related to Gus and doesn't wait for an answer.
+Frozen pieces won't turn.
+
+[carnival 14] Hall of Mirrors
+Your stand is in the hall of mirrors now. You keep grabbing reflections of fruit instead of fruit, and one reflection is wearing a Hawaiian shirt. You aren't.
+The fruit won't stay the same, and customers lose track of their orders in the mirrors.
+
+[carnival 15] Food Fight
+Someone started a food fight at the pie stand while the critics were judging it. A blueberry stained Hawaiian shirt was found at the scene.
+The critics want 90% or they pay nothing, and everyone else wants seconds to throw.
+
+[carnival 16] Rollercoaster
+The rollercoaster broke, so the operator rebuilt it around your conveyor. He says a man paid him to "make it more exciting."
+The belt runs faster and stalls on the loops, and the thrill seekers won't wait long.
+
+[carnival 17] Rain Delay
+A cat came into your stand to get out of the rain. Its collar says "Property of G."
+The cat keeps chewing the power cord, and everyone sneezing at it suddenly remembers their allergies.
+
+[carnival 18] Grand Finale
+It's the last night of the carnival, and every act is performing at once. A postcard is waiting on the counter. It says "Proud of you. Don't look for me."
+Everything the carnival has thrown at you, all at once.
+
+[tutorial] holds the Day 1 tutorial steps, one per line, in order. The turn step has a mouse
+# version and a touch version split by ||
+
+[summer 1] Opening Day
+Uncle Gus left you his beach smoothie shack and fled the country. He left his journal on the counter. The first entry says the shack is completely legal.
+In the back you found two unattended fruit crates.
+
+[summer 2] New Delivery
+Blueberries arrived. Nobody ordered them. Gus's journal says "The blueberries are fine. The blueberries are FINE."
+A third fruit crate now sits out back.
+
+[summer 3] Odd Shapes
+The next journal entry reads "Bought a fruit cutter off a guy. It only cuts spiritual shapes. No refunds."
+The fruit comes out bent, but you can right click a piece to spin it into place.
+
+[summer 4] Mango Season
+Someone carved "trust the mangoes" into the counter. It seems to be in Gus's handwriting.
+A crate of mangoes turned up this morning, and the customers are craving something new.
+
+[summer 5] Lunch Rush
+A lifeguard slaps a twenty on the counter. "Ten minutes for lunch. Keep the change if you're fast."
+Anyone marked RUSH won't wait long, but they pay double.
+
+[summer 6] Allergy Season
+A man hands you a laminated card listing every fruit that has tried to kill him. It is double sided.
+Some orders now come with a fruit marked NO. Keep it out of the cup.
+
+[summer 7] Rotten Batch
+Flipping back through the journal, you find "Cleaned the blenders today." The entry is from two summers ago.
+Old fruit has set like cement in the bottom of the blenders. You'll have to pack around it.
+
+[summer 8] Broken Blender
+The journal's cleaning page says "Hot wash, tumble dry." The old fruit came out.
+The blenders came out of the dryer a size smaller. They're 3x3 now.
+
+[summer 9] Belt on Overdrive
+Page 40 of Gus's journal says "Never press the red button under the belt." That would have been good to know yesterday.
+The belt now runs a lot faster than it should.
+
+[summer 10] Heatwave
+A postcard from Gus arrived. It says "hot here too." There is no return address.
+Fruit left on the belt too long melts away.
+
+[summer 11] Brain Freeze
+A frosty page near the back of the journal reads "Freezer runs a little cold." It froze the fruit, the mop and a seagull. The seagull is fine.
+Frozen pieces won't turn.
+
+[summer 12] Food Critics
+A food blogger found the shack and asked about Gus. You said he was on sabbatical.
+Customers marked CRITIC want 90% or better, and pay triple when they get it.
+
+[summer 13] Mystery Menu
+A regular asks for her usual with "a splash" of mango. Gus's journal says "Whatever you do, don't ask how much a splash is."
+One fruit in every order has no amount, just a question mark.
+
+[summer 14] Bonfire Night
+The whole beach stays out late for the bonfire, so the shack does too. Someone ran the bonfire speakers off your outlet.
+The fuse blew during the first song, so you work by flashlight.
+
+[summer 15] Summer Storm
+The journal has a page titled "storms." It just says "Run." A storm is rolling in.
+The power keeps cutting out, and the blenders only work when the lights are on.
+
+[summer 16] Double Trouble
+The volleyball team Gus used to coach won without him. They are starving.
+Some of them want two smoothies.
+
+[summer 17] VIP Visit
+A famous surfer who used to ride with Gus is stopping by. His name is underlined twice in the journal, next to "Do not ask him about the shark."
+The surfer is a VIP and tips like one.
+
+[summer 18] Summer Festival
+The summer festival. A postcard arrives with no return address. It says "Save me a smoothie." Nobody comes to collect it.
+Everything that happened this summer happens today.
+
+[carnival 1] Carnival Day
 The carnival hired you, no questions asked. Gus recommended you, which should have been a warning.
 Customers marked PRIZE spin the wheel, and good smoothies in a row build a combo.
 
