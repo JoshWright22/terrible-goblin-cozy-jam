@@ -8,6 +8,7 @@ const PAINT := Color(1.0, 0.97, 0.9)
 const ACCENT_PAINT := Color(1.0, 0.84, 0.45)
 const EDGE := Color(0.24, 0.13, 0.05, 0.75)
 const STAR := "*"   # marks where star_row draws a star icon
+const STAR_DROP := 0.15   # the font's digits sit low in their line, so stars move down this much of the font size
 const PAINT_ON := false   # the brush reveal is switched off for now, text shows straight away
 
 static func apply(root: Node, reveal: bool = true, delay: float = 0.15) -> void:
@@ -124,6 +125,7 @@ static func star_row(parts: Array, font_size: int, accent: bool = false) -> HBox
 			var star := StarIcon.new()
 			star.custom_minimum_size = Vector2.ONE * font_size * 0.9
 			star.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+			star.draw_offset.y = font_size * STAR_DROP
 			star.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			row.add_child(star)
 		else:

@@ -14,6 +14,7 @@ const BG_SCALE := Vector2(0.45, 0.45)
 
 var _closing := false
 var _settings_layer: CanvasLayer = null
+var _pouring := false   # a smoothie pour to or from settings is under way
 
 func _ready() -> void:
 	BoardPaint.apply(self, true, 0.2)
@@ -97,9 +98,19 @@ func _release(btn: BaseButton) -> void:
 # ---------- Button handlers ----------
 
 func _on_settings_button_pressed() -> void:
-	if _closing or is_instance_valid(_settings_layer):
+	if _closing or _pouring or is_instance_valid(_settings_layer):
 		return
-	AudioManager.play_pause_open()
+	_pour_to(_open_settings)
+
+# Settings swap in and out under the same smoothie pour as a scene change
+func _pour_to(at_cover: Callable) -> void:
+	_pouring = true
+	get_tree().call_group("hostController", "pour", func():
+		_pouring = false
+		at_cover.call()
+	)
+
+func _open_settings() -> void:
 	_settings_layer = CanvasLayer.new()
 	_settings_layer.layer = layer + 1
 	var settings: Node = GameManager.settingsScene.instantiate()
@@ -109,10 +120,13 @@ func _on_settings_button_pressed() -> void:
 	add_child(_settings_layer)
 
 func _close_settings() -> void:
-	AudioManager.play_pause_close()
+	if _pouring:
+		return
 	SaveManager.save_game()
-	_settings_layer.queue_free()
-	_settings_layer = null
+	_pour_to(func():
+		_settings_layer.queue_free()
+		_settings_layer = null
+	)
 
 func _on_resume_button_pressed() -> void:
 	if _closing:

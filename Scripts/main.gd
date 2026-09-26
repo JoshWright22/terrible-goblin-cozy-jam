@@ -39,6 +39,11 @@ func changeScene(scene) -> void:
 	add_child(instance)
 
 func transition_to_scene(scene) -> void:
+	pour(changeScene.bind(scene))
+
+# Smoothie pour over the whole screen; at_cover runs while it's fully covered.
+# Scene changes use it, and so do overlays like settings opening from the pause menu
+func pour(at_cover: Callable) -> void:
 	if _transitioning:
 		return
 	_transitioning = true
@@ -55,9 +60,9 @@ func transition_to_scene(scene) -> void:
 	tw_in.tween_method(_set_fill, 0.0, 1.0, 0.6)
 	await tw_in.finished
 
-	changeScene(scene)
+	at_cover.call()
 
-	# ...and carries on off the top to reveal the new scene
+	# ...and carries on off the top to reveal what's underneath
 	var tw_out := _transition_rect.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw_out.tween_interval(0.08)
 	tw_out.tween_method(_set_fill, 1.0, 2.0, 0.6)

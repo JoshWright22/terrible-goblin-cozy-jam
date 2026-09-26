@@ -30,6 +30,7 @@ func _ready() -> void:
 		_stars[i].filled = false
 		_stars[i].tooltip_text = hints[i]
 		_stars[i].mouse_filter = Control.MOUSE_FILTER_PASS
+		_stars[i].draw_offset.y = _time_lbl.get_theme_font_size("font_size") * BoardPaint.STAR_DROP
 	_night.visible = _day.night_shift
 	_outage.visible = false
 	_power_timer = randf_range(POWER_ON_TIME.x, POWER_ON_TIME.y)
