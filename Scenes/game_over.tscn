@@ -91,5 +91,23 @@ texture_normal = ExtResource("4_go")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="TipLabel" type="Label" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = 262.0
+offset_right = 420.0
+offset_bottom = 352.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 34
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
 [connection signal="pressed" from="ButtonBox/RetryButton" to="." method="_on_retry_button_pressed"]
 [connection signal="pressed" from="ButtonBox/ExitButton" to="." method="_on_exit_button_pressed"]

@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var _bg_sprite:    Sprite2D      = $BgSprite
 @onready var _dimmer:       ColorRect     = $Dimmer
 @onready var _btn_box:      VBoxContainer = $ButtonBox
+@onready var _tip_lbl:      Label         = $TipLabel
 
 func _ready() -> void:
 	_score_lbl.text = "Score: %d" % GameManager.score
@@ -23,8 +24,10 @@ func _ready() -> void:
 		_score_lbl.add_theme_font_size_override("font_size", 40)
 	else:
 		_title_lbl.text = "SHOP CLOSED"
+	_tip_lbl.text = Tips.random()
 	BoardPaint.style(_title_lbl, true)
 	BoardPaint.style(_score_lbl)
+	BoardPaint.style(_tip_lbl, false, false)
 	_setup_btn(_retry_btn)
 	_setup_btn(_exit_btn)
 	_play_entrance()
@@ -40,6 +43,7 @@ func _play_entrance() -> void:
 	_score_lbl.modulate.a = 0.0
 	_btn_box.modulate.a = 0.0
 	_btn_box.position.y += 80.0
+	_tip_lbl.modulate.a = 0.0
 
 	var tw := create_tween()
 
@@ -83,6 +87,7 @@ func _play_entrance() -> void:
 	tw.tween_property(_btn_box, "position:y", _btn_box.position.y - 80.0, 0.28) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(_btn_box, "modulate:a", 1.0, 0.2)
+	tw.tween_property(_tip_lbl, "modulate:a", 1.0, 0.3)
 
 var _shake_origin: Vector2 = Vector2.ZERO
 var _shake_started: bool = false

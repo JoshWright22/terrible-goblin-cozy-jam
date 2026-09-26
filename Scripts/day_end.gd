@@ -18,6 +18,7 @@ func _ready() -> void:
 	_title_lbl.text = "Day %d done!" % day.day_number if stars > 0 else "Day %d: try again!" % day.day_number
 	_score_lbl.text = "Score: %d" % GameManager.score
 	_note_lbl.text = _note_for(day, stars)
+	$TipLabel.text = Tips.random() if stars < 3 else ""
 	var unlocked := Cosmetics.newly_unlocked(GameManager.stars_before_day, SaveManager.total_stars())
 	if not unlocked.is_empty():
 		_note_lbl.text = "Unlocked: " + ", ".join(unlocked) + "!"
