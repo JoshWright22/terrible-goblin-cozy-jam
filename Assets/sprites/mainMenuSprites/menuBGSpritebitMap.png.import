@@ -3,12 +3,12 @@
 importer="bitmap"
 type="BitMap"
 uid="uid://dlv1f7plidfhj"
-path="res://.godot/imported/menuBGSpritebitMap.png-3cba53792553e115df011d972baac336.res"
+path="res://.godot/imported/menuBGSpritebitMap.png-50bd403b2b3b676b26b257293a906f18.res"
 
 [deps]
 
-source_file="res://assets/sprites/mainMenuSprites/menuBGSpritebitMap.png"
-dest_files=["res://.godot/imported/menuBGSpritebitMap.png-3cba53792553e115df011d972baac336.res"]
+source_file="res://Assets/sprites/mainMenuSprites/menuBGSpritebitMap.png"
+dest_files=["res://.godot/imported/menuBGSpritebitMap.png-50bd403b2b3b676b26b257293a906f18.res"]
 
 [params]
 
