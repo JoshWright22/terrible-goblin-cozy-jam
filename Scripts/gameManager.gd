@@ -32,6 +32,12 @@ const DAY_COUNT := 18
 var current_day: DayConfig = null   # null = endless mode
 var day_complete: bool = false
 var power_out: bool = false          # Power Outage twist: blenders can't blend while true
+var stars_before_day: int = 0
+# Tutorial: while true, customers are patient and the timers stop
+var tutorial_active: bool = false
+var rotations: int = 0          # pieces rotated this run
+var smoothies_served: int = 0   # smoothies delivered this run        # total stars when the day started, for unlock announcements
+@onready var styleScene = load("res://Scenes/Primary/style_shop.tscn")
 
 func _ready() -> void:
 	pass

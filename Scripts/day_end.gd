@@ -18,11 +18,14 @@ func _ready() -> void:
 	_title_lbl.text = "Day %d done!" % day.day_number if stars > 0 else "Day %d: no stars" % day.day_number
 	_score_lbl.text = "Score: %d" % GameManager.score
 	_note_lbl.text = _note_for(day, stars)
+	var unlocked := Cosmetics.newly_unlocked(GameManager.stars_before_day, SaveManager.total_stars())
+	if not unlocked.is_empty():
+		_note_lbl.text = "Unlocked: " + ", ".join(unlocked) + "!"
 	for star in _stars:
 		star.filled = false
 
 	_next_btn.visible = stars > 0 and GameManager.has_next_day()
-	ButtonFx.style_text_button(_retry_btn, Color(0.85, 0.55, 0.3), 38)
+	ButtonFx.style_text_button(_retry_btn, Color(0.85, 0.55, 0.3), 48)
 	for btn in [_next_btn, _retry_btn, _menu_btn]:
 		ButtonFx.setup(btn)
 	_next_btn.pressed.connect(_on_next)

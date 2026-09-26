@@ -16,6 +16,12 @@ extends Node2D
 @export var shapeshift_while_held: bool = false
 @export var variant_pool: Array[FruitData] = [] # Assign allowed transformation resources here!
 
+# Grab leniency: pieces riding the belt get a circle around the whole fruit
+const BELT_GRAB_PADDING: float = 30.0   # extra pixels beyond the fruit's outer edge
+
+var _bounds_size: Vector2 = Vector2.ZERO    # full piece size in pixels
+var _bounds_center: Vector2 = Vector2.ZERO  # piece center relative to this node
+
 var is_dragging: bool = false
 var is_locked: bool = false
 var frozen: bool = false  # Brain Freeze twist: can't be rotated
@@ -55,6 +61,7 @@ var local_min_y: float = 0.0
 func _ready() -> void:
 	spawn_position = global_position
 	target_rotation = rotation
+	add_to_group("fruit_piece")
 	
 	if main_click_area:
 		main_click_area.input_event.connect(_on_main_click_area_input)
@@ -157,14 +164,25 @@ func build_piece_from_layout() -> void:
 		var half_cell_compensation = Vector2(dynamic_cell_size, dynamic_cell_size) / 2.0
 		main_sprite.position = structure_top_left - layout_center_offset - half_cell_compensation
 
+	_bounds_size = Vector2(cells_wide, cells_high) * dynamic_cell_size
+	_bounds_center = (Vector2(min_x + max_x, min_y + max_y) / 2.0) * dynamic_cell_size - layout_center_offset
+	main_click_area.position = Vector2.ZERO
+	_update_click_shape()
+
+# Circle around the whole fruit while it's loose, tight box once it sits in a blender
+func _update_click_shape() -> void:
 	var click_shape = main_click_area.get_child(0) as CollisionShape2D
-	if click_shape and click_shape.shape is RectangleShape2D:
-		var unique_shape = click_shape.shape.duplicate() as RectangleShape2D
-		var belt_padding := 0.0 if is_locked else 18.0
-		unique_shape.size = Vector2(cells_wide * dynamic_cell_size + belt_padding, cells_high * dynamic_cell_size + belt_padding)
-		click_shape.shape = unique_shape
-		main_click_area.position = Vector2.ZERO
-		click_shape.position = Vector2.ZERO
+	if click_shape == null:
+		return
+	if is_locked:
+		var box := RectangleShape2D.new()
+		box.size = _bounds_size
+		click_shape.shape = box
+	else:
+		var circle := CircleShape2D.new()
+		circle.radius = _bounds_size.length() / 2.0 + BELT_GRAB_PADDING
+		click_shape.shape = circle
+	click_shape.position = _bounds_center
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE and is_dragging:
@@ -208,7 +226,8 @@ func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: i
 		var clicked_cell_y = round(block_space_pos.y / dynamic_cell_size)
 		var targeted_cell = Vector2(clicked_cell_x, clicked_cell_y)
 
-		if not targeted_cell in block_layout:
+		# Loose pieces accept any click inside their grab circle; blender pieces need a filled cell
+		if is_locked and not targeted_cell in block_layout:
 			return
 
 		# If overlapping another piece on the belt/mid-air, defer to the larger one.
@@ -250,6 +269,7 @@ func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: i
 					tile.remove_meta("occupied_by_fruit")
 			locked_tiles.clear()
 			is_locked = false
+			_update_click_shape()
 
 		global_position = get_global_mouse_position()
 
@@ -309,6 +329,7 @@ func _shiver() -> void:
 
 func rotate_piece_90_degrees() -> void:
 	AudioManager.play_fruit_rotate()
+	GameManager.rotations += 1
 	is_rotating = true
 	target_rotation += deg_to_rad(90)
 	
@@ -444,6 +465,7 @@ func attempt_physical_placement() -> void:
 			locked_tiles.append(tile)
 
 		is_locked = true
+		_update_click_shape()
 		detached_from_conveyor = true
 		spawn_position = global_position
 		z_as_relative = true

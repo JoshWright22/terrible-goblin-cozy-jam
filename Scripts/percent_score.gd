@@ -17,7 +17,7 @@ func _ready() -> void:
 		_play_success()
 	else:
 		label.text = "MISS!"
-		label.add_theme_font_size_override("font_size", 46)
+		label.add_theme_font_size_override("font_size", 58)
 		_play_fail()
 
 func _play_success() -> void:

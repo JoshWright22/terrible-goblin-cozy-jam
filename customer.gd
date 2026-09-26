@@ -89,7 +89,7 @@ func _update_badge() -> void:
 		return
 	if _badge == null:
 		_badge = Label.new()
-		_badge.add_theme_font_size_override("font_size", 40)
+		_badge.add_theme_font_size_override("font_size", 50)
 		_badge.add_theme_constant_override("outline_size", 10)
 		_badge.add_theme_color_override("font_outline_color", Color.BLACK)
 		_badge.add_theme_color_override("font_color", Color(1.0, 0.85, 0.2) if kind == "vip" else Color.WHITE)
@@ -100,7 +100,7 @@ func _update_badge() -> void:
 	_badge.text = text
 
 func _process(_delta: float) -> void:
-	timer.paused = GameManager.paused
+	timer.paused = GameManager.paused or GameManager.tutorial_active
 	var should_highlight: bool = GameManager.hold and GameManager.trgID == ID
 	if should_highlight and not _is_highlighted:
 		_is_highlighted = true

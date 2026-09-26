@@ -6,15 +6,6 @@ var _transition_rect: ColorRect = null
 var _transition_mat: ShaderMaterial = null
 var _transitioning: bool = false
 
-# Strawberry, mango, blueberry, banana, apple
-const SMOOTHIE_COLORS: Array[Color] = [
-	Color(0.95, 0.52, 0.58),
-	Color(0.99, 0.7, 0.35),
-	Color(0.55, 0.5, 0.85),
-	Color(0.99, 0.87, 0.45),
-	Color(0.62, 0.82, 0.45),
-]
-
 func _ready() -> void:
 	add_to_group("hostController")
 	_setup_transition()
@@ -53,14 +44,17 @@ func transition_to_scene(scene) -> void:
 	_transitioning = true
 	var view := get_viewport().get_visible_rect().size
 	_transition_mat.set_shader_parameter("aspect", view.x / view.y)
-	_transition_mat.set_shader_parameter("juice_color", SMOOTHIE_COLORS.pick_random())
+	var layers := Cosmetics.transition_layers()
+	_transition_mat.set_shader_parameter("layer_back", layers[0])
+	_transition_mat.set_shader_parameter("layer_middle", layers[1])
+	_transition_mat.set_shader_parameter("layer_front", layers[2])
 	_transition_mat.set_shader_parameter("fill", 0.0)
 	_transition_rect.visible = true
 	AudioManager.play_transition()
 
-	# Smoothie pours up and covers the screen
+	# Three layers of smoothie pour up and cover the screen
 	var tw_in := _transition_rect.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tw_in.tween_method(_set_fill, 0.0, 1.0, 0.45)
+	tw_in.tween_method(_set_fill, 0.0, 1.0, 0.6)
 	await tw_in.finished
 
 	changeScene(scene)
@@ -68,7 +62,7 @@ func transition_to_scene(scene) -> void:
 	# ...and carries on off the top to reveal the new scene
 	var tw_out := _transition_rect.create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tw_out.tween_interval(0.08)
-	tw_out.tween_method(_set_fill, 1.0, 2.0, 0.5)
+	tw_out.tween_method(_set_fill, 1.0, 2.0, 0.6)
 	await tw_out.finished
 	_transition_rect.visible = false
 	_transitioning = false

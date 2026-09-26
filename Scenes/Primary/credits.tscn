@@ -1,251 +1,98 @@
-[gd_scene format=3 uid="uid://b7h0qnvv28pe0"]
+[gd_scene format=3]
 
-[ext_resource type="Texture2D" uid="uid://bnv5cu7vsqafb" path="res://Assets/sprites/backgroundSprite.PNG" id="1_meb0d"]
-[ext_resource type="FontVariation" path="res://Assets/fonts/slush_font.tres" id="2_cfch2"]
+[ext_resource type="Script" path="res://Scripts/credits.gd" id="1_credits"]
+[ext_resource type="Texture2D" uid="uid://c0cxrudqx2agw" path="res://Assets/sprites/mainMenuSprites/menu separate/menuEmptyBGSprite.PNG" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://bbiorb1320y3x" path="res://Assets/sprites/ui sprites/uiBG1Sprite.PNG" id="3_board"]
+[ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_exit"]
+[ext_resource type="Texture2D" uid="uid://ba3cyy0fuknb4" path="res://Assets/sprites/fruitSprites/appleSprite.PNG" id="5_apple"]
+[ext_resource type="Texture2D" uid="uid://ccyytao3oi3xj" path="res://Assets/sprites/fruitSprites/bananaSprite.PNG" id="6_banana"]
+[ext_resource type="Texture2D" uid="uid://8ujntvhtec0w" path="res://Assets/sprites/fruitSprites/blueberrySprite.PNG" id="7_blueberry"]
+[ext_resource type="Texture2D" uid="uid://0uyjj8ucuppj" path="res://Assets/sprites/fruitSprites/mangoSprite.PNG" id="8_mango"]
+[ext_resource type="Texture2D" uid="uid://bm3ua7hpxdsuo" path="res://Assets/sprites/fruitSprites/strawberrySprite.PNG" id="9_strawberry"]
 
-[sub_resource type="GDScript" id="GDScript_meb0d"]
-script/source = "extends Node2D
-@onready var buttText = $ColorRect/Label
-@onready var _links: Array[Control] = [
-	$Control/VBoxContainer/auroraLink,
-	$Control/VBoxContainer/RobLink,
-	$Control/VBoxContainer/joshLink,
-]
+[node name="credits" type="Node2D"]
+script = ExtResource("1_credits")
 
-const _FRUIT_PATHS: Array[String] = [
-	\"res://Assets/sprites/fruitSprites/appleSprite.PNG\",
-	\"res://Assets/sprites/fruitSprites/bananaSprite.PNG\",
-	\"res://Assets/sprites/fruitSprites/blueberrySprite.PNG\",
-	\"res://Assets/sprites/fruitSprites/mangoSprite.PNG\",
-	\"res://Assets/sprites/fruitSprites/strawberrySprite.PNG\",
-]
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(958.5, 568)
+scale = Vector2(0.49921876, 0.52592593)
+texture = ExtResource("2_bg")
 
-var _spawn_timer: float = 0.0
-var _falling: Array = []
+[node name="Fruits" type="Node2D" parent="."]
 
-func _ready() -> void:
-	AudioManager.start_menu_music()
-	await get_tree().process_frame
-	for link in _links:
-		link.pivot_offset = link.size * 0.5
-		link.mouse_entered.connect(_pop_link.bind(link))
-		link.mouse_exited.connect(_unpop_link.bind(link))
-		link.pressed.connect(func(): AudioManager.play_button_click())
+[node name="Strawberry" type="Sprite2D" parent="Fruits"]
+position = Vector2(165, 380)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("9_strawberry")
 
-func _pop_link(btn: Control) -> void:
-	AudioManager.play_button_hover()
-	var tw := btn.create_tween()
-	tw.set_trans(Tween.TRANS_BACK)
-	tw.set_ease(Tween.EASE_OUT)
-	tw.tween_property(btn, \"scale\", Vector2(1.15, 1.15), 0.15)
+[node name="Mango" type="Sprite2D" parent="Fruits"]
+position = Vector2(170, 760)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("8_mango")
 
-func _unpop_link(btn: Control) -> void:
-	var tw := btn.create_tween()
-	tw.set_trans(Tween.TRANS_BACK)
-	tw.set_ease(Tween.EASE_OUT)
-	tw.tween_property(btn, \"scale\", Vector2(1.0, 1.0), 0.12)
+[node name="Banana" type="Sprite2D" parent="Fruits"]
+position = Vector2(1770, 250)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("6_banana")
 
-func _process(delta: float) -> void:
-	_spawn_timer -= delta
-	if _spawn_timer <= 0.0:
-		_spawn_fruit()
-		_spawn_timer = randf_range(0.5, 1.1)
-	var to_remove: Array = []
-	for f in _falling:
-		if not is_instance_valid(f.node):
-			to_remove.append(f)
-			continue
-		f.node.position.y += f.speed * delta
-		f.node.rotation += f.rot_speed * delta
-		if f.node.position.y > 1200.0:
-			f.node.queue_free()
-			to_remove.append(f)
-	for f in to_remove:
-		_falling.erase(f)
+[node name="Blueberry" type="Sprite2D" parent="Fruits"]
+position = Vector2(1765, 560)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("7_blueberry")
 
-func _spawn_fruit() -> void:
-	var path: String = _FRUIT_PATHS[randi() % _FRUIT_PATHS.size()]
-	var tex: Texture2D = load(path)
-	if tex == null:
-		return
-	var rect := TextureRect.new()
-	rect.texture = tex
-	rect.expand_mode = 1
-	rect.stretch_mode = 5
-	rect.size = Vector2(90, 90)
-	rect.z_index = -1
-	rect.position = Vector2(randf_range(30.0, 1870.0), -110.0)
-	rect.modulate.a = 0.55
-	add_child(rect)
-	_falling.append({ \"node\": rect, \"speed\": randf_range(160.0, 300.0), \"rot_speed\": randf_range(-1.5, 1.5) })
+[node name="Apple" type="Sprite2D" parent="Fruits"]
+position = Vector2(1760, 860)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("5_apple")
 
-func _on_button_mouse_entered() -> void:
-	AudioManager.play_button_hover()
-	buttText.add_theme_color_override(\"font_color\", Color(0.557, 0.514, 0.0))
-
-func _on_button_mouse_exited() -> void:
-	buttText.add_theme_color_override(\"font_color\", Color(1, 1, 1, 1))
-
-func _on_button_button_down() -> void:
-	AudioManager.play_button_click()
-	get_tree().call_group(\"hostController\", \"transition_to_scene\", GameManager.mainMenu)
-"
-
-[node name="credits" type="Node2D" unique_id=1061753410]
-script = SubResource("GDScript_meb0d")
-
-[node name="TextureRect" type="TextureRect" parent="." unique_id=297512101]
-offset_left = -764.0
-offset_top = -405.0
-offset_right = 3076.0
-offset_bottom = 1755.0
-texture = ExtResource("1_meb0d")
-
-[node name="Line2D3" type="Line2D" parent="." unique_id=1178349440]
-position = Vector2(229.535, -66)
-points = PackedVector2Array(314, 408, 373.45624, 408, 436, 408)
-closed = true
-default_color = Color(0, 0, 0, 1)
-
-[node name="Line2D" type="Line2D" parent="." unique_id=2107602148]
-position = Vector2(229, -4)
-points = PackedVector2Array(314, 408, 436, 408)
-closed = true
-default_color = Color(0, 0, 0, 1)
-
-[node name="Line2D2" type="Line2D" parent="." unique_id=473415797]
-position = Vector2(231, 61)
-points = PackedVector2Array(314, 408, 373.45624, 408, 436, 408)
-closed = true
-default_color = Color(0, 0, 0, 1)
-
-[node name="Line2D4" type="Line2D" parent="." unique_id=1324240568]
-position = Vector2(532, -116)
-points = PackedVector2Array(314, 408, 373.45624, 408, 775, 408)
-closed = true
-default_color = Color(0, 0, 0, 1)
-
-[node name="Control" type="Control" parent="." unique_id=2065234246]
+[node name="Board" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 177.465
-offset_right = 217.46512
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=314582593]
+[node name="BoardSprite" type="Sprite2D" parent="Board"]
+position = Vector2(960, 540)
+rotation = -1.5707964
+scale = Vector2(0.72, 0.72)
+texture = ExtResource("3_board")
+
+[node name="Title" type="Label" parent="Board"]
 layout_mode = 0
-offset_left = 634.53503
-offset_top = 172.0
-offset_right = 1160.535
-offset_bottom = 315.0
-pivot_offset = Vector2(228, 0)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_fonts/normal_font = ExtResource("2_cfch2")
-theme_override_font_sizes/normal_font_size = 104
-bbcode_enabled = true
-text = " CREDITS "
-fit_content = true
-autowrap_mode = 0
+offset_left = 460.0
+offset_top = 105.0
+offset_right = 1460.0
+offset_bottom = 215.0
+theme_override_font_sizes/font_size = 110
+text = "Credits"
+horizontal_alignment = 1
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="Control" unique_id=1825462363]
+[node name="Team" type="VBoxContainer" parent="Board"]
 layout_mode = 0
-offset_left = 439.0
-offset_top = 314.0
-offset_right = 1348.0
-offset_bottom = 566.0
-scale = Vector2(0.9899249, 0.99584746)
-pivot_offset = Vector2(228, 0)
-theme_override_colors/default_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_fonts/normal_font = ExtResource("2_cfch2")
-theme_override_font_sizes/normal_font_size = 49
-bbcode_enabled = true
-text = "[center]RoranArt | Aurora - Asset/Art Dev
-Robert Taquechel - Godot Dev
-Joshua Wright - Godot Dev
-Jack | H4rb1nger - Godot Dev
-Nivadra - Music
+offset_left = 420.0
+offset_top = 240.0
+offset_right = 1540.0
+offset_bottom = 690.0
+theme_override_constants/separation = 14
 
- Delicious Handrawn font by the Delicious Handrawn Project Authors (OFL)
-Sound effects by Kenney (kenney.nl)
-
-And a thanks to you for playing :)[/center]"
-fit_content = true
-autowrap_mode = 0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=229252426]
+[node name="Thanks" type="Label" parent="Board"]
 layout_mode = 0
-offset_left = 25.535004
-offset_top = 311.0
-offset_right = 355.535
-offset_bottom = 523.0
-theme_override_constants/separation = -3
+offset_left = 420.0
+offset_top = 720.0
+offset_right = 1500.0
+offset_bottom = 900.0
+theme_override_font_sizes/font_size = 40
+text = "thanks"
+horizontal_alignment = 1
+autowrap_mode = 3
 
-[node name="auroraLink" type="LinkButton" parent="Control/VBoxContainer" unique_id=55417472]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_fonts/font = ExtResource("2_cfch2")
-theme_override_font_sizes/font_size = 49
-text = "Instagram"
-underline = 2
-uri = "https://www.instagram.com/roranart/"
-
-[node name="RobLink" type="LinkButton" parent="Control/VBoxContainer" unique_id=1120306128]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_fonts/font = ExtResource("2_cfch2")
-theme_override_font_sizes/font_size = 49
-text = "Itch.io Page"
-underline = 2
-uri = "https://roberto-taquechel.itch.io/"
-
-[node name="joshLink" type="LinkButton" parent="Control/VBoxContainer" unique_id=1534237533]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_fonts/font = ExtResource("2_cfch2")
-theme_override_font_sizes/font_size = 49
-text = "Github Page"
-underline = 2
-uri = "https://joshwright22.github.io/"
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=233416963]
-offset_left = 91.0
-offset_top = 42.0
-offset_right = 492.0
-offset_bottom = 196.0
-color = Color(1, 1, 0.7254902, 1)
-
-[node name="Button" type="Button" parent="ColorRect" unique_id=1927039975]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = -1.0
-offset_top = 1.0
-offset_right = 398.0
-offset_bottom = 153.0
-text = "Return"
-
-[node name="Label" type="Label" parent="ColorRect" unique_id=1750963482]
-layout_mode = 0
-offset_left = 54.0
-offset_top = 53.0
-offset_right = 360.0
-offset_bottom = 99.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 17
-theme_override_fonts/font = ExtResource("2_cfch2")
-theme_override_font_sizes/font_size = 35
-text = "Return to Menu"
-
-[connection signal="button_down" from="ColorRect/Button" to="." method="_on_button_button_down"]
-[connection signal="mouse_entered" from="ColorRect/Button" to="." method="_on_button_mouse_entered"]
-[connection signal="mouse_exited" from="ColorRect/Button" to="." method="_on_button_mouse_exited"]
+[node name="BackButton" type="TextureButton" parent="."]
+offset_left = 40.0
+offset_top = 40.0
+offset_right = 170.0
+offset_bottom = 170.0
+action_mode = 0
+texture_normal = ExtResource("4_exit")
+ignore_texture_size = true
+stretch_mode = 5

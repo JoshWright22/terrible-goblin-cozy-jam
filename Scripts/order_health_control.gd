@@ -110,6 +110,8 @@ func _ready() -> void:
 	GameManager.seen_fruit_types.clear()
 	GameManager.day_complete = false
 	GameManager.power_out = false
+	GameManager.rotations = 0
+	GameManager.smoothies_served = 0
 	day = GameManager.current_day
 	if day:
 		day_time_left = day.duration
@@ -118,20 +120,24 @@ func _ready() -> void:
 	var _help_layer := CanvasLayer.new()
 	_help_layer.layer = 12
 	add_child(_help_layer)
-	# The full tutorial shows on day 1 and in endless, later days get a short intro card
-	var helper
-	if day == null or day.day_number == 1:
-		helper = load("res://Scenes/help_scene.tscn").instantiate()
+	# Each day opens with its intro card, day 1 then runs the hands-on tutorial.
+	# Endless jumps straight in.
+	if day:
+		_help_layer.add_child(load("res://Scenes/day_intro.tscn").instantiate())
+		if day.day_number == 1:
+			GameManager.tutorial_active = true
+			add_child(load("res://Scenes/tutorial_guide.tscn").instantiate())
 	else:
-		helper = load("res://Scenes/day_intro.tscn").instantiate()
-	_help_layer.add_child(helper)
+		GameManager.tutorial_active = false
+		GameManager.paused = false
+		_help_layer.queue_free()
 	_help_layer.tree_exited.connect(_start_game_music)
 	REMAIN_TIME = MAX_TIME
 	healthBar.max_value = MAX_TIME
 	healthBar.value = MAX_TIME
 	var font = load("res://Assets/fonts/slush_font.tres")
 	score_label.add_theme_font_override("font", font)
-	score_label.add_theme_font_size_override("font_size", 58)
+	score_label.add_theme_font_size_override("font_size", 72)
 	score_label.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0, 1.0))
 	score_label.add_theme_constant_override("outline_size", 8)
 	score_label.add_theme_color_override("font_outline_color", Color.BLACK)
@@ -148,11 +154,11 @@ func _process(delta: float) -> void:
 			_customers_started = true
 			customerSpawnTimer.start(customerSpawnTimer.wait_time)
 
-	if currentCustomer.size() != 0 and not handBreak and not GameManager.paused and not GameManager.hold:
+	if currentCustomer.size() != 0 and not handBreak and not GameManager.paused and not GameManager.hold and not GameManager.tutorial_active:
 		REMAIN_TIME -= delta
 		healthBar.ratio = REMAIN_TIME / MAX_TIME
 
-	if day and not _day_finished and not GameManager.paused and not gameOver:
+	if day and not _day_finished and not GameManager.paused and not gameOver and not GameManager.tutorial_active:
 		day_time_left -= delta
 		if day_time_left <= 0.0:
 			_finish_day()
@@ -180,6 +186,7 @@ func _finish_day() -> void:
 	GameManager.paused = true
 	customerSpawnTimer.stop()
 	_stop_game_music()
+	GameManager.stars_before_day = SaveManager.total_stars()
 	SaveManager.record_day(day.day_number, day.stars_for_score(GameManager.score))
 	get_tree().paused = true
 
@@ -229,7 +236,7 @@ func _animate_score(from_val: int, to_val: int) -> void:
 		float(from_val), float(to_val), dur
 	).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 	tw.finished.connect(func():
-		var base_sz := 58
+		var base_sz := 72
 		var peak_sz := mini(base_sz + int(float(gain) / 10.0), 88)
 		var punch := score_label.create_tween()
 		punch.tween_method(
@@ -304,6 +311,7 @@ func compareValues(inputer) -> void:
 		scoreGain = int(round(100.0 * (percent / 100.0) * float(total_count) * cell_scale * GameManager.smoothie_quality * fill_bonus * custom.score_mult))
 		if too_sloppy:
 			scoreGain /= 2
+	GameManager.smoothies_served += 1
 	var old_score := GameManager.score
 	GameManager.score += scoreGain
 	GameManager.smoothie_quality = 1.0

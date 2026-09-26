@@ -10,6 +10,7 @@ const DONE_COLOR := Color(0.55, 0.75, 0.4)
 @onready var _stars_lbl: Label = $Board/StarsLabel
 @onready var _endless_btn: Button = $Board/EndlessButton
 @onready var _back_btn: TextureButton = $BackButton
+@onready var _style_btn: Button = $Board/StyleButton
 
 func _ready() -> void:
 	AudioManager.start_menu_music()
@@ -17,7 +18,7 @@ func _ready() -> void:
 		_grid.add_child(_make_tile(day_number))
 
 	_stars_lbl.text = "%d / %d stars" % [SaveManager.total_stars(), GameManager.DAY_COUNT * 3]
-	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 40)
+	ButtonFx.style_text_button(_endless_btn, Color(0.45, 0.62, 0.85), 50)
 	if GameManager.endless_unlocked():
 		_endless_btn.text = "Endless  (best %d)" % SaveManager.endless_best
 	else:
@@ -26,6 +27,11 @@ func _ready() -> void:
 	ButtonFx.setup(_endless_btn)
 	_endless_btn.pressed.connect(func(): _go(GameManager.start_endless))
 
+	ButtonFx.style_text_button(_style_btn, Color(0.85, 0.5, 0.65), 50)
+	ButtonFx.setup(_style_btn)
+	_style_btn.pressed.connect(func():
+		get_tree().call_group("hostController", "transition_to_scene", GameManager.styleScene)
+	)
 	ButtonFx.setup(_back_btn)
 	_back_btn.pressed.connect(func():
 		get_tree().call_group("hostController", "transition_to_scene", GameManager.mainMenu)
@@ -41,7 +47,7 @@ func _make_tile(day_number: int) -> Button:
 	var tile := Button.new()
 	tile.custom_minimum_size = TILE_SIZE
 	tile.disabled = not unlocked
-	ButtonFx.style_text_button(tile, DONE_COLOR if stars > 0 else OPEN_COLOR, 56)
+	ButtonFx.style_text_button(tile, DONE_COLOR if stars > 0 else OPEN_COLOR, 70)
 
 	var box := VBoxContainer.new()
 	box.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -52,7 +58,7 @@ func _make_tile(day_number: int) -> Button:
 	var number := Label.new()
 	number.text = str(day_number) if unlocked else "?"
 	number.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	ButtonFx.outline_label(number, 60)
+	ButtonFx.outline_label(number, 75)
 	box.add_child(number)
 
 	var row := HBoxContainer.new()

@@ -1,0 +1,63 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/tutorial_guide.gd" id="1_guide"]
+[ext_resource type="Script" path="res://Scripts/tutorial_arrow.gd" id="2_arrow"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sign"]
+bg_color = Color(0.69, 0.54, 0.39, 0.97)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.84, 0.69, 0.51, 1)
+corner_radius_top_left = 34
+corner_radius_top_right = 34
+corner_radius_bottom_right = 34
+corner_radius_bottom_left = 34
+shadow_color = Color(0.37, 0.24, 0.16, 1)
+shadow_size = 1
+shadow_offset = Vector2(8, 10)
+
+[node name="TutorialGuide" type="CanvasLayer"]
+layer = 6
+script = ExtResource("1_guide")
+
+[node name="Sign" type="Panel" parent="."]
+offset_left = 300.0
+offset_top = 615.0
+offset_right = 1000.0
+offset_bottom = 865.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sign")
+
+[node name="CountLabel" type="Label" parent="Sign"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 14.0
+offset_right = 230.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 44
+text = "1 / 6"
+
+[node name="StepLabel" type="Label" parent="Sign"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 64.0
+offset_right = 670.0
+offset_bottom = 180.0
+theme_override_font_sizes/font_size = 56
+text = "Step"
+autowrap_mode = 3
+
+[node name="SkipButton" type="Button" parent="Sign"]
+layout_mode = 0
+offset_left = 520.0
+offset_top = 180.0
+offset_right = 680.0
+offset_bottom = 236.0
+action_mode = 0
+text = "Skip"
+
+[node name="Arrow" type="Node2D" parent="."]
+visible = false
+script = ExtResource("2_arrow")

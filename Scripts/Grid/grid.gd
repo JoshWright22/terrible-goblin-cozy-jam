@@ -69,7 +69,7 @@ func _show_out_of_order() -> void:
 	var sign_label := Label.new()
 	sign_label.text = "OUT OF\nORDER"
 	sign_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sign_label.add_theme_font_size_override("font_size", 44)
+	sign_label.add_theme_font_size_override("font_size", 55)
 	sign_label.add_theme_constant_override("outline_size", 10)
 	sign_label.add_theme_color_override("font_outline_color", Color.BLACK)
 	sign_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.35))
@@ -102,7 +102,7 @@ func _add_rotten_cells(count: int) -> void:
 		mark.text = "X"
 		mark.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		mark.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		mark.add_theme_font_size_override("font_size", 40)
+		mark.add_theme_font_size_override("font_size", 50)
 		mark.add_theme_color_override("font_color", Color(0.3, 0.45, 0.18))
 		mark.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		mark.size = tile_size
@@ -134,6 +134,7 @@ func generate_physical_grid() -> void:
 		var uniform_scale = total_h / blender_texture.get_height()
 		bg.scale = Vector2(uniform_scale, uniform_scale)
 		bg.z_index = -1
+		Cosmetics.apply_blender(bg)
 		grid_visuals.add_child(bg)
 
 	for x in range(grid_columns):

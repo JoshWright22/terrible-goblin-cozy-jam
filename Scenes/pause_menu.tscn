@@ -40,7 +40,7 @@ offset_bottom = -165.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_pm")
-theme_override_font_sizes/font_size = 62
+theme_override_font_sizes/font_size = 78
 text = "PAUSED"
 horizontal_alignment = 1
 

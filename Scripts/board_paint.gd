@@ -8,8 +8,6 @@ const ACCENT_PAINT := Color(1.0, 0.84, 0.45)
 const EDGE := Color(0.24, 0.13, 0.05, 0.75)
 const SHADOW := Color(0.18, 0.1, 0.04, 0.35)
 
-static var _material: ShaderMaterial = null
-
 static func apply(root: Node, reveal: bool = true, delay: float = 0.15) -> void:
 	var i := 0
 	for lbl in _text_nodes(root):
@@ -22,7 +20,7 @@ static func style(lbl: Control, accent: bool = false) -> void:
 	var color_key := "default_color" if lbl is RichTextLabel else "font_color"
 	# Keep any colour the scene set on purpose (e.g. gold headings), otherwise cream paint
 	if not lbl.has_theme_color_override(color_key) or lbl.get_theme_color(color_key) == Color.WHITE:
-		lbl.add_theme_color_override(color_key, ACCENT_PAINT if accent else PAINT)
+		lbl.add_theme_color_override(color_key, ACCENT_PAINT if accent else Cosmetics.selected(Cosmetics.PAINT)["color"])
 	lbl.add_theme_color_override("font_outline_color", EDGE)
 	lbl.add_theme_constant_override("outline_size", 5)
 	lbl.add_theme_color_override("font_shadow_color", SHADOW)
@@ -35,20 +33,32 @@ static func style(lbl: Control, accent: bool = false) -> void:
 		lbl.rotation_degrees = randf_range(-1.2, 1.2)
 
 static func paint_on(lbl: Control, delay: float = 0.0) -> void:
-	if not "visible_ratio" in lbl:
+	var mat := lbl.material as ShaderMaterial
+	if mat == null:
 		return
-	lbl.visible_ratio = 0.0
-	var chars: int = maxi(1, lbl.get_total_character_count())
-	var time := clampf(chars * 0.03, 0.25, 1.2)
+	# Width of the actual text, not the whole label box, so short text doesn't lag
+	var width := lbl.size.x
+	var font := lbl.get_theme_font("font") if lbl is Label else lbl.get_theme_font("normal_font")
+	var font_size := lbl.get_theme_font_size("font_size") if lbl is Label else lbl.get_theme_font_size("normal_font_size")
+	if lbl is Label and font:
+		width = minf(width, font.get_multiline_string_size(lbl.text, lbl.horizontal_alignment, lbl.size.x, font_size).x)
+	var start_x := (lbl.size.x - width) / 2.0 if lbl is Label and lbl.horizontal_alignment == HORIZONTAL_ALIGNMENT_CENTER else 0.0
+	var lines: int = maxi(1, lbl.get_line_count())
+	mat.set_shader_parameter("label_width", start_x + width)
+	mat.set_shader_parameter("line_count", float(lines))
+	mat.set_shader_parameter("line_height", lbl.size.y / lines)
+	mat.set_shader_parameter("reveal", 0.0)
+	var time := clampf(width / 900.0, 0.3, 0.9) * lines
 	var tw := lbl.create_tween()
 	tw.tween_interval(delay)
-	tw.tween_property(lbl, "visible_ratio", 1.0, time)
+	tw.tween_callback(AudioManager.play_slider_tick.bind(0.8))
+	tw.tween_method(func(v: float): mat.set_shader_parameter("reveal", v), 0.0, 1.0, time) 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 static func _paint_material() -> ShaderMaterial:
-	if _material == null:
-		_material = ShaderMaterial.new()
-		_material.shader = load("res://Shaders/painted_text.gdshader")
-	return _material
+	# Each label gets its own copy so they can paint on independently
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://Shaders/painted_text.gdshader")
+	return mat
 
 static func _text_nodes(root: Node) -> Array:
 	var found: Array = []

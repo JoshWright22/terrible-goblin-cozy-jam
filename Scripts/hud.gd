@@ -9,6 +9,7 @@ const _day_end_scene   := preload("res://Scenes/day_end.tscn")
 const _day_hud_scene   := preload("res://Scenes/day_hud.tscn")
 
 func _ready() -> void:
+	Cosmetics.apply_shop(get_parent())
 	if GameManager.current_day:
 		get_parent().add_child.call_deferred(_day_hud_scene.instantiate())
 
