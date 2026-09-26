@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://b4h2u65m5kryd"
-path="res://.godot/imported/squish sound effect.wav-61508f60a710b20a8353d64eb8831abd.sample"
+path="res://.godot/imported/squish sound effect.wav-1944a3e5d419f2438bcc81a4d6783cd7.sample"
 
 [deps]
 
-source_file="res://Assets/sfx/squish sound effect.wav"
-dest_files=["res://.godot/imported/squish sound effect.wav-61508f60a710b20a8353d64eb8831abd.sample"]
+source_file="res://assets/sfx/squish sound effect.wav"
+dest_files=["res://.godot/imported/squish sound effect.wav-1944a3e5d419f2438bcc81a4d6783cd7.sample"]
 
 [params]
 

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cbv2h3wmi231b"
-path="res://.godot/imported/beltSprite8.png-0550d57005d6476dbd1551ab87686d92.ctex"
+path="res://.godot/imported/beltSprite8.png-56cd8600b399fdc26c3293e24494138f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/shopSprites/belt animation/beltSprite8.png"
-dest_files=["res://.godot/imported/beltSprite8.png-0550d57005d6476dbd1551ab87686d92.ctex"]
+source_file="res://assets/sprites/shopSprites/belt animation/beltSprite8.png"
+dest_files=["res://.godot/imported/beltSprite8.png-56cd8600b399fdc26c3293e24494138f.ctex"]
 
 [params]
 

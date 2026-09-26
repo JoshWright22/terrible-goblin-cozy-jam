@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://de1ndydqmrp5a"
-path="res://.godot/imported/mango2Sprite.PNG-49793c8ab5c3ee6638a3957d9bb2502c.ctex"
+path="res://.godot/imported/mango2Sprite.PNG-2cae82a6fdf8677cc8febfeb2fee587d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/fruitSprites/mango/mango2Sprite.PNG"
-dest_files=["res://.godot/imported/mango2Sprite.PNG-49793c8ab5c3ee6638a3957d9bb2502c.ctex"]
+source_file="res://assets/sprites/fruitSprites/mango/mango2Sprite.PNG"
+dest_files=["res://.godot/imported/mango2Sprite.PNG-2cae82a6fdf8677cc8febfeb2fee587d.ctex"]
 
 [params]
 

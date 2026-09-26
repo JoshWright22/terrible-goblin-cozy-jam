@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cmttrlrs5mvko"
-path="res://.godot/imported/impactPlate_medium_004.ogg-a05358e07a98167103750297e6a3ab52.oggvorbisstr"
+path="res://.godot/imported/impactPlate_medium_004.ogg-285bd80f247495f4bf1e7c6c8d6aa83d.oggvorbisstr"
 
 [deps]
 
-source_file="res://Assets/sfx/kenney_interface-sounds/Audio/impactPlate_medium_004.ogg"
-dest_files=["res://.godot/imported/impactPlate_medium_004.ogg-a05358e07a98167103750297e6a3ab52.oggvorbisstr"]
+source_file="res://assets/sfx/kenney_interface-sounds/Audio/impactPlate_medium_004.ogg"
+dest_files=["res://.godot/imported/impactPlate_medium_004.ogg-285bd80f247495f4bf1e7c6c8d6aa83d.oggvorbisstr"]
 
 [params]
 

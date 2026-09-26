@@ -3,12 +3,12 @@
 importer="bitmap"
 type="BitMap"
 uid="uid://dab7xs1823ekh"
-path="res://.godot/imported/settingsButton1SpritebitMap.png-34b2e427ac3f447116c0fb94385e3a70.res"
+path="res://.godot/imported/settingsButton1SpritebitMap.png-4693cc03d6c70c312a3eefa56f6a48f1.res"
 
 [deps]
 
-source_file="res://Assets/sprites/mainMenuSprites/settingsButton1SpritebitMap.png"
-dest_files=["res://.godot/imported/settingsButton1SpritebitMap.png-34b2e427ac3f447116c0fb94385e3a70.res"]
+source_file="res://assets/sprites/mainMenuSprites/settingsButton1SpritebitMap.png"
+dest_files=["res://.godot/imported/settingsButton1SpritebitMap.png-4693cc03d6c70c312a3eefa56f6a48f1.res"]
 
 [params]
 

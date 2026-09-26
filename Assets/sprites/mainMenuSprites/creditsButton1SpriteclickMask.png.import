@@ -3,12 +3,12 @@
 importer="bitmap"
 type="BitMap"
 uid="uid://btq2rjg6ifmk4"
-path="res://.godot/imported/creditsButton1SpriteclickMask.png-bb3f2b40fc31a75107cf70dde9a43ef2.res"
+path="res://.godot/imported/creditsButton1SpriteclickMask.png-64e4daa06203d6a7cba71bd28f4dfcdd.res"
 
 [deps]
 
-source_file="res://Assets/sprites/mainMenuSprites/creditsButton1SpriteclickMask.png"
-dest_files=["res://.godot/imported/creditsButton1SpriteclickMask.png-bb3f2b40fc31a75107cf70dde9a43ef2.res"]
+source_file="res://assets/sprites/mainMenuSprites/creditsButton1SpriteclickMask.png"
+dest_files=["res://.godot/imported/creditsButton1SpriteclickMask.png-64e4daa06203d6a7cba71bd28f4dfcdd.res"]
 
 [params]
 

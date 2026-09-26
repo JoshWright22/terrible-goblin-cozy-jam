@@ -3,12 +3,12 @@
 importer="oggvorbisstr"
 type="AudioStreamOggVorbis"
 uid="uid://cqnpvo4c1okqj"
-path="res://.godot/imported/footstep_grass_002.ogg-aa5b22bb05adfe9ada3c9b2b584f4fba.oggvorbisstr"
+path="res://.godot/imported/footstep_grass_002.ogg-b946c43787bfe35fff3d6bf6f0927469.oggvorbisstr"
 
 [deps]
 
-source_file="res://Assets/sfx/kenney_interface-sounds/Audio/footstep_grass_002.ogg"
-dest_files=["res://.godot/imported/footstep_grass_002.ogg-aa5b22bb05adfe9ada3c9b2b584f4fba.oggvorbisstr"]
+source_file="res://assets/sfx/kenney_interface-sounds/Audio/footstep_grass_002.ogg"
+dest_files=["res://.godot/imported/footstep_grass_002.ogg-b946c43787bfe35fff3d6bf6f0927469.oggvorbisstr"]
 
 [params]
 

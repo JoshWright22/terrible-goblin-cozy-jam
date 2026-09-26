@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://duaupsi5kpj8l"
-path="res://.godot/imported/strawberrySmoothieSprite.PNG-4b4c7b5b0a7e6254385b1c5c1d5e5668.ctex"
+path="res://.godot/imported/strawberrySmoothieSprite.PNG-32d02e4d581ce6287a05a9d438e957b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/blender/strawberrySmoothieSprite.PNG"
-dest_files=["res://.godot/imported/strawberrySmoothieSprite.PNG-4b4c7b5b0a7e6254385b1c5c1d5e5668.ctex"]
+source_file="res://assets/sprites/blender/strawberrySmoothieSprite.PNG"
+dest_files=["res://.godot/imported/strawberrySmoothieSprite.PNG-32d02e4d581ce6287a05a9d438e957b8.ctex"]
 
 [params]
 

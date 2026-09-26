@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c0erxnp74pyag"
-path="res://.godot/imported/appleSmoothieSprite.PNG-ef630a3b9df528b95a057474a291b9fb.ctex"
+path="res://.godot/imported/appleSmoothieSprite.PNG-fcec1fdf3bb6138df2581541e6bfda4a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/blender/appleSmoothieSprite.PNG"
-dest_files=["res://.godot/imported/appleSmoothieSprite.PNG-ef630a3b9df528b95a057474a291b9fb.ctex"]
+source_file="res://assets/sprites/blender/appleSmoothieSprite.PNG"
+dest_files=["res://.godot/imported/appleSmoothieSprite.PNG-fcec1fdf3bb6138df2581541e6bfda4a.ctex"]
 
 [params]
 

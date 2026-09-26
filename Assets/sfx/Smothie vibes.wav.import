@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dobfqn27boc7s"
-path="res://.godot/imported/Smothie vibes.wav-caba8caeac8f1a6bd90b937455d6146a.sample"
+path="res://.godot/imported/Smothie vibes.wav-932bcbcaa5862fc7b3fc68f99328e7bb.sample"
 
 [deps]
 
-source_file="res://Assets/sfx/Smothie vibes.wav"
-dest_files=["res://.godot/imported/Smothie vibes.wav-caba8caeac8f1a6bd90b937455d6146a.sample"]
+source_file="res://assets/sfx/Smothie vibes.wav"
+dest_files=["res://.godot/imported/Smothie vibes.wav-932bcbcaa5862fc7b3fc68f99328e7bb.sample"]
 
 [params]
 

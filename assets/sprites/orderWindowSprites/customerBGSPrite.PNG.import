@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://hvvpjt45gxo7"
-path="res://.godot/imported/customerBGSPrite.PNG-688411db92c02cfe2b24f90d4fdc3338.ctex"
+path="res://.godot/imported/customerBGSPrite.PNG-8389bcea7155ef8907ee14b01d2273c3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/orderWindowSprites/customerBGSPrite.PNG"
-dest_files=["res://.godot/imported/customerBGSPrite.PNG-688411db92c02cfe2b24f90d4fdc3338.ctex"]
+source_file="res://assets/sprites/orderWindowSprites/customerBGSPrite.PNG"
+dest_files=["res://.godot/imported/customerBGSPrite.PNG-8389bcea7155ef8907ee14b01d2273c3.ctex"]
 
 [params]
 

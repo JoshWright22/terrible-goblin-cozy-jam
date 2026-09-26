@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://twnwd11gq0wl"
-path="res://.godot/imported/Magic Yellow by Syaf Rizal [Khurasan™].otf-f0e477344d795e22d6eecaac88baf506.fontdata"
+path="res://.godot/imported/Magic Yellow by Syaf Rizal [Khurasan™].otf-82b8b710854b16d3ffd88953fdb5f343.fontdata"
 
 [deps]
 
-source_file="res://Assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf"
-dest_files=["res://.godot/imported/Magic Yellow by Syaf Rizal [Khurasan™].otf-f0e477344d795e22d6eecaac88baf506.fontdata"]
+source_file="res://assets/fonts/Magic Yellow by Syaf Rizal [Khurasan™].otf"
+dest_files=["res://.godot/imported/Magic Yellow by Syaf Rizal [Khurasan™].otf-82b8b710854b16d3ffd88953fdb5f343.fontdata"]
 
 [params]
 

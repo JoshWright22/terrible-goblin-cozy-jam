@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://d6wkqmax7ar2"
-path="res://.godot/imported/char4NeutralSprite.PNG-487a06159a05e5165a59d0ccb14e6f9c.ctex"
+path="res://.godot/imported/char4NeutralSprite.PNG-b047fefa090c841ec1be55bf6d143555.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/sprites/characterSprites/char4/char4NeutralSprite.PNG"
-dest_files=["res://.godot/imported/char4NeutralSprite.PNG-487a06159a05e5165a59d0ccb14e6f9c.ctex"]
+source_file="res://assets/sprites/characterSprites/char4/char4NeutralSprite.PNG"
+dest_files=["res://.godot/imported/char4NeutralSprite.PNG-b047fefa090c841ec1be55bf6d143555.ctex"]
 
 [params]
 
