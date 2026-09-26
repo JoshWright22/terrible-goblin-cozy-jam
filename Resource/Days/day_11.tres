@@ -6,6 +6,6 @@
 script = ExtResource("1_day")
 day_number = 11
 title = "Brain Freeze"
-intro_text = "The new freezer works too well. It froze the fruit, the mop and Kevin. Frosty pieces can't rotate."
+intro_text = "The new freezer works too well. It froze the fruit, the mop and a seagull. Frozen pieces won't turn."
 frozen_chance = 0.35
 star_scores = Array[int]([1950, 3500, 5250])
