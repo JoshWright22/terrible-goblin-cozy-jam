@@ -5,9 +5,10 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 5
-title = "Lunch Rush"
-intro_text = "The lifeguards all eat at noon. RUSH customers leave fast but tip double. The ocean can wait."
-fruits = Array[int]([0, 1, 2, 3])
-rush_orders = true
+title = "Allergy Season"
+intro_text = "Half the beach is allergic to something. Never add a crossed out fruit. Lawyers are expensive."
+fruits = Array[int]([0, 1, 2])
+allergy_orders = true
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1800, 3250, 4850])
+blender_count = 2

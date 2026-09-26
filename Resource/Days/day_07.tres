@@ -10,3 +10,5 @@ intro_text = "Something was living in the blenders. It has moved on. Its rotten 
 rotten_cells = 2
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1800, 3250, 4850])
+fruits = Array[int]([0, 1, 2, 3])
+blender_count = 3

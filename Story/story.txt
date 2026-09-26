@@ -13,25 +13,25 @@
 Uncle Gus left you his beach smoothie shack and fled the country. He left his journal on the counter. The first entry says the shack is completely legal.
 In the back you found two unattended fruit crates.
 
-[summer 2] New Delivery
-Blueberries arrived. Nobody ordered them. Gus's journal says "The blueberries are fine. The blueberries are FINE."
-A third fruit crate now sits out back.
-
-[summer 3] Odd Shapes
+[summer 2] Odd Shapes
 The next journal entry reads "Bought a fruit cutter off a guy. It only cuts spiritual shapes. No refunds."
 The fruit comes out bent, but you can right click a piece to spin it into place.
 
-[summer 4] Mango Season
-Someone carved "trust the mangoes" into the counter. It seems to be in Gus's handwriting.
-A crate of mangoes turned up this morning, and the customers are craving something new.
+[summer 3] New Delivery
+Blueberries arrived. Nobody ordered them. Gus's journal says "The blueberries are fine. The blueberries are FINE."
+A third fruit crate now sits out back.
 
-[summer 5] Lunch Rush
+[summer 4] Lunch Rush
 A lifeguard slaps a twenty on the counter. "Ten minutes for lunch. Keep the change if you're fast."
 Anyone marked RUSH won't wait long, but they pay double.
 
-[summer 6] Allergy Season
+[summer 5] Allergy Season
 A man hands you a laminated card listing every fruit that has tried to kill him. It is double sided.
 Some orders now come with a fruit marked NO. Keep it out of the cup.
+
+[summer 6] Mango Season
+Someone carved "trust the mangoes" into the counter. It seems to be in Gus's handwriting.
+A crate of mangoes turned up this morning, and the customers are craving something new.
 
 [summer 7] Rotten Batch
 Flipping back through the journal, you find "Cleaned the blenders today." The entry is from two summers ago.

@@ -5,9 +5,10 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 6
-title = "Allergy Season"
-intro_text = "Half the beach is allergic to something. Never add a crossed out fruit. Lawyers are expensive."
+title = "Mango Season"
+intro_text = "Mango season. The beach has lost all dignity. Customers will start asking for mangoes."
 fruits = Array[int]([0, 1, 2, 3])
-allergy_orders = true
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([1800, 3250, 4850])
+patience_scale = 1.2
+star_scores = Array[int]([1650, 2950, 4450])
+blender_count = 3

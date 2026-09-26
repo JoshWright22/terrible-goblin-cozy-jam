@@ -67,7 +67,7 @@ The full game uses the jam's existing art: 5 fruits × 7 shapes (35 pieces). New
 - Large – an upgrade
 - Fewer blenders (2 of 4) – a day modifier
 
-**Opening progression:** start Summer with one blender on Day 1, then unlock a second on Day 2, a third on Day 3 and the fourth on Day 4. Closed blenders show their opening day; the Day 12 repair modifier still leaves only two working. Early score targets are reduced for the smaller setup and still need a playtest balance pass.
+**Opening progression:** start Summer with one blender on Day 1. New fruit deliveries open another blender: the second with blueberry on Day 3, the third with mango on Day 6 and the fourth with apple on Day 9. Closed blenders show their opening day. Star targets still need a playtest balance pass for the longer stretches with fewer blenders.
 
 **Customers:** new types reuse the existing customer sprites. They're told apart by color tints and a small icon badge (for example a star for the critic or a clock for the rusher), not by new art.
 
@@ -87,14 +87,14 @@ A classic summer: sunshine, the beach, mango season and a festival to finish. Yo
 | Day | Name | Twist | Cost |
 | --- | --- | --- | --- |
 | 1 | Opening Day | 2 fruits, simple shapes; tutorial built in | Setting |
-| 2 | New Delivery | Third fruit arrives | Setting |
-| 3 | Odd Shapes | L and T shapes introduced | Setting |
-| 4 | Mango Season | Mango arrives on its own day, shown on the intro card | Setting |
-| 5 | Lunch Rush | Rush orders with a timer | Small |
-| 6 | Allergy Season | "No banana" style orders | Small |
+| 2 | Odd Shapes | L and T shapes introduced | Setting |
+| 3 | New Delivery | Blueberry arrives; previously learned shapes stay available | Setting |
+| 4 | Lunch Rush | Rush orders with a timer | Small |
+| 5 | Allergy Season | "No banana" style orders | Small |
+| 6 | Mango Season | Mango arrives on its own day, shown on the intro card | Setting |
 | 7 | Rotten Batch | Blocked cells to avoid (`blank_cells` exists) | Small |
 | 8 | Broken Blender | 3×3 grid (the blenders shrink in the wash after Rotten Batch) | Setting |
-| 9 | Belt on Overdrive | Fast conveyor | Setting |
+| 9 | Belt on Overdrive | Fast conveyor; apple arrives, shown on the intro card | Setting |
 | 10 | Heatwave | Fruit melts if left on the belt | Small |
 | 11 | Brain Freeze | Some pieces can't rotate | Small |
 | 12 | Food Critics | CRITIC customers want 90%+ accuracy and pay triple | Small |
@@ -109,7 +109,9 @@ A classic summer: sunshine, the beach, mango season and a festival to finish. Yo
 
 The wide 6×3 blender was swapped out because the blender art can't stretch to a wide grid without new sprites.
 
-Playtest changes: mango got its own day instead of sharing Day 4 with a flat 80% rule. Day 12 was the point where the campaign dragged, so the plain "two blenders" day became Food Critics, where a few marked customers demand accuracy for a big payout. Any day that adds a fruit shows it on the intro card: the order icon next to a few of its pieces.
+Fruit progression is spread across the first half: strawberry and banana on Day 1, blueberry on Day 3, mango on Day 6 and apple on Day 9. Existing story entries move with their days, with the dialogue and rules preserved. Fruit pools stay cumulative; each new fruit delivery opens another blender. Apple joins the existing Belt on Overdrive day rather than adding another day or replacing its story.
+
+Playtest changes: mango got its own day instead of sharing a day with a flat 80% rule. Day 12 was the point where the campaign dragged, so the plain "two blenders" day became Food Critics, where a few marked customers demand accuracy for a big payout. Any day that adds a fruit shows it on the intro card: the order icon next to a few of its pieces.
 
 **Stars:** each star is still a score target. Star 1 is roughly what surviving the day earns, star 2 is 1.8 times that and star 3 is 2.7 times that. Playtesters found stars 2 and 3 too far apart (they were 3x and 6.7x), so getting better at the game rarely showed up as a new star. The closer steps reward each improvement. Hovering a star shows its target. Losing, or ending a day short of three stars, shows a tip for scoring higher.
 
@@ -341,7 +343,7 @@ Done so far (September 2026):
 - [x] Sunset tint over each day, night shift and power outage effects
 - [x] Smoothie pour scene transition, painted board text
 - [x] Calendar footer keeps Style beside Endless and Daily Slush; star counts use drawn icons
-- [x] Summer starts with one blender and opens one more each day through Day 4
+- [x] Summer starts with one blender and opens another with each fruit delivery on Days 3, 6 and 9
 - [x] Touch rotate (second finger tap) and always-on order bubbles on mobile
 - [ ] Balance pass on star targets (current values are first guesses)
 - [x] Unlimited Endless mode: score-based upgrade choices, escalating survival pressure, and upgrades that reset each run

@@ -5,12 +5,11 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 2
-title = "New Delivery"
-intro_text = "Blueberries arrived. Nobody ordered them. Uncle Gus's old supplier assures you there is nothing wrong with them. Three fruits now."
-fruits = Array[int]([0, 1, 2])
-shapes = PackedStringArray("1x1", "2x1", "3x1")
-max_difficulty = "EASY"
-patience_scale = 1.3
-duration = 120
-star_scores = Array[int]([1100, 2000, 2950])
-blender_count = 2
+title = "Odd Shapes"
+intro_text = "The new fruit comes in shapes nature did not intend. Right click to spin pieces so they fit."
+fruits = Array[int]([0, 1])
+shapes = PackedStringArray("1x1", "2x1", "3x1", "2x2_L", "3x2_L", "3x2_T")
+max_difficulty = "MEDIUM"
+patience_scale = 1.2
+star_scores = Array[int]([1350, 2450, 3650])
+blender_count = 1

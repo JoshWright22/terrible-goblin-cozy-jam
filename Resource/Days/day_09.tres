@@ -11,3 +11,5 @@ belt_speed_scale = 1.6
 spawn_rate_scale = 1.4
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1950, 3500, 5250])
+fruits = Array[int]([0, 1, 2, 3, 4])
+blender_count = 4

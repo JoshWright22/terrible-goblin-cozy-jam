@@ -11,3 +11,4 @@ fruits = Array[int]([0, 1, 2, 3])
 grid_size = 3
 max_difficulty = "MEDIUM"
 star_scores = Array[int]([1500, 2700, 4050])
+blender_count = 3
