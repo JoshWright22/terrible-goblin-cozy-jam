@@ -5,8 +5,9 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 9
-title = "Rotten Batch"
-intro_text = "Something was living in the blenders. It has moved on. Its rotten fruit has not, so pack around it."
-rotten_cells = 2
+title = "Belt on Overdrive"
+intro_text = "Uncle Gus left a note: do not press the red button. It has been pressed. Fruit comes in fast!"
+belt_speed_scale = 1.6
+spawn_rate_scale = 1.4
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([1800, 3250, 4850])
+star_scores = Array[int]([1950, 3500, 5250])

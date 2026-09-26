@@ -5,9 +5,8 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 7
-title = "Broken Blender"
-intro_text = "Someone put the blenders in the dryer. They shrank. 3x3 grids today. No one is taking questions."
-fruits = Array[int]([0, 1, 2, 3])
-grid_size = 3
+title = "Rotten Batch"
+intro_text = "Something was living in the blenders. It has moved on. Its rotten fruit has not, so pack around it."
+rotten_cells = 2
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([1500, 2700, 4050])
+star_scores = Array[int]([1800, 3250, 4850])

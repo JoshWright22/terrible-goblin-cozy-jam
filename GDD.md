@@ -80,7 +80,7 @@ The full game uses the jam's existing art: 5 fruits × 7 shapes (35 pieces). New
 
 ## Campaign 1: Summer Fun
 
-A classic summer: sunshine, the beach, mango season and a festival to finish. You run the smoothie shack Uncle Gus left you before fleeing the country. The campaign runs 18 days, each with its own twist. To keep this fast to build, each day is a `DayConfig` resource. Most twists are just different values in it, so about half the days need no new code.
+A classic summer: sunshine, the beach, mango season and a festival to finish. You run the smoothie shack Uncle Gus left you before fleeing the country. Gus never appears; the story follows him only through his journal, postcards and what people say about him. Story text is in `Story/story.txt`. The campaign runs 18 days, each with its own twist. To keep this fast to build, each day is a `DayConfig` resource. Most twists are just different values in it, so about half the days need no new code.
 
 **DayConfig fields:** fruits allowed, shapes allowed, grid size, belt speed, customer patience, % tolerance, customer mix, day length, target score (1/2/3 stars), twist ID, sky/shader preset.
 
@@ -92,9 +92,9 @@ A classic summer: sunshine, the beach, mango season and a festival to finish. Yo
 | 4 | Mango Season | Mango arrives on its own day, shown on the intro card | Setting |
 | 5 | Lunch Rush | Rush orders with a timer | Small |
 | 6 | Allergy Season | "No banana" style orders | Small |
-| 7 | Broken Blender | 3×3 grid | Setting |
-| 8 | Belt on Overdrive | Fast conveyor | Setting |
-| 9 | Rotten Batch | Blocked cells to avoid (`blank_cells` exists) | Small |
+| 7 | Rotten Batch | Blocked cells to avoid (`blank_cells` exists) | Small |
+| 8 | Broken Blender | 3×3 grid (the blenders shrink in the wash after Rotten Batch) | Setting |
+| 9 | Belt on Overdrive | Fast conveyor | Setting |
 | 10 | Heatwave | Fruit melts if left on the belt | Small |
 | 11 | Brain Freeze | Some pieces can't rotate | Small |
 | 12 | Food Critics | CRITIC customers want 90%+ accuracy and pay triple | Small |

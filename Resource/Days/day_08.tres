@@ -5,9 +5,9 @@
 [resource]
 script = ExtResource("1_day")
 day_number = 8
-title = "Belt on Overdrive"
-intro_text = "Uncle Gus left a note: do not press the red button. It has been pressed. Fruit comes in fast!"
-belt_speed_scale = 1.6
-spawn_rate_scale = 1.4
+title = "Broken Blender"
+intro_text = "Someone put the blenders in the dryer. They shrank. 3x3 grids today. No one is taking questions."
+fruits = Array[int]([0, 1, 2, 3])
+grid_size = 3
 max_difficulty = "MEDIUM"
-star_scores = Array[int]([1950, 3500, 5250])
+star_scores = Array[int]([1500, 2700, 4050])
