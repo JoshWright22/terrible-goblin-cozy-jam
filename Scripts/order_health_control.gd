@@ -107,6 +107,7 @@ const PRIZE_WHEEL_CENTER := Vector2(585, 300)   # over the customer window
 const COMBO_STEP := 0.25
 const COMBO_MAX_MULT := 2.0
 var combo: int = 0
+var last_served_recipe: Dictionary = {}
 var _sweep_timer: float = 1.0
 var ingredients: Array[FruitData.FruitType] = [
 	FruitData.FruitType.BANANA,
@@ -396,6 +397,13 @@ func compareValues(inputer) -> void:
 	var total_count: int = 0
 	for v in inputer.values():
 		total_count += v
+	# Hall of Mirrors: the reflection copies the previous cup, even at a different size.
+	# A rejected repeat still becomes the previous cup, so serve a different recipe next.
+	var repeated_recipe := GameManager.twists().varied_recipes and same_recipe(inputer, last_served_recipe)
+	if repeated_recipe:
+		typeMatch = false
+		_combo_popup("Change the recipe!", Color(1.0, 0.55, 0.5))
+	last_served_recipe = inputer.duplicate()
 	var inputer_perc: Dictionary = {}
 	for key in inputer:
 		inputer_perc[key] = float(inputer[key]) / float(total_count) * 100.0
@@ -569,6 +577,18 @@ func customer_left() -> void:
 	var tw := healthBar.create_tween()
 	tw.tween_property(healthBar, "modulate", Color(2.2, 1.0, 1.0), 0.07)
 	tw.tween_property(healthBar, "modulate", Color(1.0, 1.0, 1.0), 0.4).set_trans(Tween.TRANS_QUAD)
+
+func same_recipe(a: Dictionary, b: Dictionary) -> bool:
+	if a.is_empty() or a.size() != b.size():
+		return false
+	var total_a: int = 0
+	var total_b: int = 0
+	for amount in a.values(): total_a += amount
+	for amount in b.values(): total_b += amount
+	for fruit in a:
+		if a[fruit] * total_b != b.get(fruit, 0) * total_a:
+			return false
+	return true
 
 func genOrder(custID) -> void:
 	var order = {}

@@ -6,9 +6,8 @@
 script = ExtResource("1_day")
 day_number = 14
 title = "Hall of Mirrors"
-intro_text = "Your stand is in the hall of mirrors now. Fruit keeps changing and orders fade. Trust nothing."
-shifty_fruit = true
-fading_orders = true
+intro_text = "The mirrors copy your last smoothie. Serve different fruit proportions each time; repeats earn no points or health."
+varied_recipes = true
 combo = true
 prize_customers = true
 star_scores = Array[int]([2900, 5200, 7850])

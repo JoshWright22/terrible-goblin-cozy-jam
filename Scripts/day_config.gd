@@ -49,6 +49,10 @@ class_name DayConfig
 @export var prize_customers: bool = false   # Boardwalk Carnival: every fourth customer spins the prize wheel when served
 @export var angry_reorder: bool = false     # customers change their order when they turn angry
 
+@export_group("Carnival")
+@export var varied_recipes: bool = false    # repeating the previous cup's proportions earns nothing
+@export var sticky_fruit: bool = false      # fruit cannot be lifted out once placed in a blender
+
 func stars_for_score(score: int) -> int:
 	var stars := 0
 	for target in star_scores:

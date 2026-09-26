@@ -126,7 +126,7 @@ The twist on summer: a carnival takes over the boardwalk and hires you, no quest
 | Slow Belt | The conveyor runs at half speed for 10 seconds |
 | Calm | Every waiting customer's patience resets |
 
-Every carnival day also has Combo, plus the day's own twists from these five mechanics (none need new art):
+Every carnival day also has Combo, plus the day's own twists. These carnival mechanics need no new art:
 
 | Mechanic | What happens |
 | --- | --- |
@@ -135,6 +135,10 @@ Every carnival day also has Combo, plus the day's own twists from these five mec
 | Belt Hiccups | The conveyor stalls for 2.5 seconds every 8 to 13 seconds |
 | Shifty Fruit | Loose fruit changes type every 2.2 seconds until it's grabbed |
 | Short Memory | Order bubbles fade after 3.5 seconds; hover the customer to peek |
+| Mirror Recipes | The same fruit proportions as the previous served cup earn no points or health, even in a larger cup. Change the proportions or fruit types; the HUD shows the last cup. |
+| Sticky Blenders | Placed fruit cannot be picked up again. Blending still clears the grid normally. |
+
+Days 1-17 each introduce a rule not previously introduced in this campaign. Existing Summer rules can return as their carnival introduction; later days can also combine them with earlier carnival rules. Day 18 activates every carnival mechanic together. The story dialogue stays in `Story/story.txt`; the final rule sentence explains the playable twist.
 
 | Day | Name | Twists (all also have combo and prize customers) |
 | --- | --- | --- |
@@ -151,11 +155,13 @@ Every carnival day also has Combo, plus the day's own twists from these five mec
 | 11 | Double Heat | Double orders, overheat |
 | 12 | Fortune Teller | Mystery orders |
 | 13 | Ice Cream Truck | Frozen fruit |
-| 14 | Hall of Mirrors | Shifty fruit, fading orders |
+| 14 | Hall of Mirrors | New: mirror recipes, no repeated proportions |
 | 15 | Food Fight | Critics, double orders |
 | 16 | Rollercoaster | Belt stalls, rush, faster belt |
-| 17 | Rain Delay | Power outage, allergies |
-| 18 | Grand Finale | Shifty, overheat, fading, VIP, rush (180 s) |
+| 17 | Rain Delay | New: sticky blenders, no rearranging placed fruit |
+| 18 | Grand Finale | All carnival rules: wheel, combo, overheat, stalls, shifting fruit, fading orders, darkness, rush, allergies, outages, 85% accuracy, doubles, mystery amounts, frozen fruit, mirror recipes, critics, faster belt and sticky blenders (180 s) |
+
+The finale's combined difficulty and the two new days' star targets still need a playtest balance pass.
 
 **Story:** every day's intro card tells a line of story in a deadpan voice and then states the day's rule, e.g. "The magician next door is bored. Fruit on the belt keeps changing until you grab it."
 
@@ -341,7 +347,7 @@ Done so far (September 2026):
 - [x] Unlimited Endless mode: score-based upgrade choices, escalating survival pressure, and upgrades that reset each run
 - [ ] Playtest Endless milestone costs, upgrade strength and pressure growth
 - [x] Style unlocks: blender, wall, conveyor, transition and board paint colors
-- [x] Second campaign (Boardwalk Carnival): 18 days, prize wheel gimmick, five new mechanics
+- [x] Second campaign (Boardwalk Carnival): 18 days, a new rule introduction each day, mirror recipes, sticky blenders and a finale combining every carnival rule
 - [x] Hands-on day 1 tutorial, redone settings and credits screens
 - [ ] Shop upgrades (gameplay unlocks)
 - [x] Settings: fullscreen toggle

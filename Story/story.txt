@@ -135,7 +135,7 @@ Frozen pieces won't turn.
 
 [carnival 14] Hall of Mirrors
 Your stand is in the hall of mirrors now. You keep grabbing reflections of fruit instead of fruit, and one reflection is wearing a Hawaiian shirt. You aren't.
-The fruit won't stay the same, and customers lose track of their orders in the mirrors.
+The mirrors copy your last smoothie. Serve different fruit proportions each time; repeats earn no points or health.
 
 [carnival 15] Food Fight
 Someone started a food fight at the pie stand while the critics were judging it. A blueberry stained Hawaiian shirt was found at the scene.
@@ -147,11 +147,11 @@ The belt runs faster and stalls on the loops, and the thrill seekers won't wait 
 
 [carnival 17] Rain Delay
 A cat came into your stand to get out of the rain. Its collar says "Property of G."
-The cat keeps chewing the power cord, and everyone sneezing at it suddenly remembers their allergies.
+The cat tracks sticky mud into the blenders. Once fruit is placed, it stays there until you blend.
 
 [carnival 18] Grand Finale
 It's the last night of the carnival, and every act is performing at once. A postcard is waiting on the counter. It says "Proud of you. Don't look for me."
-Everything the carnival has thrown at you, all at once.
+Every carnival rule returns together, including the mirrors and sticky blenders. Keep recipes varied and plan each placement.
 
 [tutorial]
 Grab a fruit off the conveyor belt

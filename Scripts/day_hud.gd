@@ -20,6 +20,7 @@ var _tint: CanvasModulate = null
 var _power_timer: float = 0.0
 var _storm_steps: Array = []   # what's left of the current lightning hit
 var _order_mask: ShaderMaterial = null
+var _rule_hint: Label = null
 
 func _ready() -> void:
 	_day = GameManager.current_day
@@ -36,6 +37,14 @@ func _ready() -> void:
 	_night.visible = _day.night_shift
 	_outage.visible = false
 	_power_timer = randf_range(POWER_ON_TIME.x, POWER_ON_TIME.y)
+	if _day.varied_recipes or _day.sticky_fruit:
+		_rule_hint = Label.new()
+		_rule_hint.position = Vector2(170, 645)
+		_rule_hint.size = Vector2(820, 160)
+		_rule_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		_rule_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ButtonFx.outline_label(_rule_hint, 32, 5)
+		add_child(_rule_hint)
 
 	# Tints the shop itself (not the UI layers) as the day goes on
 	_tint = CanvasModulate.new()
@@ -47,6 +56,20 @@ func _process(delta: float) -> void:
 		if _control == null:
 			return
 	var left: float = maxf(0.0, _control.day_time_left)
+	if _rule_hint:
+		var lines: Array[String] = []
+		if _day.varied_recipes:
+			lines.append("Mirrors: change fruit proportions each serve.")
+			var previous: Dictionary = _control.last_served_recipe
+			var total: float = 0.0
+			for amount in previous.values(): total += amount
+			var parts: Array[String] = []
+			for fruit in previous:
+				parts.append("%s %.0f%%" % [FruitData.FruitType.keys()[fruit].capitalize(), 100.0 * previous[fruit] / total])
+			lines.append("Last cup: " + (", ".join(parts) if total > 0 else "none yet"))
+		if _day.sticky_fruit:
+			lines.append("Sticky blenders: placed fruit stays until blended.")
+		_rule_hint.text = "\n".join(lines)
 	_time_lbl.text = "%d:%02d" % [int(left) / 60, int(left) % 60]
 	_time_lbl.modulate = Color(1.0, 0.55, 0.45) if left < 15.0 else Color.WHITE
 

@@ -232,6 +232,9 @@ func _on_main_click_area_input(_viewport: Node, event: InputEvent, _shape_idx: i
 	if GameManager.paused:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		if is_locked and GameManager.twists().sticky_fruit:
+			_shiver()
+			return
 		# Only one fruit piece held at a time
 		if GameManager.fruit_held:
 			return
