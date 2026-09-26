@@ -9,7 +9,7 @@ extends CanvasLayer
 @onready var _note_lbl: Label = $NoteLabel
 @onready var _stars: Array[StarIcon] = [$Stars/Star1, $Stars/Star2, $Stars/Star3]
 @onready var _next_btn: TextureButton = $ButtonBox/NextButton
-@onready var _retry_btn: Button = $ButtonBox/RetryButton
+@onready var _retry_btn: TextureButton = $ButtonBox/RetryButton
 @onready var _menu_btn: TextureButton = $ButtonBox/MenuButton
 
 func _ready() -> void:
@@ -21,7 +21,11 @@ func _ready() -> void:
 	$TipLabel.text = Tips.random() if stars < 3 else ""
 	var unlocked := Cosmetics.newly_unlocked(GameManager.stars_before_day, SaveManager.total_stars())
 	if not unlocked.is_empty():
-		_note_lbl.text = "Unlocked: " + ", ".join(unlocked) + "!"
+		# A long list wouldn't fit on the board, so name one and count the rest
+		var names: String = " and ".join(unlocked)
+		if unlocked.size() > 2:
+			names = "%s and %d more" % [unlocked[0], unlocked.size() - 1]
+		_note_lbl.text = "Unlocked: %s!" % names
 	var hints := day.star_hints()
 	for i in _stars.size():
 		_stars[i].filled = false
@@ -29,7 +33,6 @@ func _ready() -> void:
 		_stars[i].mouse_filter = Control.MOUSE_FILTER_PASS
 
 	_next_btn.visible = stars > 0 and GameManager.has_next_day()
-	ButtonFx.style_text_button(_retry_btn, Color(0.85, 0.55, 0.3), 48)
 	for btn in [_next_btn, _retry_btn, _menu_btn]:
 		ButtonFx.setup(btn)
 	_next_btn.pressed.connect(_on_next)

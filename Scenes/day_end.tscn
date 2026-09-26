@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://droqks88vso3y" path="res://Assets/sprites/ui sprites/playButtonSprite.PNG" id="3_play"]
 [ext_resource type="Texture2D" uid="uid://li58ncn403w1" path="res://Assets/sprites/ui sprites/exitButtonSprite.PNG" id="4_exit"]
 [ext_resource type="Script" path="res://Scripts/star_icon.gd" id="5_star"]
+[ext_resource type="Texture2D" path="res://Assets/sprites/ui sprites/blankButtonSprite.PNG" id="6_blank"]
+[ext_resource type="Script" path="res://Scripts/retry_icon.gd" id="7_retry"]
 
 [node name="DayEnd" type="CanvasLayer"]
 process_mode = 3
@@ -27,16 +29,16 @@ texture = ExtResource("2_bg")
 
 [node name="TitleLabel" type="Label" parent="."]
 offset_left = 440.0
-offset_top = 178.0
+offset_top = 165.0
 offset_right = 1480.0
-offset_bottom = 318.0
+offset_bottom = 305.0
 theme_override_font_sizes/font_size = 112
 text = "Day 1 done!"
 horizontal_alignment = 1
 
 [node name="Stars" type="HBoxContainer" parent="."]
 offset_left = 735.0
-offset_top = 335.0
+offset_top = 305.0
 offset_right = 1185.0
 offset_bottom = 475.0
 theme_override_constants/separation = 20
@@ -62,28 +64,31 @@ script = ExtResource("5_star")
 
 [node name="ScoreLabel" type="Label" parent="."]
 offset_left = 460.0
-offset_top = 490.0
+offset_top = 450.0
 offset_right = 1460.0
-offset_bottom = 585.0
+offset_bottom = 545.0
 theme_override_font_sizes/font_size = 84
 text = "Score: 0"
 horizontal_alignment = 1
 
 [node name="NoteLabel" type="Label" parent="."]
 offset_left = 460.0
-offset_top = 590.0
+offset_top = 540.0
 offset_right = 1460.0
-offset_bottom = 690.0
+offset_bottom = 630.0
 theme_override_colors/font_color = Color(1, 0.84, 0.45, 1)
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 48
 text = "note"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+text_overrun_behavior = 3
 
 [node name="ButtonBox" type="HBoxContainer" parent="."]
 offset_left = 560.0
-offset_top = 715.0
+offset_top = 635.0
 offset_right = 1360.0
-offset_bottom = 875.0
+offset_bottom = 785.0
 theme_override_constants/separation = 40
 alignment = 1
 
@@ -96,12 +101,28 @@ texture_normal = ExtResource("4_exit")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="RetryButton" type="Button" parent="ButtonBox"]
-custom_minimum_size = Vector2(200, 90)
+[node name="RetryButton" type="TextureButton" parent="ButtonBox"]
+custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 size_flags_vertical = 4
 action_mode = 0
-text = "Retry"
+texture_normal = ExtResource("6_blank")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Icon" type="Control" parent="ButtonBox/RetryButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("7_retry")
 
 [node name="NextButton" type="TextureButton" parent="ButtonBox"]
 custom_minimum_size = Vector2(140, 140)
@@ -113,10 +134,10 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="TipLabel" type="Label" parent="."]
-offset_left = 460.0
-offset_top = 880.0
-offset_right = 1460.0
-offset_bottom = 960.0
+offset_left = 480.0
+offset_top = 795.0
+offset_right = 1440.0
+offset_bottom = 890.0
 theme_override_font_sizes/font_size = 34
 horizontal_alignment = 1
 vertical_alignment = 1

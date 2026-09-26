@@ -5,6 +5,7 @@ extends CanvasLayer
 const NIGHT_TINT := Color(0.72, 0.74, 0.95)
 const POWER_ON_TIME := Vector2(9.0, 15.0)   # random range between outages
 const POWER_OFF_TIME := 3.0
+const FLICKER_TIME := 0.08
 const FLASHLIGHT_MASK := preload("res://Shaders/flashlight_mask.gdshader")
 
 @onready var _night: ColorRect = $NightOverlay
@@ -17,6 +18,7 @@ var _day: DayConfig
 var _control: Node = null
 var _tint: CanvasModulate = null
 var _power_timer: float = 0.0
+var _storm_steps: Array = []   # what's left of the current lightning hit
 var _order_mask: ShaderMaterial = null
 
 func _ready() -> void:
@@ -89,18 +91,33 @@ func _exit_tree() -> void:
 func _update_power(delta: float) -> void:
 	_power_timer -= delta
 	if _power_timer > 0.0:
-		if GameManager.power_out:
-			# Flicker while the power is out
-			_outage.color.a = 0.35 + 0.12 * sin(Time.get_ticks_msec() * 0.03)
 		return
-	GameManager.power_out = not GameManager.power_out
-	_outage.visible = GameManager.power_out
-	if GameManager.power_out:
+	if _storm_steps.is_empty():
+		_storm_steps = _storm()
+	var step: Array = _storm_steps.pop_front()
+	_outage.visible = step[0]
+	_power_timer = step[1]
+	# The blenders cut out for the long dark stretch and the flickers after it
+	if step[1] == POWER_OFF_TIME:
+		GameManager.power_out = true
 		AudioManager.play_pause_close()
-		_power_timer = POWER_OFF_TIME
-	else:
+	elif _storm_steps.is_empty():
+		GameManager.power_out = false
 		AudioManager.play_pause_open()
-		_power_timer = randf_range(POWER_ON_TIME.x, POWER_ON_TIME.y)
+
+# One lightning hit as [lights out, seconds] steps: a flicker or two, the lights go out,
+# a flicker or two while they try to come back, then back on until the next hit
+func _storm() -> Array:
+	var steps: Array = []
+	for i in randi_range(1, 2):
+		steps.append([true, FLICKER_TIME])
+		steps.append([false, FLICKER_TIME * 1.6])
+	steps.append([true, POWER_OFF_TIME])
+	for i in randi_range(1, 2):
+		steps.append([false, FLICKER_TIME])
+		steps.append([true, FLICKER_TIME * 1.6])
+	steps.append([false, randf_range(POWER_ON_TIME.x, POWER_ON_TIME.y)])
+	return steps
 
 func _pop(star: Control) -> void:
 	AudioManager.play_health_gain()
