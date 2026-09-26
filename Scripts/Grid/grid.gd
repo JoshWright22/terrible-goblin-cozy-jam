@@ -72,9 +72,7 @@ func _overheat() -> void:
 	var hot := Label.new()
 	hot.text = "HOT!"
 	hot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	hot.add_theme_font_size_override("font_size", 70)
-	hot.add_theme_constant_override("outline_size", 12)
-	hot.add_theme_color_override("font_outline_color", Color.BLACK)
+	ButtonFx.outline_label(hot, 70, 12)
 	hot.add_theme_color_override("font_color", Color(1.0, 0.45, 0.25))
 	hot.size = Vector2(260, 100)
 	hot.position = grid_anchor.position - hot.size / 2.0
@@ -124,9 +122,7 @@ func _show_out_of_order() -> void:
 	var sign_label := Label.new()
 	sign_label.text = "OPENS\nDAY %d" % opens if not_yet else "OUT OF\nORDER"
 	sign_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sign_label.add_theme_font_size_override("font_size", 55)
-	sign_label.add_theme_constant_override("outline_size", 10)
-	sign_label.add_theme_color_override("font_outline_color", Color.BLACK)
+	ButtonFx.outline_label(sign_label, 55, 10)
 	sign_label.add_theme_color_override("font_color", Color(1.0, 0.84, 0.45) if not_yet else Color(1.0, 0.45, 0.35))
 	sign_label.size = Vector2(300, 120)
 	sign_label.position = grid_anchor.position - sign_label.size / 2.0
@@ -164,6 +160,14 @@ func _add_rotten_cells(count: int) -> void:
 		mark.position = -tile_size / 2.0
 		tile.add_child(mark)
 
+# The blender art shrinks with smaller grids, so everything drawn on it shrinks too.
+# The art and button offsets are set up for a 4x4 grid
+func _size_scale() -> float:
+	return grid_rows / 4.0
+
+func _button_scale() -> float:
+	return blend_button_sprite_scale * _size_scale()
+
 func calculate_grid_dimensions() -> void:
 	var total_grid_width: float = grid_columns * tile_size.x
 	var total_grid_height: float = grid_rows * tile_size.y
@@ -184,7 +188,7 @@ func generate_physical_grid() -> void:
 		bg.name = "BlenderBackground"
 		bg.texture = blender_texture
 		bg.centered = true
-		bg.position = grid_anchor.position + blender_offset
+		bg.position = grid_anchor.position + blender_offset * _size_scale()
 		var total_h = grid_rows * tile_size.y * blender_scale
 		var uniform_scale = total_h / blender_texture.get_height()
 		bg.scale = Vector2(uniform_scale, uniform_scale)
@@ -239,12 +243,12 @@ func position_and_wire_blend_button() -> void:
 	var blender_half_height = (total_grid_height * blender_scale) / 2.0
 
 	var target_local_center_x = grid_anchor.position.x
-	var target_local_bottom_y = grid_anchor.position.y + blender_half_height - button_spacing_y
+	var target_local_bottom_y = grid_anchor.position.y + blender_half_height - button_spacing_y * _size_scale()
 
 	# Size the button to the sprite's rendered dimensions so the full sprite is clickable
 	var btn_size = blend_button.size
 	if blend_button_normal_texture:
-		btn_size = blend_button_normal_texture.get_size() * blend_button_sprite_scale
+		btn_size = blend_button_normal_texture.get_size() * _button_scale()
 		blend_button.custom_minimum_size = btn_size
 		blend_button.size = btn_size
 
@@ -271,7 +275,7 @@ func _setup_blend_button_sprites(btn_size: Vector2) -> void:
 		normal_spr.texture = blend_button_normal_texture
 		normal_spr.centered = true
 		normal_spr.position = center
-		normal_spr.scale = Vector2(blend_button_sprite_scale, blend_button_sprite_scale)
+		normal_spr.scale = Vector2.ONE * _button_scale()
 		blend_button.add_child(normal_spr)
 
 	if blend_button_pressed_texture:
@@ -280,7 +284,7 @@ func _setup_blend_button_sprites(btn_size: Vector2) -> void:
 		pressed_spr.texture = blend_button_pressed_texture
 		pressed_spr.centered = true
 		pressed_spr.position = center
-		pressed_spr.scale = Vector2(blend_button_sprite_scale, blend_button_sprite_scale)
+		pressed_spr.scale = Vector2.ONE * _button_scale()
 		pressed_spr.visible = false
 		blend_button.add_child(pressed_spr)
 
