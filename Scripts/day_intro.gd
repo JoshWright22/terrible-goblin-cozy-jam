@@ -2,6 +2,7 @@ extends Control
 
 # Short card shown before days 2+ (day 1 uses the full tutorial)
 
+@onready var _dimmer: ColorRect = $Dimmer
 @onready var _panel: Sprite2D = $BgSprite
 @onready var _day_lbl: Label = $DayLabel
 @onready var _title_lbl: Label = $TitleLabel
@@ -46,9 +47,15 @@ func _close() -> void:
 		return
 	_closing = true
 	GameManager.paused = false
-	var tw := create_tween()
-	tw.tween_property(self, "position:x", -get_viewport_rect().size.x - 50.0, 0.22) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	# The board slides off while the dimmer just fades where it is
+	var slide := -get_viewport_rect().size.x - 50.0
+	var tw := create_tween().set_parallel()
+	for child in get_children():
+		if child == _dimmer:
+			tw.tween_property(child, "modulate:a", 0.0, 0.3)
+		else:
+			tw.tween_property(child, "position:x", child.position.x + slide, 0.22) \
+				.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tw.finished.connect(func():
 		var parent = get_parent()
 		if parent is CanvasLayer:

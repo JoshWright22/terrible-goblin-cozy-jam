@@ -5,13 +5,18 @@ extends Node2D
 const ON_COLOR := Color(0.55, 0.75, 0.4)
 const OFF_COLOR := Color(0.6, 0.5, 0.45)
 
+signal closed
+
 @onready var _rows: VBoxContainer = $Board/Rows
 @onready var _back_btn: TextureButton = $BackButton
+
+var overlay: bool = false   # opened from the pause menu, so close instead of changing scene
 
 var _slider_tick_cooldown: float = 0.0
 
 func _ready() -> void:
-	AudioManager.start_menu_music()
+	if not overlay:
+		AudioManager.start_menu_music()
 	_add_slider("Music", "Music")
 	_add_slider("Sound effects", "SFX")
 	if SaveManager.can_toggle_fullscreen():
@@ -27,9 +32,17 @@ func _ready() -> void:
 	ButtonFx.setup(_back_btn)
 	_back_btn.pressed.connect(func():
 		SaveManager.save_game()
-		get_tree().call_group("hostController", "transition_to_scene", GameManager.mainMenu)
+		if overlay:
+			closed.emit()
+		else:
+			get_tree().call_group("hostController", "transition_to_scene", GameManager.mainMenu)
 	)
 	BoardPaint.apply($Board, true, 0.15)
+	# Sliders and toggles paint on after their row's name, like the calendar buttons
+	for i in _rows.get_child_count():
+		for item in _rows.get_child(i).get_children():
+			if item is BaseButton or item is Slider:
+				BoardPaint.paint_tree(item, 0.45 + i * 0.2, false)
 
 func _process(delta: float) -> void:
 	_slider_tick_cooldown = maxf(0.0, _slider_tick_cooldown - delta)

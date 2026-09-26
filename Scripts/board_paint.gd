@@ -158,7 +158,7 @@ static func _paint_material(grain: float = -1.0, streaks: float = -1.0) -> Shade
 # Everything under root that draws something: the root itself, labels, buttons, stars
 static func _drawn_items(root: Control) -> Array:
 	var found: Array = []
-	if root is Label or root is RichTextLabel or root is BaseButton or root is StarIcon or root is Panel:
+	if root is Label or root is RichTextLabel or root is BaseButton or root is StarIcon or root is Panel or root is Slider:
 		found.append(root)
 	for child in root.get_children():
 		if child is Control:

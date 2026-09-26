@@ -4,6 +4,7 @@ signal resume_requested
 
 @onready var _resume_btn:   TextureButton = $ButtonBox/ResumeButton
 @onready var _exit_btn:     TextureButton = $ButtonBox/ExitButton
+@onready var _settings_btn: Button        = $ButtonBox/SettingsButton
 @onready var _dimmer:       ColorRect     = $Dimmer
 @onready var _bg:           Sprite2D      = $BgSprite
 @onready var _label:        Label         = $PausedLabel
@@ -12,11 +13,14 @@ signal resume_requested
 const BG_SCALE := Vector2(0.45, 0.45)
 
 var _closing := false
+var _settings_layer: CanvasLayer = null
 
 func _ready() -> void:
 	BoardPaint.apply(self, true, 0.2)
 	_setup_btn(_resume_btn)
 	_setup_btn(_exit_btn)
+	ButtonFx.style_text_button(_settings_btn, Color(0.93, 0.6, 0.35), 50)
+	ButtonFx.setup(_settings_btn)
 	_play_in()
 
 func _setup_btn(btn: TextureButton) -> void:
@@ -57,8 +61,11 @@ func _play_out(callback: Callable) -> void:
 	tw.parallel().tween_property(_dimmer, "modulate:a", 0.0, 0.15)
 	tw.finished.connect(callback)
 
-# Called by HUD when ESC is pressed while paused
+# Called by HUD when ESC is pressed while paused. ESC backs out of settings first.
 func request_close() -> void:
+	if is_instance_valid(_settings_layer):
+		_close_settings()
+		return
 	if _closing:
 		return
 	_closing = true
@@ -88,6 +95,24 @@ func _release(btn: TextureButton) -> void:
 		.set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 # ---------- Button handlers ----------
+
+func _on_settings_button_pressed() -> void:
+	if _closing or is_instance_valid(_settings_layer):
+		return
+	AudioManager.play_pause_open()
+	_settings_layer = CanvasLayer.new()
+	_settings_layer.layer = layer + 1
+	var settings: Node = GameManager.settingsScene.instantiate()
+	settings.overlay = true
+	settings.closed.connect(_close_settings)
+	_settings_layer.add_child(settings)
+	add_child(_settings_layer)
+
+func _close_settings() -> void:
+	AudioManager.play_pause_close()
+	SaveManager.save_game()
+	_settings_layer.queue_free()
+	_settings_layer = null
 
 func _on_resume_button_pressed() -> void:
 	if _closing:

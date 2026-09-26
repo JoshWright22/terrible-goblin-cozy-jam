@@ -34,9 +34,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -200.0
-offset_top = -250.0
+offset_top = -300.0
 offset_right = 200.0
-offset_bottom = -165.0
+offset_bottom = -215.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("5_pm")
@@ -51,16 +51,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -80.0
-offset_top = -150.0
-offset_right = 80.0
-offset_bottom = 200.0
+offset_left = -130.0
+offset_top = -200.0
+offset_right = 130.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 30
 
 [node name="ResumeButton" type="TextureButton" parent="ButtonBox"]
 custom_minimum_size = Vector2(160, 160)
+size_flags_horizontal = 4
 action_mode = 0
 texture_normal = ExtResource("3_pm")
 ignore_texture_size = true
@@ -68,10 +69,19 @@ stretch_mode = 5
 
 [node name="ExitButton" type="TextureButton" parent="ButtonBox"]
 custom_minimum_size = Vector2(160, 160)
+size_flags_horizontal = 4
 action_mode = 0
 texture_normal = ExtResource("4_pm")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="SettingsButton" type="Button" parent="ButtonBox"]
+custom_minimum_size = Vector2(260, 90)
+layout_mode = 2
+size_flags_horizontal = 4
+action_mode = 0
+text = "Settings"
+
 [connection signal="pressed" from="ButtonBox/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="ButtonBox/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="ButtonBox/SettingsButton" to="." method="_on_settings_button_pressed"]
