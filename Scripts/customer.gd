@@ -47,7 +47,11 @@ var kind: String = ""        # "", "rush", "vip" or "critic"
 var orders_left: int = 1     # 2 for double orders
 var score_mult: float = 1.0
 var _badge: Label = null
-const BADGE_CENTER := Vector2(-25, 0)   # middle of the customer sprite
+const BADGE_Y := 0.0   # badges sit across the customer's middle
+# Some art isn't centered on the character (the lifeguard's beach ball, the seagull's wing),
+# so their badges shift left onto the body. Keyed by index in characterSprites
+const BADGE_NUDGE := {0: -55.0, 4: -20.0}
+var _look: int = -1   # which character art this customer uses
 const BADGE_COLORS := {"rush": Color(0.95, 0.2, 0.2), "vip": Color(1.0, 0.85, 0.2), "critic": Color(0.72, 0.5, 1.0)}
 const ORDER_FADE_TIME := 3.5  # Short Memory twist: seconds an order stays up on its own
 var _hovered: bool = false
@@ -101,7 +105,8 @@ func _update_badge() -> void:
 		_badge.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		# Stamped across the middle of the customer at a slant
 		_badge.size = Vector2(260, 80)
-		_badge.position = BADGE_CENTER - _badge.size / 2.0
+		# Follow the sprite, since spriteCorrection shifts some characters sideways
+		_badge.position = Vector2(sprite.position.x + BADGE_NUDGE.get(_look, 0.0), BADGE_Y) - _badge.size / 2.0
 		_badge.pivot_offset = _badge.size / 2.0
 		_badge.rotation_degrees = -12.0
 		_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -124,6 +129,7 @@ func genCustomer() -> void:
 	while text in control.spritesUsed.values():
 		text = characterSprites.pick_random()
 	sprite.texture = text
+	_look = characterSprites.find(text)
 	control.spritesUsed[ID] = text
 	spriteCorrection()
 	fadeTween.tween_property(self, "modulate", Color(1, 1, 1, 1.0), FADE_TIME)
