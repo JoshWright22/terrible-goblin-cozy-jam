@@ -38,7 +38,7 @@ Flipping back through the journal, you find "Cleaned the blenders today." The en
 Old fruit has set like cement in the bottom of the blenders. You'll have to pack around it.
 
 [summer 8] Broken Blender
-The journal's cleaning page says "Blenders: hot wash, tumble dry." The old fruit came out.
+The journal's cleaning page says "Hot wash, tumble dry." The old fruit came out.
 The blenders came out of the dryer a size smaller. They're 3x3 now.
 
 [summer 9] Belt on Overdrive
@@ -74,7 +74,7 @@ The volleyball team Gus used to coach won without him. They are starving.
 Some of them want two smoothies.
 
 [summer 17] VIP Visit
-A famous surfer who used to ride with Gus is stopping by. His name is in the journal, underlined twice: "Do not ask him about the shark."
+A famous surfer who used to ride with Gus is stopping by. His name is underlined twice in the journal, next to "Do not ask him about the shark."
 The surfer is a VIP and tips like one.
 
 [summer 18] Summer Festival
@@ -114,7 +114,7 @@ The magician is back, and he brought allergies.
 The fruit keeps changing, and some orders have a crossed out fruit.
 
 [carnival 9] Blackout
-Someone plugged the ferris wheel into your outlet. The plug has a sticky note on it: "Borrowing this. G."
+Someone plugged the ferris wheel into your outlet. The sticky note on the plug says "Borrowing this. G."
 The power flickers and the belt stalls.
 
 [carnival 10] Judging Day
