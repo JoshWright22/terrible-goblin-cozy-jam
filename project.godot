@@ -10,8 +10,11 @@ config_version=5
 
 [application]
 
-config/name="Terrible-Goblin-Cozy-Jam"
+config/name="Slush Rush"
+config/version="0.1.0"
 run/main_scene="uid://b7gcf2cfvgq4e"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Slush Rush"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

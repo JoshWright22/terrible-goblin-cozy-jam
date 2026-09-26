@@ -20,3 +20,6 @@ mono_crash.*.json
 
 # Local editor tooling
 addons/godot_mcp/
+
+# Export output
+builds/
